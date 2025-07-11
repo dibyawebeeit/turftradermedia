@@ -1,0 +1,67 @@
+.accordionjs {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.accordionjs .acc_section {
+  position: relative;
+  z-index: 10;
+  overflow: hidden;
+  margin: 0 0 30px;
+  /*width: 48%;
+  float: left;*/
+  background-color: #fff;
+  padding: 20px 25px;
+  border-radius: 0;
+  text-align: left;
+  box-shadow: 0 0 5px 5px rgba(0,0,0,0.1);
+}
+.accordionjs .acc_section:last-child{
+  margin: 0;
+}
+/*.accordionjs .acc_section:nth-child(even){
+  float: right;
+}*/
+.accordionjs .acc_section .acc_head {
+  position: relative;
+  display: block;
+  cursor: pointer;
+}
+.accordionjs .acc_section .acc_head h3 {
+  font-size: 20px; 
+  line-height: 28px; 
+  font-weight: 700; 
+  color: #1a1a1a;
+  margin: 0;
+  position: relative;
+  padding: 0 50px 0 0;
+  background: url(../images/faq_plus.png) 100% 50% no-repeat;
+}
+
+.accordionjs .acc_section .acc_content {
+  padding: 20px 0 0;
+}
+.accordionjs .acc_section .acc_content p{
+  font-size: 16px; line-height: 26px; color: #424242;
+}
+.accordionjs .acc_section:first-of-type,
+.accordionjs .acc_section:first-of-type .acc_head {
+  /*border-top-left-radius: 3px;
+  border-top-right-radius: 3px;*/
+}
+.accordionjs .acc_section:last-of-type,
+.accordionjs .acc_section:last-of-type .acc_content {
+  /*border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;*/
+}
+.accordionjs .acc_section.acc_active > .acc_content {
+  display: block;
+}
+.accordionjs .acc_section.acc_active > .acc_head h3 {
+  background: url(../images/faq_minus.png) 100% 50% no-repeat;
+}
+
+@media screen and (max-width: 767px) {
+.accordionjs{margin: 0 0 80px !important;}
+}

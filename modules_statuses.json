@@ -1,0 +1,15 @@
+{
+    "Frontend": true,
+    "Authentication": true,
+    "Dashboard": true,
+    "Setting": true,
+    "Profile": true,
+    "Role": true,
+    "Permission": true,
+    "Faq": true,
+    "User": true,
+    "Subscriptionplan": true,
+    "Cms": true,
+    "Banner": true,
+    "Category": true
+}
