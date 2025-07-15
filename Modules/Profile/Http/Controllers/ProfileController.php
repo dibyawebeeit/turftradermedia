@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
+use App\Rules\PhoneNumber;
 
 class ProfileController extends Controller
 {
@@ -55,14 +56,14 @@ class ProfileController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if($id != Auth::user()->id)
+        if($id != Auth::guard('admin')->user()->id)
         {
             abort(401);
         }
         $validated = $request->validate([
             'email' => 'required|email|unique:users,email,' . $id,
             'name' => 'required|string',
-            'phone' => 'nullable|numeric|digits:10',
+            'phone' => ['required', new PhoneNumber()],
         ]);
 
         if($request->has('image'))

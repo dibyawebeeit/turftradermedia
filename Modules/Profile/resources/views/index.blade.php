@@ -429,17 +429,17 @@
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label for="phone" class="form-label">Phone</label>
-                                                <input type="tel" class="form-control" name="phone" placeholder="Enter Phone" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" onkeypress="if(this.value.length==10) return false;" value="{{Auth::user()->phone}}">
+                                                <input type="tel" class="form-control" name="phone" placeholder="Enter Phone" value="{{Auth::user()->phone}}">
                                             </div>
                                         </div> <!-- end col -->
                                         
-                                        <div class="col-md-6">
+                                        {{-- <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label for="image" class="form-label">Profile Picture</label>
                                                 <input type="file" class="form-control" name="image">
                                                 <input type="hidden" name="oldimage" value="{{Auth::user()->image}}">
                                             </div>
-                                        </div>
+                                        </div> --}}
                                     </div> <!-- end row -->
 
                                     <h5 class="mb-4 text-uppercase"><i class="mdi mdi-lock me-1"></i> Authentication Info</h5>

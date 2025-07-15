@@ -100,6 +100,24 @@
                 </li>
             @endcan
 
+            @can('manufacturer_list')
+                <li class="side-nav-item">
+                    <a href="{{route('manufacturer.index')}}" class="side-nav-link">
+                        <i class="fas fa-industry"></i>
+                        <span> Manufacturer </span>
+                    </a>
+                </li>
+            @endcan
+
+            @can('equipmentmodel_list')
+                <li class="side-nav-item">
+                    <a href="{{route('equipmentmodel.index')}}" class="side-nav-link">
+                        <i class="fas fa-industry"></i>
+                        <span> Model </span>
+                    </a>
+                </li>
+            @endcan
+
              @can('subscriptionplan_list')
                 <li class="side-nav-item">
                     <a href="{{route('subscriptionplan.index')}}" class="side-nav-link">
@@ -133,6 +151,7 @@
                 </a>
             </li> --}}
 
+            @can('cms')
             <li class="side-nav-item">
                 <a data-bs-toggle="collapse" href="#cmsSection" aria-expanded="false"
                     aria-controls="cmsSection" class="side-nav-link">
@@ -160,6 +179,7 @@
                     </ul>
                 </div>
             </li>
+            @endcan
 
             @can('setting')
                 <li class="side-nav-item">
