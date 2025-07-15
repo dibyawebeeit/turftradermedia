@@ -29,6 +29,8 @@
         <link rel="icon" href="{{ asset('frontendassets/image/fab.png') }}" sizes="192x192" />
         <link rel="apple-touch-icon" href="{{ asset('frontendassets/image/fab.png') }}" />
         <meta name="msapplication-TileImage" content="{{ asset('frontendassets/image/fab.png') }}" />
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+       <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css">
         <script src="{{ asset('frontendassets/js/jquery-3.6.0.min.js') }}"></script>
 
     </head>
@@ -52,6 +54,28 @@
         <script src="{{ asset('frontendassets/js/slick.js') }}"></script>
         <script src="{{ asset('frontendassets/js/main-script.js') }}"></script>
 
+        <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+        <script> 
+            $(document).ready(function() {
+                var table = $('#example').DataTable({ 
+                        select: false,
+                        "columnDefs": [{
+                            className: "Name", 
+                            "targets":[0],
+                            "visible": false,
+                            "searchable":false
+                        }]
+                    });//End of create main table
+
+                
+                $('#example tbody').on( 'click', 'tr', function () {
+                
+                    alert(table.row( this ).data()[0]);
+
+                } );
+            });
+        </script>
 
         <script>
             let imageDataTransfer = new DataTransfer();

@@ -36,7 +36,7 @@
                 @endforeach
                                 
                     
-                    <button class="btn" id="backBtn">Back</button>
+                    {{-- <button class="btn" id="backBtn">Back</button> --}}
                 </div>
             </div>
 

@@ -31,6 +31,11 @@
                               <li><a class="btn-profile-menu {{ $activemenu && $activemenu=='change_password'?'active':'' }}" href="{{ route('customer.change_password') }}">
                                  <i class="fa-solid fa-key me-2"></i> Change Password </a>
                               </li>
+
+                              <li><a class="btn-profile-menu {{ $activemenu && $activemenu=='equipment'?'active':'' }}" href="{{ route('customer.equipment.index') }}">
+                                 <i class="fa-solid fa-car me-2"></i> Equipments </a>
+                              </li>
+
                               {{-- <li><a class="btn-profile-menu " href="#">
                                  <i class="fa-solid fa-cog me-2"></i> Settings </a>
                               </li> --}}

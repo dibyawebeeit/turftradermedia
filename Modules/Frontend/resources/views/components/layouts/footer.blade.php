@@ -47,9 +47,9 @@
                 
                 <div class="social-link">
                     <ul>
-                        <li><a href="#" target="_blank"><i class="fa-brands fa-facebook-f"></i></a></li>
-                        <li><a href="#" target="_blank"><i class="fa-brands fa-instagram"></i></a></li>
-                        <li><a href="#" target="_blank"><i class="fa-brands fa-x-twitter"></i></a></li>
+                        <li><a href="{{sitesetting()->facebook_link==''?'#':sitesetting()->facebook_link}}" target="_blank"><i class="fa-brands fa-facebook-f"></i></a></li>
+                        <li><a href="{{sitesetting()->instagram_link==''?'#':sitesetting()->instagram_link}}" target="_blank"><i class="fa-brands fa-instagram"></i></a></li>
+                        <li><a href="{{sitesetting()->twitter_link==''?'#':sitesetting()->twitter_link}}" target="_blank"><i class="fa-brands fa-x-twitter"></i></a></li>
                     </ul>
                 </div>
                                    

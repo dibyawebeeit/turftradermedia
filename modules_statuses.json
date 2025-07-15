@@ -16,5 +16,6 @@
     "Subscription": true,
     "Customerpanel": true,
     "Manufacturer": true,
-    "EquipmentModel": true
+    "EquipmentModel": true,
+    "Equipment": true
 }

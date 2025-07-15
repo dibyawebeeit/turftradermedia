@@ -1,7 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Modules\Customerpanel\Http\Controllers\CustomerEquipmentController;
 use Modules\Customerpanel\Http\Controllers\CustomerpanelController;
+
 
 // Route::middleware(['auth', 'verified'])->group(function () {
 //     Route::resource('customerpanels', CustomerpanelController::class)->names('customerpanel');
@@ -26,4 +28,6 @@ Route::prefix('customer')->middleware(['auth.customer', 'customerrole:seller'])-
     Route::get('/business-document', [CustomerpanelController::class, 'business_document'])->name('customer.business_document');
     Route::post('/upload_document', [CustomerpanelController::class, 'upload_document'])->name('customer.upload_document');
     Route::post('/delete_document', [CustomerpanelController::class, 'delete_document'])->name('customer.delete_document');
+
+    Route::resource('/equipment', CustomerEquipmentController::class)->names('customer.equipment');
 });
