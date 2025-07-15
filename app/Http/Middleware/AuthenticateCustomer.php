@@ -23,7 +23,7 @@ class AuthenticateCustomer extends Middleware
     protected function redirectTo($request)
     {
         if (! $request->expectsJson()) {
-            return route('login'); // Make sure this route exists
+            return route('signin'); // Make sure this route exists
         }
     }
 }

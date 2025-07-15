@@ -3,14 +3,17 @@
 namespace Modules\Authentication\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Mail\ForgotpasswordMail;
 
 use App\Models\User; // Import the User model
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class AuthenticationController extends Controller
 {
@@ -19,20 +22,13 @@ class AuthenticationController extends Controller
      */
     public function index()
     {
+        if (Auth::guard('admin')->check()) {
+            return redirect()->route('dashboard.index');
+        }
         return view('authentication::index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('authentication::create');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
+    
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -56,31 +52,103 @@ class AuthenticationController extends Controller
             return redirect()->route('authentication.index')->withInput()->with('error','Invalid Credentials');
         }
     }
-    /**
-     * Show the specified resource.
-     */
-    public function show($id)
+
+    public function forgot_password(Request $request)
     {
-        return view('authentication::show');
+        return view('authentication::forgot_password');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
+    public function submit_forgot_password(Request $request)
     {
-        return view('authentication::edit');
+        $email = $request->email;
+        $isExist = User::where('email', $email)->exists();
+
+        if ($isExist) {
+            $otp = rand(111111, 999999);
+
+            $mailData = array(
+                'otp' => $otp
+            );
+            Mail::to($email)->send(new ForgotpasswordMail($mailData));
+
+            Session::put('user_email', $email);
+            $user = User::where('email', $email)->first();
+            $user->forgotpassword_code = $otp;
+            $user->save();
+            return response()->json([
+                'status' => true,
+                'msg' => 'OTP sent successfully',
+                'data' => array('otp' => $otp),
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'msg' => 'Invalid Email ID',
+                'data' => null,
+            ]);
+        }
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id) {}
+    public function submit_otp(Request $request)
+    {
+        $email = Session::get('user_email');
+        $otp = $request->otp;
+        if ($email == '') {
+            return response()->json([
+                'status' => false,
+                'msg' => 'OTP not match',
+            ]);
+        }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id) {}
+        $userDetails = User::where('email', $email)->first();
+
+        if ($otp == $userDetails->forgotpassword_code) {
+            return response()->json([
+                'status' => true,
+                'msg' => 'OTP matched',
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'msg' => 'OTP not match',
+            ]);
+        }
+    }
+
+    public function change_password()
+    {
+        $email = Session::get('user_email');
+        if ($email == '') {
+            return redirect()->route('authentication.index');
+        }
+        return view('authentication::change_password');
+    }
+
+    public function submit_change_password(Request $request)
+    {
+        $email = Session::get('user_email');
+        if ($email == '') {
+            return redirect('/login');
+        }
+        $request->validate([
+            'password' => 'required|string',
+            'confirm_password' => 'required|string|same:password',
+        ]);
+
+
+        $user = User::where('email', $email)->first();
+        $user->password = Hash::make($request->password);
+        $result = $user->save();
+
+        if ($result) {
+            // Session::forget('user_email');
+            session()->forget('user_email');
+            return redirect()->back()->with('success', 'Password changed successfully')->with('redirect_login', true);
+        } else {
+            return redirect()->back()->withInput()->with('error', 'Something went wrong!');
+        }
+    }
+    
 
     public function logout() {
         Auth::guard('admin')->logout();

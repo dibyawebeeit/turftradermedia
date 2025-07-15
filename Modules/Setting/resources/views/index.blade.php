@@ -204,7 +204,7 @@
                                 </div>
                                 <!-- end row -->
 
-                                <h5 class="mb-3 text-uppercase bg-light p-2"><i class="mdi mdi-email me-1"></i> SMTP Info
+                                {{-- <h5 class="mb-3 text-uppercase bg-light p-2"><i class="mdi mdi-email me-1"></i> SMTP Info
                                 </h5>
                                 <div class="row">
                                     <div class="col-md-6">
@@ -256,9 +256,9 @@
                                             <label for="smtp_switch" data-on-label="On" data-off-label="Off"></label>
                                         </div>
                                     </div> <!-- end col -->
-                                </div> <!-- end row -->
+                                </div>  --}}
 
-                                <h5 class="mb-3 text-uppercase bg-light p-2"><i class="mdi mdi-google me-1"></i> Google
+                                {{-- <h5 class="mb-3 text-uppercase bg-light p-2"><i class="mdi mdi-google me-1"></i> Google
                                     reCAPTCHA v2
                                 </h5>
                                 <div class="row">
@@ -287,9 +287,9 @@
                                             <label for="recapcha_switch" data-on-label="On" data-off-label="Off"></label>
                                         </div>
                                     </div> <!-- end col -->
-                                </div> <!-- end row -->
+                                </div>  --}}
 
-                                <h5 class="mb-3 text-uppercase bg-light p-2"><i class="mdi mdi-google me-1"></i> Google
+                                {{-- <h5 class="mb-3 text-uppercase bg-light p-2"><i class="mdi mdi-google me-1"></i> Google
                                     Sign In
                                 </h5>
                                 <div class="row">
@@ -327,9 +327,9 @@
                                                 data-off-label="Off"></label>
                                         </div>
                                     </div> <!-- end col -->
-                                </div> <!-- end row -->
+                                </div>  --}}
 
-                                <h5 class="mb-3 text-uppercase bg-light p-2"><i
+                                {{-- <h5 class="mb-3 text-uppercase bg-light p-2"><i
                                         class="mdi mdi-credit-card-check me-1"></i> Paypal
                                     Credentials
                                 </h5>
@@ -388,9 +388,9 @@
                                             <label for="paypal_switch" data-on-label="On" data-off-label="Off"></label>
                                         </div>
                                     </div> <!-- end col -->
-                                </div> <!-- end row -->
+                                </div> --}}
 
-                                <h5 class="mb-3 text-uppercase bg-light p-2"><i
+                                {{-- <h5 class="mb-3 text-uppercase bg-light p-2"><i
                                         class="mdi mdi-credit-card-check me-1"></i> Stripe Credentials
                                 </h5>
                                 <div class="row">
@@ -417,9 +417,9 @@
                                             <label for="stripe_switch" data-on-label="On" data-off-label="Off"></label>
                                         </div>
                                     </div> <!-- end col -->
-                                </div> <!-- end row -->
+                                </div>  --}}
 
-                                <h5 class="mb-3 text-uppercase bg-light p-2"><i
+                                {{-- <h5 class="mb-3 text-uppercase bg-light p-2"><i
                                         class="mdi mdi-credit-card-check me-1"></i> Razorpay
                                     Credentials
                                 </h5>
@@ -448,9 +448,9 @@
                                             <label for="razorpay_switch" data-on-label="On" data-off-label="Off"></label>
                                         </div>
                                     </div> <!-- end col -->
-                                </div> <!-- end row -->
+                                </div>  --}}
 
-                                <h5 class="mb-3 text-uppercase bg-light p-2"><i
+                                {{-- <h5 class="mb-3 text-uppercase bg-light p-2"><i
                                         class="mdi mdi-credit-card-check me-1"></i> PayU Money Credentials
                                 </h5>
                                 <div class="row">
@@ -486,7 +486,7 @@
                                             <label for="payu_switch" data-on-label="On" data-off-label="Off"></label>
                                         </div>
                                     </div> <!-- end col -->
-                                </div> <!-- end row -->
+                                </div>  --}}
 
                                 <div class="text-end">
                                     <button type="submit" class="btn btn-success mt-2"><i

@@ -1,4 +1,4 @@
-<x-frontend::layouts.master>
+<x-frontend::layouts.master :title="'Sign In'">
 <hr>
 
 
@@ -12,14 +12,29 @@
                     <div class="login-block">
                         <h3>Log in to your account</h3>
                         <p>You can log in below using your email or customer ID. If you need any help logging in, please contact your account manager for assistance</p>
-                        <form action="" method="post" enctype="multipart/form-data">
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+                        @if (session()->has('error'))
+                            <div class="errmsg">
+                              <i class="fa-solid fa-circle-exclamation"></i> {{ session('error') }}
+                            </div>
+                        @endif
+                        <form action="{{ route('submit_signin') }}" method="post" enctype="multipart/form-data">
+                          @csrf
                           <div class="form-group">
-                            <label class="control-label" for="input-email">Customer ID or Email Address</label>
-                            <input autocomplete="off" type="text" name="email" value="" placeholder="Customer ID or Email Address" id="input-email" class="form-control">
+                            <label class="control-label" for="input-email">Email ID</label>
+                            <input autocomplete="off" type="text" name="email" value="{{ old('email') }}" placeholder="Email ID" id="input-email" class="form-control" required>
                           </div>
                           <div class="form-group">
                             <label class="control-label" for="input-password">Password</label>
-                            <input autocomplete="off" type="password" name="password" value="" placeholder="Password" id="input-password" class="form-control">
+                            <input autocomplete="off" type="password" name="password" value="{{ old('password') }}" placeholder="Password" id="input-password" class="form-control" required>
                             <a class="forgot-pass-btn" href="#">Forgot Password</a></div>
                           <input type="submit" value="Login" class="">
                          </form>
@@ -35,7 +50,7 @@
                       <div class="login-block registerBlock">
                         <h3>Im New Customer</h3>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque a pharetra ante. Etiam eros arcu, mollis sed elementum at, sagittis sit amet neque. Aliquam tempus euismod velit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi vel dignissim magna. Aenean tincidunt nisi erat, at euismod lorem condimentum nec.</p>
-                        <a href="register.html" class="btn">Continue</a>
+                        <a href="{{ route('register') }}" class="btn">Continue</a>
                         <div class="terms-block">
                             <h3>Sign up today and you will be able to:</h3>
                             <ul>

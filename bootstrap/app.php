@@ -14,6 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'auth.admin' => \App\Http\Middleware\AuthenticateAdmin::class,
             'auth.customer' => \App\Http\Middleware\AuthenticateCustomer::class,
+            'customerrole' => \App\Http\Middleware\CustomerRoleMiddleware::class,
             'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
             'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
             'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,

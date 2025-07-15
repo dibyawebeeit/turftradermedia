@@ -22,6 +22,11 @@ class Subscriptionplan extends Model
         'status'
     ];
 
+    protected function scopeActive($query)
+    {
+        return $query->where('status', 1);
+    }
+
     // protected static function newFactory(): SubscriptionplanFactory
     // {
     //     // return SubscriptionplanFactory::new();

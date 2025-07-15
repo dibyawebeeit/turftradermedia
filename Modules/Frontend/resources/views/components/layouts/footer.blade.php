@@ -81,3 +81,41 @@
      </div>
 </div>
 </footer>
+@if (session()->has('success'))
+<script>
+    const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+    }
+    });
+    Toast.fire({
+    icon: "success",
+    text: "{{ session('success') }}"
+    });
+</script>
+@endif
+@if (session()->has('error'))
+<script>
+    const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+    }
+    });
+    Toast.fire({
+    icon: "error",
+    text: "{{ session('error') }}"
+    });
+</script>
+@endif

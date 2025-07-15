@@ -5,8 +5,13 @@
       
         <div class="col-cmn col-lg-4 col-md-4 col-sm-4 one">
             <div class="header-top-left">
-            	<a href="{{ route('signin') }}">Sign-In</a>
-            	<a href="{{ route('register') }}">Register</a>
+              @if (Auth::guard('customer')->check())
+                  <a href="{{ route('customer.dashboard') }}">Dashboard</a>
+              @else
+                  <a href="{{ route('signin') }}">Sign-In</a>
+            	    <a href="{{ route('register') }}">Register</a>
+              @endif
+            	
             </div>        
         </div>
         

@@ -7,7 +7,9 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-        <title>Authentication - {{ config('app.name', 'Laravel') }}</title>
+        <title>
+            {{ $title ?? 'Authentication' }} - {{ config('app.name', 'Laravel') }}
+        </title>
 
         <meta name="description" content="{{ $description ?? '' }}">
         <meta name="keywords" content="{{ $keywords ?? '' }}">
@@ -31,6 +33,14 @@
         <link href="{{ asset('assets/css/app-saas.min.css') }}" rel="stylesheet" type="text/css" id="app-style" />
         <!-- Icons css -->
         <link href="{{ asset('assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
+
+        <style>
+            .error
+            {
+                color: red;
+                font-size: 14px;
+            }
+        </style>
         {{-- added by dibya --}}
 
     </head>
@@ -46,6 +56,8 @@
         <!-- App js -->
         <script src="{{ asset('assets/js/app.min.js') }}"></script>
         {{-- added by dibya --}}
+
+        @yield('script')
 
     </body>
 </html>

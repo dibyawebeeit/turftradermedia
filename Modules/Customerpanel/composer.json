@@ -1,0 +1,30 @@
+{
+    "name": "nwidart/customerpanel",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Customerpanel\\": "app/",
+            "Modules\\Customerpanel\\Database\\Factories\\": "database/factories/",
+            "Modules\\Customerpanel\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\Customerpanel\\Tests\\": "tests/"
+        }
+    }
+}

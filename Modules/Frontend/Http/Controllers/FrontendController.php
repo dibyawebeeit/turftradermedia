@@ -3,12 +3,27 @@
 namespace Modules\Frontend\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Mail\WelcomeMail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 use Modules\Banner\Models\Banner;
 use Modules\Category\Models\Category;
 use Modules\Cms\Models\Aboutus;
 use Modules\Cms\Models\Advertising;
 use Modules\Cms\Models\Contactuscms;
+use Modules\Customer\Models\Customer;
+use Modules\Customer\Models\CustomerDocument;
+use Modules\Subscription\Models\Subscription;
+use Modules\Subscriptionplan\Models\Subscriptionplan;
+use Srmklive\PayPal\Services\PayPal as PayPalClient;
+use Srmklive\PayPal\Services\PayPal;
+use App\Rules\PhoneNumber;
 
 class FrontendController extends Controller
 {
@@ -22,10 +37,28 @@ class FrontendController extends Controller
     {
         return view('frontend::signin');
     }
+
+    public function submit_signin(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|max:100',
+            'password' => 'required'
+        ]);
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::guard('customer')->attempt($credentials)) {
+            return redirect()->route('customer.dashboard');
+        }
+
+        return redirect()->route('signin')->with('error','Invalid Credentials');
+    }
     public function register()
     {
-        return view('frontend::register');
+        $cachedData = Cache::get('cached_customer_data');
+        return view('frontend::register', compact('cachedData'));
     }
+
+    
     public function advertising(Request $request)
     {
         $data['advertising'] = Advertising::first();
@@ -77,5 +110,289 @@ class FrontendController extends Controller
     public function product_details()
     {
         return view('frontend::product_details');
+    }
+
+    public function submit_register(Request $request)
+    {
+       $validatedData = $request->validate([
+        'first_name'=> 'required|string|max:100',
+        'last_name'=> 'required|string|max:100',
+        'email'=> 'required|email|max:100|unique:customers,email',
+        'phone' => ['required', new PhoneNumber()],
+        'address'=> 'required|string|max:255',
+        'city'=> 'required|string|max:100',
+        'state'=> 'required|string|max:100',
+        'country'=> 'required|string|max:100',
+        'postal_code'=> 'required|string|max:5',
+        'password'=> 'required|string|same:repassword',
+        
+       ]);
+
+
+       $input = $request->all();
+
+       if($request->role === 'Buyer')
+       {
+            $input['role']="buyer";
+            $input["password"]= Hash::make($request->password);
+            $result = Customer::create($input);
+            if($result)
+            {
+                $name = $request->first_name." ".$request->last_name;
+                Mail::to($request->email)->send(new WelcomeMail($name, route('signin')));
+                return redirect()->route('success')->with('success','You have registered successfully.');
+            }
+            else
+            {
+                return redirect()->route('oops')->with('error','Something went wrong!');
+            }
+       }
+       else
+       {
+            $request->validate([
+                'documents' => 'required', // optional: ensure at least one file is uploaded
+                'documents.*' => 'required|mimes:jpeg,jpg,pdf|max:1024', // 1MB per file
+            ]);
+            $uploadedFiles = [];
+
+            if ($request->hasFile('documents')) {
+                foreach ($request->file('documents') as $file) {
+                    $ext = $file->getClientOriginalExtension(); // jpg, pdf
+                    $type = $ext === 'pdf' ? 'pdf' : 'image';
+                    $timestamp = Carbon::now()->format('Y_m_d_His');
+                    $random = Str::random(6);
+                    $filename = $timestamp . '_' . $random . '.' . $ext;
+
+                    // Ensure folder exists
+                    $destinationPath = public_path('uploads/tempCustomerDoc');
+                    if (!file_exists($destinationPath)) {
+                        mkdir($destinationPath, 0755, true);
+                    }
+
+                    $file->move($destinationPath, $filename);
+
+                    $uploadedFiles[] = [
+                        'file' => 'uploads/tempCustomerDoc/' . $filename,
+                        'type' => $type,
+                        'original_name' => $file->getClientOriginalName(),
+                    ];
+                }
+            }
+
+            // Add uploaded file data to the rest of validatedData
+            $validatedData['documents'] = $uploadedFiles;
+
+            // Cache for 30 minutes (1800 seconds)
+            Cache::put('cached_customer_data', $validatedData, 1800);
+
+            return redirect()->route('subscription');
+
+           
+       }
+
+
+
+       
+    }
+    public function subscription(Request $request)
+    {
+        $data = Cache::get('cached_customer_data');
+        if (!$data) {
+            return redirect()->route('register');
+        } 
+
+
+        $data['subscriptionplan']=Subscriptionplan::active()->get();
+        return view('frontend::subscription', $data);
+    }
+
+    //Paypal Integration
+    public function startPayment(Request $request)
+    {
+        $subscriptionId = $request->query('id');
+        $type = $request->query('type'); // 'monthly' or 'annual'
+
+        $subscription = Subscriptionplan::findOrFail($subscriptionId);
+
+        if (!in_array($type, ['monthly', 'annual'])) {
+            abort(400, 'Invalid subscription type');
+        }
+
+        $price = $type === 'monthly' ? $subscription->monthly_price : $subscription->annual_price;
+        $start_date = Carbon::now();
+        $end_date = $type === 'monthly' ? $start_date->copy()->addMonth() : $start_date->copy()->addYear();
+
+        session([
+            'subscription' => [
+                'id' => $subscriptionId,
+                'type' => $type,
+                'price' => $price,
+                'start_date' => $start_date->toDateString(),
+                'end_date' => $price == 0 ? null : $end_date->toDateString(),
+                'type' => $type
+            ]
+        ]);
+
+        return redirect()->route('subscription_booking');
+    }
+
+    public function subscription_booking(Request $request)
+    {
+        $total_amount = session('subscription.price');
+
+        $provider = new PayPalClient;
+        $provider->setApiCredentials(config('paypal'));
+        $provider->getAccessToken();
+
+        $response = $provider->createOrder([
+            "intent" => "CAPTURE",
+            "application_context" => [
+                "return_url" => route('subscription_success'),
+                "cancel_url" => route('subscription_cancel')
+            ],
+            "purchase_units" => [
+                [
+                    "amount" => [
+                        "currency_code" => "USD",
+                        "value" => $total_amount,
+                    ]
+                ]
+            ]
+        ]);
+
+        if (isset($response['id'])) {
+            foreach ($response['links'] as $link) {
+                if ($link['rel'] === 'approve') {
+                    return redirect()->away($link['href']);
+                }
+            }
+        }
+
+        return redirect()->route('subscription_cancel');
+    }
+
+    public function subscription_success(Request $request)
+    {
+        $provider = new PayPalClient;
+        $provider->setApiCredentials(config('paypal'));
+        $provider->getAccessToken();
+
+        $response = $provider->capturePaymentOrder($request->token);
+
+        if ($response['status'] === 'COMPLETED') {
+            $payment_id = $request->token;
+            $newStatus = $this->complete_subscription($payment_id);
+            if($newStatus == true)
+            {
+                return redirect()->route('success')->with('success','You have registered successfully.');
+            }
+            else
+            {
+                 return redirect()->route('oops')->with('error','Something went wrong!');
+            }
+            
+        }
+
+        return redirect()->route('oops')->with('error','Something went wrong!');
+    }
+
+    public function complete_subscription($payment_id)
+    {
+        $subscription = session('subscription');
+
+        DB::beginTransaction();
+        try {
+            //code...
+            // Example: $data['email'], $data['first_name'], etc.
+            $data = Cache::get('cached_customer_data');
+
+            // Create permanent document folder
+            $permanentPath = public_path('uploads/customerDoc');
+            if (!file_exists($permanentPath)) {
+                mkdir($permanentPath, 0755, true);
+            }
+
+            // Move each document
+            $movedFiles = [];
+            foreach ($data['documents'] as $doc) {
+                $tempFilePath = public_path($doc['file']);
+                $fileName = basename($doc['file']);
+
+                $newPath = $permanentPath . '/' . $fileName;
+                if (file_exists($tempFilePath)) {
+                    rename($tempFilePath, $newPath); // Move from temp to permanent
+                }
+
+                $movedFiles[] = [
+                    'file' => $fileName,
+                    'type' => $doc['type'],
+                ];
+            }
+
+            // Replace temp paths with final paths
+            $data['documents'] = $movedFiles;
+            
+
+
+            // Customer Create Section
+            $data['role']="seller";
+            $data['password'] = Hash::make($data['password']);
+            $customer = Customer::create($data);
+            // Customer Create Section
+
+
+            //Document Upload Section
+            foreach ($data['documents'] as $doc) {
+                CustomerDocument::create([
+                    'customer_id' => $customer->id,
+                    'file' => $doc['file'],
+                    'type' => $doc['type'],
+                ]);
+            }
+            //Document Upload Section
+
+            $subscriptionData = [
+                'customer_id' => $customer->id,
+                'subscription_plan_id' => $subscription['id'],
+                'start_date' => $subscription['start_date'],
+                'end_date' => $subscription['end_date'], // could be null for free
+                'type' => $subscription['type'],
+                'amount' => $subscription['price'],
+                'txn_id' => $payment_id,
+                'payment_type' => 'online',
+            ];
+
+            $createdSubscription = Subscription::create($subscriptionData);
+
+            $name = $data['first_name']." ".$data['last_name'];
+            Mail::to($data['email'])->send(new WelcomeMail($name, route('signin')));
+
+            session()->forget(['subscription']);
+            Cache::forget('cached_customer_data');
+
+            DB::commit();
+
+            return true;
+        } catch (\Throwable $th) {
+            //throw $th;
+            Cache::forget('cached_customer_data');
+            DB::rollBack();
+            return false;
+        }
+          
+    }
+
+    public function subscription_cancel(Request $request)
+    {
+        return redirect()->route('oops');
+    }
+
+    public function success()
+    {
+        return view('frontend::success');
+    }
+    public function oops()
+    {
+        return view('frontend::error');
     }
 }

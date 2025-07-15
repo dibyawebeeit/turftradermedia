@@ -11,5 +11,8 @@
     "Subscriptionplan": true,
     "Cms": true,
     "Banner": true,
-    "Category": true
+    "Category": true,
+    "Customer": true,
+    "Subscription": true,
+    "Customerpanel": true
 }

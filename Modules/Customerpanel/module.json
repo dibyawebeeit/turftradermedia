@@ -1,0 +1,11 @@
+{
+    "name": "Customerpanel",
+    "alias": "customerpanel",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Customerpanel\\Providers\\CustomerpanelServiceProvider"
+    ],
+    "files": []
+}
