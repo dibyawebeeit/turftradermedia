@@ -84,29 +84,33 @@
             const dropzone = document.getElementById('dropzone-wrapper');
             const previewZone = document.getElementById('preview-zone');
 
-            // Handle file selection
-            input.addEventListener('change', function (e) {
-                handleFiles(this.files);
-            });
+            if(input && dropzone && previewZone)
+            {
+                // Handle file selection
+                input.addEventListener('change', function (e) {
+                    handleFiles(this.files);
+                });
 
-            // Handle drag events
-            dropzone.addEventListener('dragover', function (e) {
-                e.preventDefault();
-                dropzone.classList.add('dragover');
-            });
+                // Handle drag events
+                dropzone.addEventListener('dragover', function (e) {
+                    e.preventDefault();
+                    dropzone.classList.add('dragover');
+                });
 
-            dropzone.addEventListener('dragleave', function (e) {
-                e.preventDefault();
-                dropzone.classList.remove('dragover');
-            });
+                dropzone.addEventListener('dragleave', function (e) {
+                    e.preventDefault();
+                    dropzone.classList.remove('dragover');
+                });
 
-            dropzone.addEventListener('drop', function (e) {
-                e.preventDefault();
-                dropzone.classList.remove('dragover');
+                dropzone.addEventListener('drop', function (e) {
+                    e.preventDefault();
+                    dropzone.classList.remove('dragover');
 
-                let droppedFiles = e.dataTransfer.files;
-                handleFiles(droppedFiles);
-            });
+                    let droppedFiles = e.dataTransfer.files;
+                    handleFiles(droppedFiles);
+                });
+            }
+            
 
             // Handle new files
             function handleFiles(files) {

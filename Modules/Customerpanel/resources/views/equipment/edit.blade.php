@@ -70,7 +70,11 @@
                                             <select name="category_id" class="form-control-4" required="">
                                                 <option value="">--Select--</option>
                                                 @foreach ($categoryList as $key => $value)
-                                                    <option value="{{ $key }}" {{ old('category_id',$equipment->category_id)==$key?'selected':'' }}>{{ $value }}</option>
+                                                    <option value="{{ $key }}"
+                                                        {{ old('category_id', $equipment->category_id) == $key ? 'selected' : '' }}
+                                                        {{ in_array($key, $parentIds) ? 'disabled' : '' }}>
+                                                        {{ $value }}
+                                                    </option>
                                                 @endforeach
                                             </select>
                                             @error('category_id')
@@ -413,6 +417,10 @@ manufacturer.addEventListener("change",function(e){
         .catch(error => {
             console.error('Error:', error);
         });
+    }
+    else
+    {
+        equipmentModelSelect.innerHTML = '<option value="">--Select--</option>';
     }
 });
 function populateEquipmentModels(data) {

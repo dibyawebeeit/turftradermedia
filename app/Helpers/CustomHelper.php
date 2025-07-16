@@ -51,3 +51,47 @@ if (! function_exists('categories')) {
     }
 }
 
+
+if (! function_exists('allcategories')) {
+    function allcategories()
+    {
+        $categoryList = [];
+
+        $categoryQuery = Category::where('parent_id', 0)->get();
+
+        foreach ($categoryQuery as $category) {
+            buildCategoryList($category, 0, $categoryList);
+        }
+
+        return $categoryList;
+    }
+}
+
+if (! function_exists('parentCategoryIds')) {
+    function parentCategoryIds()
+    {
+        return Category::whereIn('id', function ($query) {
+            $query->select('parent_id')
+                ->from('categories')
+                ->whereNotNull('parent_id');
+        })->pluck('id')->toArray();
+    }
+}
+
+if (! function_exists('buildCategoryList')) {
+    function buildCategoryList($category, $depth, &$categoryList)
+    {
+        $indent = str_repeat('--', $depth);
+        $categoryList[$category->id] = $indent . $category->name;
+
+        $children = Category::where('parent_id', $category->id)->get();
+
+        foreach ($children as $child) {
+            buildCategoryList($child, $depth + 1, $categoryList);
+        }
+    }
+}
+
+
+
+

@@ -3,6 +3,9 @@
 
 <section class="productlist-row-list p-t-60 p-b-60">
     <div class="container">    
+      @if (isset($search_keyword))
+          <p>Search Keyword : {{ $search_keyword }}</p>
+      @endif
     	<div class="row col-middle-gap">    
         	<div class="col-cmn col-lg-4 col-md-4 col-sm-12 one">
             	<div class="section-content">
@@ -10,20 +13,35 @@
                   <h2>Shop By Category</h2>
                   <div class="category-menu">
                     <ul>
-                      @if ($allCategory != null)
-                          @foreach ($allCategory as $key => $item)
-                            <li class="{{ $key==0?'open':'' }}">
-                              <a href="#" class="active">{{ $item['name'] }}</a>
-                              @if ($item['subcategory'] != null)
-                                <ul>
-                                  @foreach ($item['subcategory'] as $subitem)
-                                      <li><a href="#">{{ $subitem['name'] }}</a></li>
-                                  @endforeach
-                                </ul>
-                              @endif
-                            </li>
-                          @endforeach
-                      @endif
+                        @if ($allCategory != null)
+                            @foreach ($allCategory as $key => $item)
+                                @php
+                                    // Check if this parent or any of its subcategories is active
+                                    $isOpen = request('category') == $item['id'] ||
+                                              (isset($item['subcategory']) && collect($item['subcategory'])->pluck('id')->contains(request('category')));
+                                @endphp
+
+                                <li class="{{ $isOpen ? 'open' : '' }}">
+                                    <a href="{{ route('products', ['category' => $item['id']]) }}" 
+                                      class="{{ request('category') == $item['id'] ? 'active' : '' }}">
+                                        {{ $item['name'] }}
+                                    </a>
+
+                                    @if (!empty($item['subcategory']))
+                                        <ul>
+                                            @foreach ($item['subcategory'] as $subitem)
+                                                <li>
+                                                    <a href="{{ route('products', ['category' => $subitem['id']]) }}" 
+                                                      class="{{ request('category') == $subitem['id'] ? 'active' : '' }}">
+                                                        {{ $subitem['name'] }}
+                                                    </a>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    @endif
+                                </li>
+                            @endforeach
+                        @endif
                     </ul>
                   </div>         
                 </div>
@@ -45,138 +63,36 @@
                           </div>
                     </div>
                     
+                    
                     <div class="productlistShop">
-                    	<div class="productlistShopCol">
-                        	<div class="productBox">
-                            	<div class="productBoxImg">
-                                	<a href="product-details.html"><img src="{{ asset('frontendassets/image/product/product-2.jpg') }}"></a>
+                      @if (count($allEquipments)>0)
+                        @foreach ($allEquipments as $equipment)
+                          <div class="productlistShopCol">
+                              <div class="productBox">
+                                  <div class="productBoxImg">
+                                      <a href="{{ route('product_details',$equipment->slug) }}"><img src="{{ asset('uploads/equipmentImage/'.$equipment->thumbnail) }}"></a>
+                                    </div>
+                                  <div class="productBoxCont">
+                                      <div class="productBoxTitle"><a href="{{ route('product_details',$equipment->slug) }}">{{ strlen($equipment->name)>20 ? substr($equipment->name,0,20):$equipment->name }}</a></div>
+                                      <div class="productBoxText"><p>{{ $equipment->category->name ?? '-' }}</p></div>
+                                      <div class="productBoxPrice">{{ $equipment->currency->sign ?? '' }} {{ $equipment->price }}</div>
+                                      <div class="productBoxBtn"><a href="{{ route('product_details',$equipment->slug) }}" class="btn">View Details</a></div>
+                                    </div>
                                 </div>
-                            	<div class="productBoxCont">
-                                	<div class="productBoxTitle"><a href="product-details.html">Gravely Axis 200DT</a></div>
-                                	<div class="productBoxText"><p>Duis cursus placerat magna, ut posuere ante auctor consectetur</p></div>
-                                	<div class="productBoxPrice">$ 19,700</div>
-                                	<div class="productBoxBtn"><a href="product-details.html" class="btn">View Details</a></div>
-                                </div>
-                            </div>
-                        </div>
-                    	<div class="productlistShopCol">
-                        	<div class="productBox">
-                            	<div class="productBoxImg">
-                                	<a href="product-details.html"><img src="{{ asset('frontendassets/image/product/product-3.jpg') }}"></a>
-                                </div>
-                            	<div class="productBoxCont">
-                                	<div class="productBoxTitle"><a href="product-details.html">Gravely Axis 200DT</a></div>
-                                	<div class="productBoxText"><p>Duis cursus placerat magna, ut posuere ante auctor consectetur</p></div>
-                                	<div class="productBoxPrice">$ 19,700</div>
-                                	<div class="productBoxBtn"><a href="product-details.html" class="btn">View Details</a></div>
-                                </div>
-                            </div>
-                        </div>
-                    	<div class="productlistShopCol">
-                        	<div class="productBox">
-                            	<div class="productBoxImg">
-                                	<a href="product-details.html"><img src="{{ asset('frontendassets/image/product/product-4.jpg') }}"></a>
-                                </div>
-                            	<div class="productBoxCont">
-                                	<div class="productBoxTitle"><a href="product-details.html">Gravely Axis 200DT</a></div>
-                                	<div class="productBoxText"><p>Duis cursus placerat magna, ut posuere ante auctor consectetur</p></div>
-                                	<div class="productBoxPrice">$ 19,700</div>
-                                	<div class="productBoxBtn"><a href="product-details.html" class="btn">View Details</a></div>
-                                </div>
-                            </div>
-                        </div>
-                    	<div class="productlistShopCol">
-                        	<div class="productBox">
-                            	<div class="productBoxImg">
-                                	<a href="product-details.html"><img src="{{ asset('frontendassets/image/product/product-6.jpg') }}"></a>
-                                </div>
-                            	<div class="productBoxCont">
-                                	<div class="productBoxTitle"><a href="product-details.html">Gravely Axis 200DT</a></div>
-                                	<div class="productBoxText"><p>Duis cursus placerat magna, ut posuere ante auctor consectetur</p></div>
-                                	<div class="productBoxPrice">$ 19,700</div>
-                                	<div class="productBoxBtn"><a href="product-details.html" class="btn">View Details</a></div>
-                                </div>
-                            </div>
-                        </div>
-                    	<div class="productlistShopCol">
-                        	<div class="productBox">
-                            	<div class="productBoxImg">
-                                	<a href="product-details.html"><img src="{{ asset('frontendassets/image/product/product-15.jpg') }}"></a>
-                                </div>
-                            	<div class="productBoxCont">
-                                	<div class="productBoxTitle"><a href="product-details.html">Gravely Axis 200DT</a></div>
-                                	<div class="productBoxText"><p>Duis cursus placerat magna, ut posuere ante auctor consectetur</p></div>
-                                	<div class="productBoxPrice">$ 19,700</div>
-                                	<div class="productBoxBtn"><a href="product-details.html" class="btn">View Details</a></div>
-                                </div>
-                            </div>
-                        </div>
-                    	<div class="productlistShopCol">
-                        	<div class="productBox">
-                            	<div class="productBoxImg">
-                                	<a href="product-details.html"><img src="{{ asset('frontendassets/image/product/product-8.jpg') }}"></a>
-                                </div>
-                            	<div class="productBoxCont">
-                                	<div class="productBoxTitle"><a href="product-details.html">Gravely Axis 200DT</a></div>
-                                	<div class="productBoxText"><p>Duis cursus placerat magna, ut posuere ante auctor consectetur</p></div>
-                                	<div class="productBoxPrice">$ 19,700</div>
-                                	<div class="productBoxBtn"><a href="product-details.html" class="btn">View Details</a></div>
-                                </div>
-                            </div>
-                        </div>
-                    	<div class="productlistShopCol">
-                        	<div class="productBox">
-                            	<div class="productBoxImg">
-                                	<a href="product-details.html"><img src="{{ asset('frontendassets/image/product/product-10.jpg') }}"></a>
-                                </div>
-                            	<div class="productBoxCont">
-                                	<div class="productBoxTitle"><a href="product-details.html">Gravely Axis 200DT</a></div>
-                                	<div class="productBoxText"><p>Duis cursus placerat magna, ut posuere ante auctor consectetur</p></div>
-                                	<div class="productBoxPrice">$ 19,700</div>
-                                	<div class="productBoxBtn"><a href="product-details.html" class="btn">View Details</a></div>
-                                </div>
-                            </div>
-                        </div>
-                    	<div class="productlistShopCol">
-                        	<div class="productBox">
-                            	<div class="productBoxImg">
-                                	<a href="product-details.html"><img src="{{ asset('frontendassets/image/product/product-11.jpg') }}"></a>
-                                </div>
-                            	<div class="productBoxCont">
-                                	<div class="productBoxTitle"><a href="product-details.html">Gravely Axis 200DT</a></div>
-                                	<div class="productBoxText"><p>Duis cursus placerat magna, ut posuere ante auctor consectetur</p></div>
-                                	<div class="productBoxPrice">$ 19,700</div>
-                                	<div class="productBoxBtn"><a href="product-details.html" class="btn">View Details</a></div>
-                                </div>
-                            </div>
-                        </div>
-                    	<div class="productlistShopCol">
-                        	<div class="productBox">
-                            	<div class="productBoxImg">
-                                	<a href="product-details.html"><img src="{{ asset('frontendassets/image/product/product-12.jpg') }}"></a>
-                                </div>
-                            	<div class="productBoxCont">
-                                	<div class="productBoxTitle"><a href="product-details.html">Gravely Axis 200DT</a></div>
-                                	<div class="productBoxText"><p>Duis cursus placerat magna, ut posuere ante auctor consectetur</p></div>
-                                	<div class="productBoxPrice">$ 19,700</div>
-                                	<div class="productBoxBtn"><a href="product-details.html" class="btn">View Details</a></div>
-                                </div>
-                            </div>
-                        </div>
-                    
-                    
+                          </div>
+                        @endforeach
+                      @else
+                          <h5>No data found!</h5>
+                      @endif
                     </div>
                     
                     
-                    
+                    @if (!empty($allEquipments))
                     <div class="pagination">
-                      <a href="#" title="Previous Page">&laquo;</a>
-                      <a href="#">1</a>
-                      <a href="#" class="active">2</a>
-                      <a href="#">3</a>
-                      <a href="#">4</a>
-                      <a href="#" title="Next Page">&raquo;</a>
+                      {{ $allEquipments->links('pagination::default') }}
                     </div>
+                    @endif
+                    
                     
                     
                 

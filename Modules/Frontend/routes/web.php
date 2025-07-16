@@ -19,6 +19,7 @@ Route::controller(FrontendController::class)->group(function(){
     Route::get("/products","products")->name("products");
     Route::get("/product/{slug}","product_details")->name("product_details");
     Route::get("/subscription","subscription")->name("subscription");
+    Route::post("/getEquipmentModel","getEquipmentModel")->name("frontend.getEquipmentModel");
 
     Route::get("/success","success")->name("success");
     Route::get("/oops","oops")->name("oops");

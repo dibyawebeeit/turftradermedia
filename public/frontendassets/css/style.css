@@ -1423,3 +1423,27 @@ left: -10px;
       height: 50px;
       width: 50px;
     }
+
+    .my-pagination {
+    display: flex;
+    list-style: none;
+    padding-left: 0;
+    gap: 10px;
+}
+
+.my-pagination li {
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
+
+.my-pagination li.active {
+    background-color: #000000;
+    color: white;
+    font-weight: bold;
+}
+
+.my-pagination li.disabled {
+    color: #999;
+    cursor: not-allowed;
+}

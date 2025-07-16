@@ -79,19 +79,25 @@
         <div class="col-cmn col-lg-9 col-md-9 col-sm-9 two text-right">
             <div class="header-searchMain">
             	<div class="header-search">
-                	<form action="">
+                	<form method="get" action="{{ route('products') }}">
                 	<div class="header-searchTbl">
                     	<div class="header-searchTblTr">
                             <div class="header-searchTblTd">
                             	<div class="header-searchTblTdMain">
-                            	<input type="text" class="productsearch" placeholder="Search Products">
-                                <select class="searchCat" required>
-                                    <option value="">All Categories</option> 
-                                    @if (categories())
-                                        @foreach (categories() as $item)
-                                            <option value="{{ $item->id }}">{{ $item->name }}</option> 
-                                        @endforeach
-                                    @endif
+                            	<input type="text" class="productsearch" name="name" placeholder="Search Products">
+                                @php
+                                    $categoryListing = allcategories();
+                                    $parentIds = parentCategoryIds();
+                                @endphp
+
+                                <select class="searchCat" name="category">
+                                    <option value="">All Categories</option>
+                                    @foreach ($categoryListing as $key => $value)
+                                        <option value="{{ $key }}"
+                                            {{ in_array($key, $parentIds) ? 'disabled' : '' }}>
+                                            {{ $value }}
+                                        </option>
+                                    @endforeach
                                 </select>
                                 </div>
                             </div>

@@ -4,6 +4,7 @@ namespace Modules\Frontend\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Mail\WelcomeMail;
+use App\Rules\PhoneNumber;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -19,11 +20,13 @@ use Modules\Cms\Models\Advertising;
 use Modules\Cms\Models\Contactuscms;
 use Modules\Customer\Models\Customer;
 use Modules\Customer\Models\CustomerDocument;
+use Modules\Equipment\Models\Equipment;
+use Modules\EquipmentModel\Models\EquipmentModel;
+use Modules\Manufacturer\Models\Manufacturer;
 use Modules\Subscription\Models\Subscription;
 use Modules\Subscriptionplan\Models\Subscriptionplan;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
 use Srmklive\PayPal\Services\PayPal;
-use App\Rules\PhoneNumber;
 
 class FrontendController extends Controller
 {
@@ -31,7 +34,23 @@ class FrontendController extends Controller
     {
         $data['banner'] = Banner::active()->get();
         $data['categoryList'] = Category::active()->where('parent_id',0)->get();
+        $data['allEquipments'] = Equipment::published()->approved()->orderBy('id','desc')->get();
+
+        $data['manufacturerListing'] = Manufacturer::select('id','name')->active()->get();
         return view('frontend::index', $data);
+    }
+
+    public function getEquipmentModel(Request $request)
+    {
+        $manufacturerId = $request->manufacturerId;
+        try {
+            $result = EquipmentModel::where('manufacturer_id',$manufacturerId)->pluck('name','id');
+            return response()->json(['status'=> true, 'data'=> $result]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json(['status'=> false]);
+        }
+        
     }
     public function signin()
     {
@@ -74,7 +93,7 @@ class FrontendController extends Controller
         $data['contactus'] = Contactuscms::first();
         return view('frontend::contact_us', $data);
     }
-    public function products()
+    public function products(Request $request)
     {
         $category =null;
         $catQuery = Category::with('childs')->where('parent_id',0)->get();
@@ -103,13 +122,49 @@ class FrontendController extends Controller
         }
         $data['allCategory'] = $category;
 
+        // $data['allEquipments'] = Equipment::published()->approved()->orderBy('id','desc')->paginate(2);
+        $equipments = Equipment::published()->approved();
 
-        // dd($data['allCategory']);
+        // Filter by category if selected
+        if ($request->filled('category')) {
+            $equipments->where('category_id', $request->category);
+        }
+
+        // Filter by name if not null
+        if ($request->filled('name')) {
+            $equipments->where('name', 'like', '%' . $request->name . '%');
+            $data['search_keyword'] = $request->name;
+        }
+
+        //Filter by manufacturer
+        if ($request->filled('manufacturer_id')) {
+            $equipments->where('manufacturer_id', $request->manufacturer_id);
+        }
+
+        //Filter by model
+        if ($request->filled('equipment_model_id')) {
+            $equipments->where('equipment_model_id', $request->equipment_model_id);
+        }
+
+
+        $data['allEquipments'] = $equipments->orderBy('id', 'desc')->paginate(9)->withQueryString();
+
         return view('frontend::products', $data);
     }
-    public function product_details()
+    public function product_details($slug)
     {
-        return view('frontend::product_details');
+        $isExist = Equipment::where('slug',$slug)->exists();
+        if(!$isExist)
+        {
+            abort(404);
+        }
+
+        $equipment = Equipment::where('slug',$slug)->first();
+        $recommendedList = Equipment::where('category_id',$equipment->category_id)->where('id','!=',$equipment->id)->get();
+
+        $data['equipment'] = $equipment;
+        $data['recommendedList'] = $recommendedList;
+        return view('frontend::product_details', $data);
     }
 
     public function submit_register(Request $request)

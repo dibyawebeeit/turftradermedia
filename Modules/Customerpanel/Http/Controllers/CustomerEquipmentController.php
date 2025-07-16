@@ -60,20 +60,28 @@ class CustomerEquipmentController extends Controller
             }
         }
         $data['categoryList']=$this->categoryList;
+
+        // Add this block here — after building categoryList
+        $parentIds = Category::whereIn('id', function($query) {
+            $query->select('parent_id')
+                ->from('categories')
+                ->where('parent_id','!=',0);
+        })->pluck('id')->toArray();
+
+        $data['parentIds'] = $parentIds;
         
         return view('customerpanel::equipment.create', $data);
     }
 
     public function getChildren($category, $depth)
-    { 
+    {
         $indent = str_repeat('--', $depth);
-        $this->categoryList[$category->id] = $indent.''.$category->name;
+        $this->categoryList[$category->id] = $indent . $category->name;
 
-        // Get direct children of this category
         $children = Category::where('parent_id', $category->id)->get();
 
         foreach ($children as $child) {
-            $this->getChildren($child, $depth+1); // Recursive call
+            $this->getChildren($child, $depth + 1);
         }
     }
 
@@ -222,6 +230,15 @@ class CustomerEquipmentController extends Controller
             }
         }
         $data['categoryList']=$this->categoryList;
+
+        // Add this block here — after building categoryList
+        $parentIds = Category::whereIn('id', function($query) {
+            $query->select('parent_id')
+                ->from('categories')
+                ->where('parent_id','!=',0);
+        })->pluck('id')->toArray();
+
+        $data['parentIds'] = $parentIds;
 
         return view('customerpanel::equipment.edit', $data);
     }

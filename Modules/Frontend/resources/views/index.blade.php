@@ -24,7 +24,10 @@
 
 <section class="home-row-proSearch p-b-60">
     <div class="container">    
-    
+        @php
+			$categoryListing = allcategories();
+			$parentIds = parentCategoryIds();
+		@endphp
     	<div class="row">    
         	<div class="col-cmn col-lg-12 col-md-12 col-sm-12 one">
             	<div class="section-content">
@@ -34,32 +37,30 @@
                     </div>
                 	<div id="Equipment"  class="proSearchtabCont" style="display:block;">
                     	<div class="tabCont tabCol4">
-                        	<form action="">
+                        	<form method="get" action="{{ route('products') }}">
                         	<div class="proSearchtabFrm">
                             	<div class="proSearchtabFrmCol">
-                                	<select class="searchCat">
-                                        <option value="">All Categories</option> 
-                                        @if (categories())
-											@foreach (categories() as $item)
-												<option value="{{ $item->id }}">{{ $item->name }}</option> 
-											@endforeach
-										@endif
-                                    </select>
+                                	<select class="searchCat" name="category">
+										<option value="">All Categories</option>
+										@foreach ($categoryListing as $key => $value)
+											<option value="{{ $key }}"
+												{{ in_array($key, $parentIds) ? 'disabled' : '' }}>
+												{{ $value }}
+											</option>
+										@endforeach
+									</select>
                                 </div>
                             	<div class="proSearchtabFrmCol">
-                                	<select class="searchManufact">
+                                	<select class="searchManufact" name="manufacturer_id" id="manufacturer">
                                         <option value="">All Manufacturers</option> 
-                                        <option value="Manufacturers 1">Manufacturers 1</option> 
-                                        <option value="Manufacturers 2">Manufacturers 2</option> 
-                                        <option value="Manufacturers 3">Manufacturers 3</option> 
+										@foreach ($manufacturerListing as $manufactureritem)
+											<option value="{{ $manufactureritem->id }}">{{ $manufactureritem->name }}</option> 
+										@endforeach
                                     </select>
                                 </div>
                             	<div class="proSearchtabFrmCol">
-                                	<select class="searchManufact">
+                                	<select class="searchManufact" name="equipment_model_id" id="equipment_model">
                                         <option value="">All Models</option> 
-                                        <option value="Models 1">Models 1</option> 
-                                        <option value="Models 2">Models 2</option> 
-                                        <option value="Models 3">Models 3</option> 
                                     </select>
                                 </div>
                             	<div class="proSearchtabFrmCol">
@@ -71,34 +72,23 @@
                     </div>
                     <div id="Keywords"  class="proSearchtabCont">
                     	<div class="tabCont tabCol4">
-                        	<form action="">
+                        	<form method="get" action="{{ route('products') }}">
                         	<div class="proSearchtabFrm">
-                            	<div class="proSearchtabFrmCol">
-                                	<select class="searchCat">
-                                        <option value="">All Categories</option> 
-                                        @if (categories())
-											@foreach (categories() as $item)
-												<option value="{{ $item->id }}">{{ $item->name }}</option> 
-											@endforeach
-										@endif
-                                    </select>
+								<div class="proSearchtabFrmCol">
+                                	<input type="text" class="productsearch" name="name" placeholder="Search Products">
                                 </div>
                             	<div class="proSearchtabFrmCol">
-                                	<select class="searchManufact">
-                                        <option value="">All Manufacturers</option> 
-                                        <option value="Manufacturers 1">Manufacturers 1</option> 
-                                        <option value="Manufacturers 2">Manufacturers 2</option> 
-                                        <option value="Manufacturers 3">Manufacturers 3</option> 
-                                    </select>
+                                	<select class="searchCat" name="category">
+										<option value="">All Categories</option>
+										@foreach ($categoryListing as $key => $value)
+											<option value="{{ $key }}"
+												{{ in_array($key, $parentIds) ? 'disabled' : '' }}>
+												{{ $value }}
+											</option>
+										@endforeach
+									</select>
                                 </div>
-                            	<div class="proSearchtabFrmCol">
-                                	<select class="searchManufact">
-                                        <option value="">All Models</option> 
-                                        <option value="Models 1">Models 1</option> 
-                                        <option value="Models 2">Models 2</option> 
-                                        <option value="Models 3">Models 3</option> 
-                                    </select>
-                                </div>
+                            	
                             	<div class="proSearchtabFrmCol">
                                 	<input type="submit" value="Search" class="submit">
                                 </div>
@@ -189,320 +179,24 @@
                 <div class="section-content">
                 
                 	<div class="saleSlider">
+
+						@foreach ($allEquipments as $equipment)
+							
                     	<div class="saleSliderCol">
                         	<div class="productBox">
                             	<div class="productBoxImg">
-                                	<a href="product-details.html"><img src="{{ asset('frontendassets/image/product/product-1.jpg') }}"></a>
+                                	<a href="{{ route('product_details',$equipment->slug) }}"><img src="{{ asset('uploads/equipmentImage/'.$equipment->thumbnail) }}"></a>
                                 </div>
                             	<div class="productBoxCont">
-                                	<div class="productBoxTitle"><a href="product-details.html">Gravely Axis 200DT</a></div>
-                                	<div class="productBoxText"><p>Duis cursus placerat magna, ut posuere ante auctor consectetur </p></div>
-                                	<div class="productBoxPrice">$ 19,700</div>
-                                	<div class="productBoxBtn"><a href="product-details.html" class="btn">View Details</a></div>
+                                	<div class="productBoxTitle"><a href="{{ route('product_details',$equipment->slug) }}">{{ strlen($equipment->name)>20 ? substr($equipment->name,0,20):$equipment->name }}</a></div>
+                                	<div class="productBoxText"><p>{{ $equipment->category->name ?? '-' }}</p></div>
+                                	<div class="productBoxPrice">{{ $equipment->currency->sign ?? '' }} {{ $equipment->price }}</div>
+                                	<div class="productBoxBtn"><a href="{{ route('product_details',$equipment->slug) }}" class="btn">View Details</a></div>
                                 </div>
                             </div>
                         </div>
-                    	<div class="saleSliderCol">
-                        	<div class="productBox">
-                            	<div class="productBoxImg">
-                                	<a href="product-details.html"><img src="{{ asset('frontendassets/image/product/product-2.jpg') }}"></a>
-                                </div>
-                            	<div class="productBoxCont">
-                                	<div class="productBoxTitle"><a href="product-details.html">Gravely Axis 200DT</a></div>
-                                	<div class="productBoxText"><p>Duis cursus placerat magna, ut posuere ante auctor consectetur</p></div>
-                                	<div class="productBoxPrice">$ 19,700</div>
-                                	<div class="productBoxBtn"><a href="product-details.html" class="btn">View Details</a></div>
-                                </div>
-                            </div>
-                        </div>
-                    	<div class="saleSliderCol">
-                        	<div class="productBox">
-                            	<div class="productBoxImg">
-                                	<a href="product-details.html"><img src="{{ asset('frontendassets/image/product/product-3.jpg') }}"></a>
-                                </div>
-                            	<div class="productBoxCont">
-                                	<div class="productBoxTitle"><a href="product-details.html">Gravely Axis 200DT</a></div>
-                                	<div class="productBoxText"><p>Duis cursus placerat magna, ut posuere ante auctor consectetur</p></div>
-                                	<div class="productBoxPrice">$ 19,700</div>
-                                	<div class="productBoxBtn"><a href="product-details.html" class="btn">View Details</a></div>
-                                </div>
-                            </div>
-                        </div>
-                    	<div class="saleSliderCol">
-                        	<div class="productBox">
-                            	<div class="productBoxImg">
-                                	<a href="product-details.html"><img src="{{ asset('frontendassets/image/product/product-4.jpg') }}"></a>
-                                </div>
-                            	<div class="productBoxCont">
-                                	<div class="productBoxTitle"><a href="product-details.html">Gravely Axis 200DT</a></div>
-                                	<div class="productBoxText"><p>Duis cursus placerat magna, ut posuere ante auctor consectetur</p></div>
-                                	<div class="productBoxPrice">$ 19,700</div>
-                                	<div class="productBoxBtn"><a href="product-details.html" class="btn">View Details</a></div>
-                                </div>
-                            </div>
-                        </div>
-                    	<div class="saleSliderCol">
-                        	<div class="productBox">
-                            	<div class="productBoxImg">
-                                	<a href="product-details.html"><img src="{{ asset('frontendassets/image/product/product-5.jpg') }}"></a>
-                                </div>
-                            	<div class="productBoxCont">
-                                	<div class="productBoxTitle"><a href="product-details.html">Gravely Axis 200DT</a></div>
-                                	<div class="productBoxText"><p>Duis cursus placerat magna, ut posuere ante auctor consectetur</p></div>
-                                	<div class="productBoxPrice">$ 19,700</div>
-                                	<div class="productBoxBtn"><a href="product-details.html" class="btn">View Details</a></div>
-                                </div>
-                            </div>
-                        </div>
-                    	<div class="saleSliderCol">
-                        	<div class="productBox">
-                            	<div class="productBoxImg">
-                                	<a href="product-details.html"><img src="{{ asset('frontendassets/image/product/product-6.jpg') }}"></a>
-                                </div>
-                            	<div class="productBoxCont">
-                                	<div class="productBoxTitle"><a href="product-details.html">Gravely Axis 200DT</a></div>
-                                	<div class="productBoxText"><p>Duis cursus placerat magna, ut posuere ante auctor consectetur</p></div>
-                                	<div class="productBoxPrice">$ 19,700</div>
-                                	<div class="productBoxBtn"><a href="product-details.html" class="btn">View Details</a></div>
-                                </div>
-                            </div>
-                        </div>
-                    	<div class="saleSliderCol">
-                        	<div class="productBox">
-                            	<div class="productBoxImg">
-                                	<a href="product-details.html"><img src="{{ asset('frontendassets/image/product/product-7.jpg') }}"></a>
-                                </div>
-                            	<div class="productBoxCont">
-                                	<div class="productBoxTitle"><a href="product-details.html">Gravely Axis 200DT</a></div>
-                                	<div class="productBoxText"><p>Duis cursus placerat magna, ut posuere ante auctor consectetur</p></div>
-                                	<div class="productBoxPrice">$ 19,700</div>
-                                	<div class="productBoxBtn"><a href="product-details.html" class="btn">View Details</a></div>
-                                </div>
-                            </div>
-                        </div>
-                    	<div class="saleSliderCol">
-                        	<div class="productBox">
-                            	<div class="productBoxImg">
-                                	<a href="product-details.html"><img src="{{ asset('frontendassets/image/product/product-8.jpg') }}"></a>
-                                </div>
-                            	<div class="productBoxCont">
-                                	<div class="productBoxTitle"><a href="product-details.html">Gravely Axis 200DT</a></div>
-                                	<div class="productBoxText"><p>Duis cursus placerat magna, ut posuere ante auctor consectetur</p></div>
-                                	<div class="productBoxPrice">$ 19,700</div>
-                                	<div class="productBoxBtn"><a href="product-details.html" class="btn">View Details</a></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="saleSliderCol">
-                        	<div class="productBox">
-                            	<div class="productBoxImg">
-                                	<a href="product-details.html"><img src="{{ asset('frontendassets/image/product/product-1.jpg') }}"></a>
-                                </div>
-                            	<div class="productBoxCont">
-                                	<div class="productBoxTitle"><a href="product-details.html">Gravely Axis 200DT</a></div>
-                                	<div class="productBoxText"><p>Duis cursus placerat magna, ut posuere ante auctor consectetur</p></div>
-                                	<div class="productBoxPrice">$ 19,700</div>
-                                	<div class="productBoxBtn"><a href="product-details.html" class="btn">View Details</a></div>
-                                </div>
-                            </div>
-                        </div>
-                    	<div class="saleSliderCol">
-                        	<div class="productBox">
-                            	<div class="productBoxImg">
-                                	<a href="product-details.html"><img src="{{ asset('frontendassets/image/product/product-10.jpg') }}"></a>
-                                </div>
-                            	<div class="productBoxCont">
-                                	<div class="productBoxTitle"><a href="product-details.html">Gravely Axis 200DT</a></div>
-                                	<div class="productBoxText"><p>Duis cursus placerat magna, ut posuere ante auctor consectetur</p></div>
-                                	<div class="productBoxPrice">$ 19,700</div>
-                                	<div class="productBoxBtn"><a href="product-details.html" class="btn">View Details</a></div>
-                                </div>
-                            </div>
-                        </div>
-                    	<div class="saleSliderCol">
-                        	<div class="productBox">
-                            	<div class="productBoxImg">
-                                	<a href="product-details.html"><img src="{{ asset('frontendassets/image/product/product-11.jpg') }}"></a>
-                                </div>
-                            	<div class="productBoxCont">
-                                	<div class="productBoxTitle"><a href="product-details.html">Gravely Axis 200DT</a></div>
-                                	<div class="productBoxText"><p>Duis cursus placerat magna, ut posuere ante auctor consectetur</p></div>
-                                	<div class="productBoxPrice">$ 19,700</div>
-                                	<div class="productBoxBtn"><a href="product-details.html" class="btn">View Details</a></div>
-                                </div>
-                            </div>
-                        </div>
-                    	<div class="saleSliderCol">
-                        	<div class="productBox">
-                            	<div class="productBoxImg">
-                                	<a href="product-details.html"><img src="{{ asset('frontendassets/image/product/product-12.jpg') }}"></a>
-                                </div>
-                            	<div class="productBoxCont">
-                                	<div class="productBoxTitle"><a href="product-details.html">Gravely Axis 200DT</a></div>
-                                	<div class="productBoxText"><p>Duis cursus placerat magna, ut posuere ante auctor consectetur</p></div>
-                                	<div class="productBoxPrice">$ 19,700</div>
-                                	<div class="productBoxBtn"><a href="product-details.html" class="btn">View Details</a></div>
-                                </div>
-                            </div>
-                        </div>                        
-                    	<div class="saleSliderCol">
-                        	<div class="productBox">
-                            	<div class="productBoxImg">
-                                	<a href="product-details.html"><img src="{{ asset('frontendassets/image/product/product-5.jpg') }}"></a>
-                                </div>
-                            	<div class="productBoxCont">
-                                	<div class="productBoxTitle"><a href="product-details.html">Gravely Axis 200DT</a></div>
-                                	<div class="productBoxText"><p>Duis cursus placerat magna, ut posuere ante auctor consectetur</p></div>
-                                	<div class="productBoxPrice">$ 19,700</div>
-                                	<div class="productBoxBtn"><a href="product-details.html" class="btn">View Details</a></div>
-                                </div>
-                            </div>
-                        </div>
-                    	<div class="saleSliderCol">
-                        	<div class="productBox">
-                            	<div class="productBoxImg">
-                                	<a href="product-details.html"><img src="{{ asset('frontendassets/image/product/product-14.jpg') }}"></a>
-                                </div>
-                            	<div class="productBoxCont">
-                                	<div class="productBoxTitle"><a href="product-details.html">Gravely Axis 200DT</a></div>
-                                	<div class="productBoxText"><p>Duis cursus placerat magna, ut posuere ante auctor consectetur</p></div>
-                                	<div class="productBoxPrice">$ 19,700</div>
-                                	<div class="productBoxBtn"><a href="product-details.html" class="btn">View Details</a></div>
-                                </div>
-                            </div>
-                        </div>
-                    	<div class="saleSliderCol">
-                        	<div class="productBox">
-                            	<div class="productBoxImg">
-                                	<a href="product-details.html"><img src="{{ asset('frontendassets/image/product/product-15.jpg') }}"></a>
-                                </div>
-                            	<div class="productBoxCont">
-                                	<div class="productBoxTitle"><a href="product-details.html">Gravely Axis 200DT</a></div>
-                                	<div class="productBoxText"><p>Duis cursus placerat magna, ut posuere ante auctor consectetur</p></div>
-                                	<div class="productBoxPrice">$ 19,700</div>
-                                	<div class="productBoxBtn"><a href="product-details.html" class="btn">View Details</a></div>
-                                </div>
-                            </div>
-                        </div>
-                    	<div class="saleSliderCol">
-                        	<div class="productBox">
-                            	<div class="productBoxImg">
-                                	<a href="product-details.html"><img src="{{ asset('frontendassets/image/product/product-16.jpg') }}"></a>
-                                </div>
-                            	<div class="productBoxCont">
-                                	<div class="productBoxTitle"><a href="product-details.html">Gravely Axis 200DT</a></div>
-                                	<div class="productBoxText"><p>Duis cursus placerat magna, ut posuere ante auctor consectetur</p></div>
-                                	<div class="productBoxPrice">$ 19,700</div>
-                                	<div class="productBoxBtn"><a href="product-details.html" class="btn">View Details</a></div>
-                                </div>
-                            </div>
-                        </div> 
-                        
-                        
-                    	<div class="saleSliderCol">
-                        	<div class="productBox">
-                            	<div class="productBoxImg">
-                                	<a href="product-details.html"><img src="{{ asset('frontendassets/image/product/product-8.jpg') }}"></a>
-                                </div>
-                            	<div class="productBoxCont">
-                                	<div class="productBoxTitle"><a href="product-details.html">Gravely Axis 200DT</a></div>
-                                	<div class="productBoxText"><p>Duis cursus placerat magna, ut posuere ante auctor consectetur</p></div>
-                                	<div class="productBoxPrice">$ 19,700</div>
-                                	<div class="productBoxBtn"><a href="product-details.html" class="btn">View Details</a></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="saleSliderCol">
-                        	<div class="productBox">
-                            	<div class="productBoxImg">
-                                	<a href="product-details.html"><img src="{{ asset('frontendassets/image/product/product-1.jpg') }}"></a>
-                                </div>
-                            	<div class="productBoxCont">
-                                	<div class="productBoxTitle"><a href="product-details.html">Gravely Axis 200DT</a></div>
-                                	<div class="productBoxText"><p>Duis cursus placerat magna, ut posuere ante auctor consectetur</p></div>
-                                	<div class="productBoxPrice">$ 19,700</div>
-                                	<div class="productBoxBtn"><a href="product-details.html" class="btn">View Details</a></div>
-                                </div>
-                            </div>
-                        </div>
-                    	<div class="saleSliderCol">
-                        	<div class="productBox">
-                            	<div class="productBoxImg">
-                                	<a href="product-details.html"><img src="{{ asset('frontendassets/image/product/product-10.jpg') }}"></a>
-                                </div>
-                            	<div class="productBoxCont">
-                                	<div class="productBoxTitle"><a href="product-details.html">Gravely Axis 200DT</a></div>
-                                	<div class="productBoxText"><p>Duis cursus placerat magna, ut posuere ante auctor consectetur</p></div>
-                                	<div class="productBoxPrice">$ 19,700</div>
-                                	<div class="productBoxBtn"><a href="product-details.html" class="btn">View Details</a></div>
-                                </div>
-                            </div>
-                        </div>
-                    	<div class="saleSliderCol">
-                        	<div class="productBox">
-                            	<div class="productBoxImg">
-                                	<a href="product-details.html"><img src="{{ asset('frontendassets/image/product/product-11.jpg') }}"></a>
-                                </div>
-                            	<div class="productBoxCont">
-                                	<div class="productBoxTitle"><a href="product-details.html">Gravely Axis 200DT</a></div>
-                                	<div class="productBoxText"><p>Duis cursus placerat magna, ut posuere ante auctor consectetur</p></div>
-                                	<div class="productBoxPrice">$ 19,700</div>
-                                	<div class="productBoxBtn"><a href="product-details.html" class="btn">View Details</a></div>
-                                </div>
-                            </div>
-                        </div>
-                    	<div class="saleSliderCol">
-                        	<div class="productBox">
-                            	<div class="productBoxImg">
-                                	<a href="product-details.html"><img src="{{ asset('frontendassets/image/product/product-12.jpg') }}"></a>
-                                </div>
-                            	<div class="productBoxCont">
-                                	<div class="productBoxTitle"><a href="product-details.html">Gravely Axis 200DT</a></div>
-                                	<div class="productBoxText"><p>Duis cursus placerat magna, ut posuere ante auctor consectetur</p></div>
-                                	<div class="productBoxPrice">$ 19,700</div>
-                                	<div class="productBoxBtn"><a href="product-details.html" class="btn">View Details</a></div>
-                                </div>
-                            </div>
-                        </div>                        
-                    	<div class="saleSliderCol">
-                        	<div class="productBox">
-                            	<div class="productBoxImg">
-                                	<a href="product-details.html"><img src="{{ asset('frontendassets/image/product/product-5.jpg') }}"></a>
-                                </div>
-                            	<div class="productBoxCont">
-                                	<div class="productBoxTitle"><a href="product-details.html">Gravely Axis 200DT</a></div>
-                                	<div class="productBoxText"><p>Duis cursus placerat magna, ut posuere ante auctor consectetur</p></div>
-                                	<div class="productBoxPrice">$ 19,700</div>
-                                	<div class="productBoxBtn"><a href="product-details.html" class="btn">View Details</a></div>
-                                </div>
-                            </div>
-                        </div>
-                    	<div class="saleSliderCol">
-                        	<div class="productBox">
-                            	<div class="productBoxImg">
-                                	<a href="product-details.html"><img src="{{ asset('frontendassets/image/product/product-14.jpg') }}"></a>
-                                </div>
-                            	<div class="productBoxCont">
-                                	<div class="productBoxTitle"><a href="product-details.html">Gravely Axis 200DT</a></div>
-                                	<div class="productBoxText"><p>Duis cursus placerat magna, ut posuere ante auctor consectetur</p></div>
-                                	<div class="productBoxPrice">$ 19,700</div>
-                                	<div class="productBoxBtn"><a href="product-details.html" class="btn">View Details</a></div>
-                                </div>
-                            </div>
-                        </div>
-                    	<div class="saleSliderCol">
-                        	<div class="productBox">
-                            	<div class="productBoxImg">
-                                	<a href="product-details.html"><img src="{{ asset('frontendassets/image/product/product-15.jpg') }}"></a>
-                                </div>
-                            	<div class="productBoxCont">
-                                	<div class="productBoxTitle"><a href="product-details.html">Gravely Axis 200DT</a></div>
-                                	<div class="productBoxText"><p>Duis cursus placerat magna, ut posuere ante auctor consectetur</p></div>
-                                	<div class="productBoxPrice">$ 19,700</div>
-                                	<div class="productBoxBtn"><a href="product-details.html" class="btn">View Details</a></div>
-                                </div>
-                            </div>
-                        </div>
+						@endforeach
+                    	
                                            	
                     </div>
                 
@@ -537,4 +231,55 @@
 
     </div>
 </section>
+
+@section('script')
+	<script>
+	let manufacturer = document.querySelector("#manufacturer");
+	let equipmentModelSelect = document.querySelector("#equipment_model");
+
+	manufacturer.addEventListener("change",function(e){
+		let manufacturerId = e.target.value;
+		if(manufacturerId != '')
+		{
+			fetch("{{ route('frontend.getEquipmentModel') }}", {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+				},
+				body: JSON.stringify({
+					manufacturerId: manufacturerId,         // example data
+				})
+			})
+			.then(response => response.json())
+			.then(data => {
+				if(data.status==true)
+				{
+					let result = data.data;
+					populateEquipmentModels(result);
+					
+					// console.log('Success:', data.data);
+				}
+			})
+			.catch(error => {
+				console.error('Error:', error);
+			});
+		}
+		else
+		{
+			equipmentModelSelect.innerHTML = '<option value="">All Models</option>';
+		}
+	});
+	function populateEquipmentModels(data) {
+		equipmentModelSelect.innerHTML = '<option value="">All Models</option>';
+
+		for (let id in data) {
+			let option = document.createElement("option");
+			option.value = id;
+			option.textContent = data[id];
+			equipmentModelSelect.appendChild(option);
+		}
+	}
+	</script>
+@endsection
 </x-frontend::layouts.master>
