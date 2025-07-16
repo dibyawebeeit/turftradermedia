@@ -69,11 +69,11 @@
                     });//End of create main table
 
                 
-                $('#example tbody').on( 'click', 'tr', function () {
+                // $('#example tbody').on( 'click', 'tr', function () {
                 
-                    alert(table.row( this ).data()[0]);
+                //     alert(table.row( this ).data()[0]);
 
-                } );
+                // } );
             });
         </script>
 

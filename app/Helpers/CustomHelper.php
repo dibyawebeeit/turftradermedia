@@ -2,7 +2,7 @@
 
 use Modules\Category\Models\Category;
 use Modules\Setting\Models\Setting;
-
+use Carbon\Carbon;
 
 if (! function_exists('format_price')) {
     function format_price($amount)
@@ -26,6 +26,21 @@ if (! function_exists('noImage')) {
         return $image;
     }
 }
+
+if (! function_exists('dateFormater')) {
+    function dateFormater($date)
+    {
+        if($date)
+        {
+            $formattedDate = Carbon::parse($date)->format('Y-m-d h:i A');
+            return $formattedDate; // Output: 2025-07-16 06:42 AM
+        }
+        return '-';
+        
+    }
+}
+
+
 
 
 if (! function_exists('categories')) {

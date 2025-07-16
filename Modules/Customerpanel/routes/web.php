@@ -30,4 +30,6 @@ Route::prefix('customer')->middleware(['auth.customer', 'customerrole:seller'])-
     Route::post('/delete_document', [CustomerpanelController::class, 'delete_document'])->name('customer.delete_document');
 
     Route::resource('/equipment', CustomerEquipmentController::class)->names('customer.equipment');
+    Route::post('getEquipmentModel',[CustomerEquipmentController::class,'getEquipmentModel'])->name('customer.getEquipmentModel');
+    Route::post('/delete_equipment_image', [CustomerEquipmentController::class, 'delete_equipment_image'])->name('customer.delete_equipment_image');
 });

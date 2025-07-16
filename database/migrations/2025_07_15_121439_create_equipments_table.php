@@ -24,6 +24,7 @@ return new class extends Migration
             $table->enum('condition', ['New','Salvaged','Used'])->default('Used');
             $table->double('price')->default(0.00);
             $table->foreignId('currency_id')->constrained();
+            $table->string('stock_no',30)->nullable();
             $table->string('machine_location')->nullable();
             $table->text('description')->nullable();
             $table->text('details')->nullable();

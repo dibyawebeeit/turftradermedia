@@ -17,11 +17,14 @@
                      <table id="example" class="display" cellspacing="0" width="100%">
                      <thead>
                            <tr>
+                              <th></th>
+                              <th>Sl</th>
+                              <th>Image</th>
                               <th>Name</th>
-                              <th>Position</th>
-                              <th>Office</th>
-                              <th>Age</th>
-                              <th>Start date</th>
+                              <th>Price</th>
+                              <th>Publish Status</th>
+                              <th>Admin Approval</th>
+                              <th>Added On</th>
                               <th>Action</th>
                            </tr>
                      </thead>
@@ -38,17 +41,43 @@
                      </tfoot> --}}
                
                      <tbody>
+                           @foreach ($equipmentList as $item)
+                               <tr>
+                                 <td></td>
+                                 <td>{{ $loop->iteration }}</td>
+                                 <td><img class="image-thumbnail" src="{{ asset('uploads/equipmentImage/'.$item->thumbnail) }}" alt=""></td>
+                                 <td>{{ $item->name }} <a href="{{ route('product_details',$item->slug) }}" target="_blank"><i class="fa-solid fa-external-link"></i></a></td>
+                                 <td>{{ $item->currency->name ?? '' }}
+                                    {{ $item->currency->sign ?? '' }}{{ $item->price }}
+                                    </td>
+                                 <td>
+                                    @if ($item->publish_status==1)
+                                        <span class="badge badge-success">Active</span>
+                                    @else
+                                        <span class="badge badge-danger">Inactive</span>
+                                    @endif
+                                 </td>
+                                 <td>
+                                    @if ($item->admin_approval==1)
+                                        <span class="badge badge-success approved">Active</span>
+                                    @else
+                                        <span class="badge badge-danger">Inactive</span>
+                                    @endif
+                                 </td>
+                                 <td>{{ dateFormater($item->created_at) }}</td>
+                                 <td class="action" style="text-align: center;">
+                                    <a href="{{ route('customer.equipment.edit',$item->id) }}"><i class="fa-solid fa-pen-to-square"></i></a>
+                                    <form action="{{ route('customer.equipment.destroy', $item->id) }}" method="POST" id="deletesection_{{ $item->id }}">
+                                       @csrf
+                                       @method('DELETE')
+                                       <a href="javascript:void(0);" class="action-icon"
+                                             onclick="deleteData({{ $item->id }})"> <i
+                                                class="fa-solid fa-trash"></i></a>
+                                    </form>
+                                 </td>
+                              </tr>
+                           @endforeach
                            
-                           <tr>
-                              <td>Airi Satou</td>
-                              <td>Accountant</td>
-                              <td>Tokyo</td>
-                              <td>33</td>
-                              <td>2008/11/28</td>
-                              <td class="action" style="text-align: center;">
-                                 <a href="#"><i class="fa-solid fa-pen-to-square"></i></a>
-                                 <a href="#"><i class="fa-solid fa-trash"></i></a></td>
-                           </tr>
                            
                      </tbody>
                      </table>
@@ -58,4 +87,23 @@
             </div>
          </div>
       </section>
+
+@section('script')
+<script>
+   function deleteData(id) {
+            Swal.fire({
+                text: "Do you want to delete?",
+                showDenyButton: false,
+                showCancelButton: true,
+                confirmButtonText: "Proceed",
+                denyButtonText: `Don't save`
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    document.getElementById("deletesection_" + id).submit();
+                }
+            });
+        }
+</script>
+@endsection
 </x-frontend::layouts.master>

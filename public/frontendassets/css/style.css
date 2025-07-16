@@ -1417,3 +1417,9 @@ left: -10px;
         text-align: center;
         cursor: pointer;
     }
+
+    .image-thumbnail
+    {
+      height: 50px;
+      width: 50px;
+    }
