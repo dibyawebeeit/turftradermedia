@@ -47,8 +47,9 @@
 
                                 <div class="text-end">
                                     <a href="{{ route('equipmentenquiry.index') }}">
-                                        <button type="button" class="btn btn-success mt-2"><i class="mdi mdi-arrow"></i>
-                                        Back</button>
+                                        <button type="button" class="btn btn-success mt-2">
+                                            <i class="fas fa-long-arrow-alt-left"></i>
+                                        Back to list</button>
                                     </a>
                                 </div>
                         </div> <!-- end card body -->

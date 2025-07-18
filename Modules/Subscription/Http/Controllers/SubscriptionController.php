@@ -4,15 +4,19 @@ namespace Modules\Subscription\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Modules\Subscription\Models\Subscription;
 
 class SubscriptionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    function __construct()
+    {
+         $this->middleware('permission:subscription_list', ['only' => ['index']]);
+    }
+
     public function index()
     {
-        return view('subscription::index');
+        $data['dataList'] = Subscription::orderBy('id','desc')->get();
+        return view('subscription::index', $data);
     }
 
     /**

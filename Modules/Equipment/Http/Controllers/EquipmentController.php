@@ -4,15 +4,23 @@ namespace Modules\Equipment\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Modules\Equipment\Models\Equipment;
 
 class EquipmentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    function __construct()
+    {
+         $this->middleware('permission:equipment_list|equipment_add|equipment_edit|equipment_delete|equipment_view', ['only' => ['index','store']]);
+         $this->middleware('permission:equipment_add', ['only' => ['create','store']]);
+         $this->middleware('permission:equipment_view', ['only' => ['show']]);
+         $this->middleware('permission:equipment_edit', ['only' => ['edit','update']]);
+         $this->middleware('permission:equipment_delete', ['only' => ['destroy']]);
+    }
+
     public function index()
     {
-        return view('equipment::index');
+        $data['dataList'] = Equipment::orderBy('id', 'desc')->get();
+        return view('equipment::index', $data);
     }
 
     /**
@@ -33,7 +41,8 @@ class EquipmentController extends Controller
      */
     public function show($id)
     {
-        return view('equipment::show');
+        $data['equipment'] = Equipment::findOrFail($id);
+        return view('equipment::show', $data);
     }
 
     /**
@@ -41,7 +50,8 @@ class EquipmentController extends Controller
      */
     public function edit($id)
     {
-        return view('equipment::edit');
+        $data['dataList'] = Equipment::findOrFail($id);
+        return view('equipment::edit', $data);
     }
 
     /**
