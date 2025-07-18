@@ -4,6 +4,7 @@ namespace Modules\Customerpanel\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Currency;
+use App\Rules\PhoneNumber;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,7 +16,7 @@ use Modules\Equipment\Models\Equipment;
 use Modules\Equipment\Models\EquipmentImage;
 use Modules\EquipmentModel\Models\EquipmentModel;
 use Modules\Manufacturer\Models\Manufacturer;
-use App\Rules\PhoneNumber;
+use Modules\Subscription\Models\Subscription;
 
 class CustomerEquipmentController extends Controller
 {
@@ -127,6 +128,24 @@ class CustomerEquipmentController extends Controller
             'images' => 'required', // optional: ensure at least one file is uploaded
             'images.*' => 'required|mimes:jpeg,jpg,png,webp|max:1024', // 1MB per file
         ]);
+
+        $subscription = Subscription::where('customer_id', $this->activeCustomerId)
+            ->where('status', 'active')
+            ->whereDate('end_date', '>=', now())
+            ->latest()
+            ->first();
+
+        if (!$subscription) {
+            return redirect()->back()->with('error', 'No active subscription found.');
+        }
+
+        // $listingCount = Equipment::where('customer_id', $this->activeCustomerId)
+        //     ->whereDate('expires_at', '>=', now())->count();
+        $listingCount = Equipment::where('customer_id', $this->activeCustomerId)->count();
+
+        if ($listingCount >= $subscription->plan->no_of_listing) {
+            return redirect()->back()->with('error', 'You have reached your listing limit.');
+        }
 
         $input = $request->all();
 

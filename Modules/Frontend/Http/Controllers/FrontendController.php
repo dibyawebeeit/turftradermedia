@@ -3,7 +3,9 @@
 namespace Modules\Frontend\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Mail\SendEnquiryMail;
 use App\Mail\WelcomeMail;
+use App\Models\Watchlist;
 use App\Rules\PhoneNumber;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -21,12 +23,14 @@ use Modules\Cms\Models\Contactuscms;
 use Modules\Customer\Models\Customer;
 use Modules\Customer\Models\CustomerDocument;
 use Modules\Equipment\Models\Equipment;
+use Modules\EquipmentEnquiry\Models\EquipmentEnquiry;
 use Modules\EquipmentModel\Models\EquipmentModel;
 use Modules\Manufacturer\Models\Manufacturer;
 use Modules\Subscription\Models\Subscription;
 use Modules\Subscriptionplan\Models\Subscriptionplan;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
 use Srmklive\PayPal\Services\PayPal;
+use Illuminate\Validation\ValidationException;
 
 class FrontendController extends Controller
 {
@@ -63,6 +67,13 @@ class FrontendController extends Controller
             'email' => 'required|email|max:100',
             'password' => 'required'
         ]);
+
+        $customer = Customer::where('email', $request->email)->first();
+
+        if (!$customer || $customer->status != 1) {
+            return redirect()->route('signin')->with('error', 'Account inactive or not found.');
+        }
+
         $credentials = $request->only('email', 'password');
 
         if (Auth::guard('customer')->attempt($credentials)) {
@@ -164,8 +175,132 @@ class FrontendController extends Controller
 
         $data['equipment'] = $equipment;
         $data['recommendedList'] = $recommendedList;
+
+        //Watchlist Section Start
+        $isFavorite = false;
+        if(Auth::guard('customer')->check())
+        {
+            $customer = Auth::guard('customer')->user();
+            if ($customer) {
+            $isFavorite = Watchlist::where('customer_id', $customer->id)
+                    ->where('equipment_id', $equipment->id)
+                    ->exists();
+            }
+        }
+        $data['isFavorite'] = $isFavorite;
+        //Watchlist Section End
+
         return view('frontend::product_details', $data);
     }
+
+    public function watchlist(Request $request)
+    {
+        $data = array();
+        $data['allEquipments'] = array();
+        if (Auth::guard('customer')->check()) {
+            $customerId = Auth::guard('customer')->user()->id;
+            $equipment_ids = Watchlist::where('customer_id',$customerId)->pluck('equipment_id');
+            $equipments = Equipment::published()->approved();
+
+            if(!empty($equipment_ids))
+            {
+                $equipments->whereIn('id',$equipment_ids);
+            }
+            $data['allEquipments'] = $equipments->orderBy('id', 'desc')->paginate(9)->withQueryString();
+        }
+        
+        return view('frontend::watchlists', $data);
+    }
+    public function watchlist_toggle(Request $request)
+    {
+        if (!Auth::guard('customer')->check()) {
+            return response()->json(['status' => 'unauthenticated']);
+        }
+
+        $customerId = Auth::guard('customer')->user()->id;
+        $equipmentId = $request->input('equipment_id');
+
+        $existing = Watchlist::where('customer_id', $customerId)
+            ->where('equipment_id', $equipmentId)
+            ->first();
+
+        if ($existing) {
+            $existing->delete();
+            return response()->json(['status' => 'removed']);
+        } else {
+            Watchlist::create([
+                'customer_id' => $customerId,
+                'equipment_id' => $equipmentId,
+            ]);
+            return response()->json(['status' => 'added']);
+        }
+    }
+
+    public function watchlist_item_remove(Request $request)
+    {
+        if (!Auth::guard('customer')->check()) {
+            return response()->json(['status' => 'unauthenticated']);
+        }
+
+        $customerId = Auth::guard('customer')->user()->id;
+        $equipmentId = $request->input('equipment_id');
+
+        $existing = Watchlist::where('customer_id', $customerId)
+            ->where('equipment_id', $equipmentId)
+            ->first();
+
+        if ($existing) {
+            $existing->delete();
+            return response()->json(['status' => 'removed']);
+        } 
+        return response()->json(['status' => 'error']);
+    }
+
+    public function submit_equipment_enquiry(Request $request) {
+
+       try {
+            $validated = $request->validate([
+                'first_name'       => 'required|string|max:100',
+                'last_name'        => 'required|string|max:100',
+                'email'            => 'required|email|max:100',
+                'phone'            => ['required', new PhoneNumber()],
+                'postal_code'      => 'required|string|max:5',
+                'message'          => 'required|string',
+                'marketing_opt_in' => 'nullable',
+            ]);
+        } catch (ValidationException $e) {
+            return redirect()->back()
+                            ->withInput()
+                            ->with('error', 'Something went wrong!');
+        }
+
+       $isExist = Equipment::where('id',$request->equipment_id)->exists();
+       if(!$isExist)
+       {
+            return redirect()->back()->withInput()->with('error','Something went wrong!');
+       }
+
+       $input = $request->all();
+       $input['marketing_opt_in'] = $request->marketing_opt_in ? 'Yes' : 'No';
+       $result = EquipmentEnquiry::create($input);
+        if($result)
+        {
+            $equipment = Equipment::find($request->equipment_id);
+            $seller_email = $equipment->customer->email ?? '';
+            if($seller_email != '')
+            {
+                Mail::to($seller_email)->send(new SendEnquiryMail($validated));
+            }
+            
+            return redirect()->back()->with('success','Thank you! we will contact you soon.');
+        }
+        else
+        {
+            return redirect()->back()->withInput()->with('error','Something went wrong!');
+        }
+       
+    }
+    
 
     public function submit_register(Request $request)
     {
@@ -237,8 +372,8 @@ class FrontendController extends Controller
             // Add uploaded file data to the rest of validatedData
             $validatedData['documents'] = $uploadedFiles;
 
-            // Cache for 30 minutes (1800 seconds)
-            Cache::put('cached_customer_data', $validatedData, 1800);
+            // Cache for 120 minutes (7200 seconds)
+            Cache::put('cached_customer_data', $validatedData, 7200);
 
             return redirect()->route('subscription');
 

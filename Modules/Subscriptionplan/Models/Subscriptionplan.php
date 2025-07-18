@@ -19,6 +19,8 @@ class Subscriptionplan extends Model
         'annual_price',
         'description',
         'offer',
+        'duration',
+        'no_of_listing',
         'status'
     ];
 

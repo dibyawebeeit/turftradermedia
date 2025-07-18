@@ -56,8 +56,14 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label for="annual_price" class="form-label">Annual Price ($) <sup>*</sup></label>
-                                            <input type="number" step="any" class="form-control" name="annual_price" placeholder="Annual Price" value="{{ old('annual_price') }}" required>
+                                            <label for="duration" class="form-label">Duration (Days) <sup>*</sup></label>
+                                            <input type="number" class="form-control" name="duration" placeholder="Duration" value="{{ old('duration') }}" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="no_of_listing" class="form-label">No of Listing <sup>*</sup></label>
+                                            <input type="number" class="form-control" name="no_of_listing" placeholder="No of Listing" value="{{ old('no_of_listing') }}" required>
                                         </div>
                                     </div>
                                     <div class="col-md-12">

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Category\Models\Category;
+use Modules\Customer\Models\Customer;
 use Modules\EquipmentModel\Models\EquipmentModel;
 use Modules\Manufacturer\Models\Manufacturer;
 
@@ -73,6 +74,11 @@ class Equipment extends Model
     public function manufacture_model()
     {
         return $this->belongsTo(EquipmentModel::class,'equipment_model_id','id');
+    }
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class,'customer_id','id');
     }
 
     public function scopePublished($query)

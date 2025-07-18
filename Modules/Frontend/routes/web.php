@@ -21,6 +21,14 @@ Route::controller(FrontendController::class)->group(function(){
     Route::get("/subscription","subscription")->name("subscription");
     Route::post("/getEquipmentModel","getEquipmentModel")->name("frontend.getEquipmentModel");
 
+    //Watchlist
+    Route::get("/watchlist","watchlist")->name("frontend.watchlist");
+    Route::post('/watchlist_toggle', 'watchlist_toggle')->name('frontend.watchlist_toggle');
+    Route::post('/watchlist_item_remove', 'watchlist_item_remove')->name('frontend.watchlist_item_remove');
+
+    //Enquiry
+    Route::post('/submit_equipment_enquiry', 'submit_equipment_enquiry')->name('frontend.submit_equipment_enquiry');
+
     Route::get("/success","success")->name("success");
     Route::get("/oops","oops")->name("oops");
 

@@ -18,6 +18,8 @@ return new class extends Migration
             $table->decimal('annual_price', 8, 2)->nullable();
             $table->text('description')->nullable();
             $table->string('offer',100)->nullable();
+            $table->integer('duration')->default(0)->comment('in days');
+            $table->integer('no_of_listing')->default(0);
             $table->tinyInteger('status')->default(1);
             $table->SoftDeletes();
             $table->timestamps();

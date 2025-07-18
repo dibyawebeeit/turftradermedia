@@ -12,38 +12,36 @@
                      <p>Welcome to your dashboard</p>
                      <section class="container analytics-section dashboardmain ">
                         <div class="row">
+
                            <div class="col-cmn col-lg-3">
                               <div class="card">
-                                 <h4>0</h4>
-                                 <a href="#">
-                                    <p>Total No</p>
+                                 <h4>{{ $total_watchlist }}</h4>
+                                 <a href="{{ route('frontend.watchlist') }}" target="_blank">
+                                    <p>Total Watchlist</p>
+                                 </a>
+                              </div>
+                           </div>
+
+                           @if (Auth::guard('customer')->user()->role === 'seller')
+                           <div class="col-cmn col-lg-3">
+                              <div class="card">
+                                 <h4>{{ $total_equipment }}</h4>
+                                 <a href="{{ route('customer.equipment.index') }}">
+                                    <p>Total Equipments</p>
                                  </a>
                               </div>
                            </div>
                            <div class="col-cmn col-lg-3">
                               <div class="card">
-                                 <h4>0</h4>
-                                 <a href="#">
-                                    <p>Total No</p>
+                                 <h4>{{ $total_enquiry }}</h4>
+                                 <a href="{{ route('customer.enquiry') }}">
+                                    <p>Total Enquiry</p>
                                  </a>
                               </div>
                            </div>
-                           <div class="col-cmn col-lg-3">
-                              <div class="card">
-                                 <h4>0</h4>
-                                 <a href="#">
-                                    <p>Total No</p>
-                                 </a>
-                              </div>
-                           </div>
-                           <div class="col-cmn col-lg-3">
-                              <div class="card">
-                                 <h4>0</h4>
-                                 <a href="#">
-                                    <p>Total No</p>
-                                 </a>
-                              </div>
-                           </div>
+                           @endif
+                           
+                           
                            
                         </div>
                      </section>

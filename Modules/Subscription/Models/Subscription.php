@@ -4,6 +4,8 @@ namespace Modules\Subscription\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Modules\Subscriptionplan\Models\Subscriptionplan;
+
 // use Modules\Subscription\Database\Factories\SubscriptionFactory;
 
 class Subscription extends Model
@@ -22,6 +24,11 @@ class Subscription extends Model
         'payment_type',
         'status'
     ];
+
+    public function plan()
+    {
+        return $this->belongsTo(Subscriptionplan::class,'subscription_plan_id','id');
+    }
 
     // protected static function newFactory(): SubscriptionFactory
     // {

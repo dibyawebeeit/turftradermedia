@@ -118,11 +118,29 @@
                 </li>
             @endcan
 
+            @can('customer_list')
+                <li class="side-nav-item">
+                    <a href="{{route('customer.index')}}" class="side-nav-link">
+                        <i class="fas fa-user"></i>
+                        <span> Customer </span>
+                    </a>
+                </li>
+            @endcan
+
              @can('subscriptionplan_list')
                 <li class="side-nav-item">
                     <a href="{{route('subscriptionplan.index')}}" class="side-nav-link">
                         <i class="fas fa-gem"></i>
                         <span> Subscription Plan </span>
+                    </a>
+                </li>
+            @endcan
+
+             @can('equipment_enquiry_list')
+                <li class="side-nav-item">
+                    <a href="{{route('equipmentenquiry.index')}}" class="side-nav-link">
+                        <i class="fas fa-question"></i>
+                        <span> Enquiry </span>
                     </a>
                 </li>
             @endcan

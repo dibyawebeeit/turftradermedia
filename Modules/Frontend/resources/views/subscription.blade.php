@@ -6,13 +6,13 @@
             
             <div class="container-subcrip" id="subscription">
                 <h1 class="title">Subscription Plans</h1>
-                <label class="switch">
+                {{-- <label class="switch">
                     <input type="checkbox" id="togBtn">
                     <div class="slider round"><!--ADDED HTML -->
                         <span class="on">Yearly</span>
                         <span class="off">Monthly</span><!--END-->
                     </div>
-                </label> 
+                </label>  --}}
                 <div class="container6 register-page6">    
                     @foreach ($subscriptionplan as $item)
                     <div class="offers">

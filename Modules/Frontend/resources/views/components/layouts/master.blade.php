@@ -164,6 +164,11 @@
             }
         </script>
 
+        <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+        <script src="{{ asset('frontendassets/js/google-translate.js') }}"></script>
+
+        
+
         @yield('script')
 
 

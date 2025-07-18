@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Modules\Customerpanel\Http\Controllers\CustomerEquipmentController;
 use Modules\Customerpanel\Http\Controllers\CustomerpanelController;
-
+use Modules\Customerpanel\Http\Controllers\CustomerSubscriptionController;
 
 // Route::middleware(['auth', 'verified'])->group(function () {
 //     Route::resource('customerpanels', CustomerpanelController::class)->names('customerpanel');
@@ -28,8 +28,14 @@ Route::prefix('customer')->middleware(['auth.customer', 'customerrole:seller'])-
     Route::get('/business-document', [CustomerpanelController::class, 'business_document'])->name('customer.business_document');
     Route::post('/upload_document', [CustomerpanelController::class, 'upload_document'])->name('customer.upload_document');
     Route::post('/delete_document', [CustomerpanelController::class, 'delete_document'])->name('customer.delete_document');
+    Route::get('/enquiry', [CustomerpanelController::class, 'enquiry'])->name('customer.enquiry');
+    Route::get('/enquiry/{id}', [CustomerpanelController::class, 'view_enquiry'])->name('customer.view_enquiry');
 
     Route::resource('/equipment', CustomerEquipmentController::class)->names('customer.equipment');
     Route::post('getEquipmentModel',[CustomerEquipmentController::class,'getEquipmentModel'])->name('customer.getEquipmentModel');
     Route::post('/delete_equipment_image', [CustomerEquipmentController::class, 'delete_equipment_image'])->name('customer.delete_equipment_image');
+
+    Route::get('/subscription', [CustomerSubscriptionController::class, 'index'])->name('customer.subscription');
+
+    
 });

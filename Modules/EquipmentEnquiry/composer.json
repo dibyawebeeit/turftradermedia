@@ -1,0 +1,30 @@
+{
+    "name": "nwidart/equipmentenquiry",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\EquipmentEnquiry\\": "app/",
+            "Modules\\EquipmentEnquiry\\Database\\Factories\\": "database/factories/",
+            "Modules\\EquipmentEnquiry\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\EquipmentEnquiry\\Tests\\": "tests/"
+        }
+    }
+}

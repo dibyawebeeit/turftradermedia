@@ -26,7 +26,7 @@ h6{ font-size: 18px; line-height: 25px; margin-bottom: 15px; font-weight: 600; }
 
 
 
-p {    margin-bottom: 25px;}
+p {    margin-bottom: 10px;}
 a{ color:#000000;text-decoration: none;-webkit-transition: all 500ms ease;	-moz-transition: all 500ms ease;	-ms-transition: all 500ms ease;	-o-transition: all 500ms ease;	transition: all 500ms ease;}
 a:hover {  animation: all 1000ms  ease-in;  text-decoration: none;color:#000000;}
 p a:hover {    text-decoration: none;color:#000000;}
@@ -1244,7 +1244,7 @@ left: -10px;
 .container-subcrip{ padding-top:20px;}
 
 .container6 .content {
-    padding: 0 10px;
+    padding: 0 40px;
     text-align: left;
     font-size: 16px;
 }
@@ -1447,3 +1447,4 @@ left: -10px;
     color: #999;
     cursor: not-allowed;
 }
+

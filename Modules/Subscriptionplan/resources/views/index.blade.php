@@ -49,8 +49,9 @@
                                         <tr>
                                             <th> Sl </th>
                                             <th>Name</th>
-                                            <th>Monthly Price</th>
-                                            <th>Annual Price</th>
+                                            <th>Price</th>
+                                            <th>Duration (Days)</th>
+                                            <th>No of Listing</th>
                                             <th>Status</th>
                                             <th>Added Date</th>
                                             <th style="width: 85px;">Action</th>
@@ -63,7 +64,8 @@
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $item->name }}</td>
                                                 <td>{{ format_price($item->monthly_price) }}</td>
-                                                <td>{{ format_price($item->annual_price) }}</td>
+                                                <td>{{ $item->duration }}</td>
+                                                <td>{{ $item->no_of_listing }}</td>
                                                 <td>
                                                     @if ($item->status==1)
                                                     <span class="badge bg-success">Active</span>

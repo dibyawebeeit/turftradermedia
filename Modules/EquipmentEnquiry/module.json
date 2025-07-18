@@ -1,0 +1,11 @@
+{
+    "name": "EquipmentEnquiry",
+    "alias": "equipmentenquiry",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\EquipmentEnquiry\\Providers\\EquipmentEnquiryServiceProvider"
+    ],
+    "files": []
+}

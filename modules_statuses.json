@@ -17,5 +17,6 @@
     "Customerpanel": true,
     "Manufacturer": true,
     "EquipmentModel": true,
-    "Equipment": true
+    "Equipment": true,
+    "EquipmentEnquiry": true
 }

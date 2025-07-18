@@ -39,8 +39,9 @@ class SubscriptionplanController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'monthly_price' => 'required',
-            'annual_price' => 'required',
-            'description' => 'required',
+            'duration' => 'required',
+            'no_of_listing' => 'required',
+            'description' => 'nullable',
             'offer' => 'nullable',
         ]);
 
@@ -79,8 +80,9 @@ class SubscriptionplanController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'monthly_price' => 'required',
-            'annual_price' => 'required',
-            'description' => 'required',
+            'duration' => 'required',
+            'no_of_listing' => 'required',
+            'description' => 'nullable',
             'offer' => 'nullable',
         ]);
 

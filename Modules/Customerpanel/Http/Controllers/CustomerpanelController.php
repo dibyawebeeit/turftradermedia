@@ -3,6 +3,7 @@
 namespace Modules\Customerpanel\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Watchlist;
 use App\Rules\PhoneNumber;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -12,6 +13,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Modules\Customer\Models\Customer;
 use Modules\Customer\Models\CustomerDocument;
+use Modules\Equipment\Models\Equipment;
+use Modules\EquipmentEnquiry\Models\EquipmentEnquiry;
 use Pest\ArchPresets\Custom;
 
 class CustomerpanelController extends Controller
@@ -35,7 +38,56 @@ class CustomerpanelController extends Controller
         $this->activemenu = "dashboard";
         $data['activemenu'] = $this->activemenu;
 
+        $data['total_watchlist'] = Watchlist::where('customer_id',$this->activeCustomerId)->count();
+        $data['total_enquiry'] =0;
+        
+        if (Auth::guard('customer')->user()->role === 'seller')
+        {
+            $data['total_equipment'] = Equipment::where('customer_id', $this->activeCustomerId)->count();
+
+            $equipmentIds = Equipment::where('customer_id', $this->activeCustomerId)->pluck('id');
+            if(!empty($equipmentIds))
+            {
+                $data['total_enquiry'] = EquipmentEnquiry::whereIn('equipment_id',$equipmentIds)->count();
+            }
+            
+        }
+
+
         return view('customerpanel::index', $data);
+    }
+
+    public function enquiry()
+    {
+        $this->activemenu = "enquiry";
+        $data['activemenu'] = $this->activemenu;
+
+        $data['enquiryList'] = array();
+        $equipmentIds = Equipment::where('customer_id', $this->activeCustomerId)->pluck('id');
+        if(!empty($equipmentIds))
+        {
+            $data['enquiryList'] = EquipmentEnquiry::whereIn('equipment_id',$equipmentIds)->get();
+        }
+        
+
+        return view('customerpanel::enquiry', $data);
+    }
+
+    public function view_enquiry($id) {
+        $this->activemenu = "enquiry";
+        $data['activemenu'] = $this->activemenu;
+        
+        $enquiry = EquipmentEnquiry::findOrFail($id);
+
+        $isExist = Equipment::where('customer_id',$this->activeCustomerId)->where('id',$enquiry->equipment_id)->exists();
+        if(!$isExist)
+        {
+            abort(403);
+        }
+
+        $data['enquiry']=$enquiry;
+        return view('customerpanel::view_enquiry', $data);
+
     }
     public function profile_setting()
     {

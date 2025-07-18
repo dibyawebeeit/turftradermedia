@@ -21,20 +21,29 @@
                                  <i class="fa-solid fa-user-pen me-2"></i> Profile Settings </a>
                               </li>
 
-                              @if (Auth::guard('customer')->user()->role === 'seller')
-                                <li><a class="btn-profile-menu {{ $activemenu && $activemenu=='business_document'?'active':'' }}" href="{{ route('customer.business_document') }}">
-                                    <i class="fa-solid fa-file me-2"></i> Business Documents </a>
-                                </li>
-                              @endif
-                              
-
                               <li><a class="btn-profile-menu {{ $activemenu && $activemenu=='change_password'?'active':'' }}" href="{{ route('customer.change_password') }}">
                                  <i class="fa-solid fa-key me-2"></i> Change Password </a>
                               </li>
 
-                              <li><a class="btn-profile-menu {{ $activemenu && $activemenu=='equipment'?'active':'' }}" href="{{ route('customer.equipment.index') }}">
-                                 <i class="fa-solid fa-car me-2"></i> Equipments </a>
-                              </li>
+                              @if (Auth::guard('customer')->user()->role === 'seller')
+                                <li><a class="btn-profile-menu {{ $activemenu && $activemenu=='business_document'?'active':'' }}" href="{{ route('customer.business_document') }}">
+                                    <i class="fa-solid fa-file me-2"></i> Business Documents </a>
+                                </li>
+
+                                 <li><a class="btn-profile-menu {{ $activemenu && $activemenu=='equipment'?'active':'' }}" href="{{ route('customer.equipment.index') }}">
+                                    <i class="fa-solid fa-car me-2"></i> Equipments </a>
+                                 </li>
+
+                                 <li><a class="btn-profile-menu {{ $activemenu && $activemenu=='subscription'?'active':'' }}" href="{{ route('customer.subscription') }}">
+                                    <i class="fa-solid fa-gift me-2"></i> Subscription </a>
+                                 </li>
+
+                                 <li><a class="btn-profile-menu {{ $activemenu && $activemenu=='enquiry'?'active':'' }}" href="{{ route('customer.enquiry') }}">
+                                    <i class="fa-solid fa-question me-2"></i> Enquiry </a>
+                                 </li>
+                              @endif
+
+                              
 
                               {{-- <li><a class="btn-profile-menu " href="#">
                                  <i class="fa-solid fa-cog me-2"></i> Settings </a>
