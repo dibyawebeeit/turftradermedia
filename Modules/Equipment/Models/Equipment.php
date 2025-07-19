@@ -44,6 +44,7 @@ class Equipment extends Model
         'meta_desc',
         'customer_id',
         'publish_status',
+        'admin_approval'
     ];
 
     public function images()

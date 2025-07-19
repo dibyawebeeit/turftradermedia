@@ -27,10 +27,10 @@
                         <div class="card-body">
                             <div class="row mb-2">
                                 <div class="col-sm-5">
-                                    {{-- @can('customer_add')
+                                    @can('customer_add')
                                         <a href="{{ route('customer.create') }}" class="btn btn-danger mb-2"><i
                                             class="mdi mdi-plus-circle me-2"></i> Add Customer</a>
-                                    @endcan --}}
+                                    @endcan
                                     
                                 </div>
                                 {{-- <div class="col-sm-7">

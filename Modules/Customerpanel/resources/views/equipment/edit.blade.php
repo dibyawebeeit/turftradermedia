@@ -120,7 +120,7 @@
                                                 <option value="Salvaged" {{ $equipment->condition=='Salvaged'?'selected':'' }}>Salvaged</option>
                                                 <option value="Used" {{ $equipment->condition=='Used'?'selected':'' }}>Used</option>
                                             </select>
-                                            @error('year')
+                                            @error('condition')
                                             <div class="errmsg">
                                             <i class="fa-solid fa-circle-exclamation"></i> {{ $message }}
                                             </div>

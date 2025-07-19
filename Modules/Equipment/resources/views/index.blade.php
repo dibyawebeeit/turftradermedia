@@ -98,7 +98,7 @@
                                                         <a href="{{ route('equipment.show', $item->id) }}" class="action-icon"> <i
                                                             class="mdi mdi-eye"></i></a>
                                                     @endcan
-                                                    {{-- @can('equipment_edit')
+                                                    @can('equipment_edit')
                                                         <a href="{{ route('equipment.edit', $item->id) }}" class="action-icon"> <i
                                                             class="mdi mdi-square-edit-outline"></i></a>
                                                     @endcan
@@ -111,9 +111,7 @@
                                                                 onclick="deleteData({{ $item->id }})"> <i
                                                                     class="mdi mdi-delete"></i></a>
                                                         </form>
-                                                    @endcan --}}
-                                                    
-                                                    
+                                                    @endcan
                                                 </td>
                                             </tr>
                                         @endforeach

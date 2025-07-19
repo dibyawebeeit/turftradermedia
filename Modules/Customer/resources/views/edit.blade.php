@@ -43,6 +43,15 @@
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="mb-3">
+                                            <label for="type" class="form-label">User Type </label>
+                                            <select class="form-control" disabled>
+                                                <option value="seller" {{ $dataList->role=='seller'?'selected':'' }}>Seller</option>
+                                                <option value="buyer" {{ $dataList->role=='buyer'?'selected':'' }}>Buyer</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
                                             <label for="first_name" class="form-label">First Name <sup>*</sup></label>
                                             <input type="text" class="form-control" name="first_name"
                                                 placeholder="First Name" value="{{ old('first_name',$dataList->first_name) }}" required>
@@ -130,6 +139,17 @@
                                             <label for="switch1" data-on-label="On" data-off-label="Off"></label>
                                         </div>
                                     </div>
+                                    @if ($dataList->role=='seller')
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="siteurl" class="form-label">Mark this seller as Free <sup>*</sup></label>
+                                                <br>
+                                                <input type="checkbox" id="switch2" name="is_free" {{ $dataList->is_free==1?'checked':'' }} data-switch="bool"/>
+                                                <label for="switch2" data-on-label="On" data-off-label="Off"></label>
+                                            </div>
+                                        </div>
+                                    @endif
+                                    
                                 </div> <!-- end row -->
                                 @if (count($dataList->documents) > 0)
                                     <div class="col-md-12">

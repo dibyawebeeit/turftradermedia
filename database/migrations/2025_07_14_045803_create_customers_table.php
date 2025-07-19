@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('password')->nullable();
             $table->string('image',100)->nullable();
             $table->enum('role', ['buyer','seller'])->default('buyer');
+            $table->boolean('is_free')->default(false);
             $table->tinyInteger('status')->default(1);
             $table->softDeletes();
             $table->timestamps();

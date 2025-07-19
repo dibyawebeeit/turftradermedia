@@ -29,6 +29,7 @@ class Customer extends Authenticatable
         'password',
         'image',
         'role',
+        'is_free',
         'status'
     ];
 
