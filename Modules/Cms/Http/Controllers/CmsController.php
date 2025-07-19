@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use Modules\Cms\Models\Aboutus;
 use Modules\Cms\Models\Advertising;
 use Modules\Cms\Models\Contactuscms;
+use Modules\Cms\Models\Home;
 use Modules\Cms\Models\Termsconditions;
 
 class CmsController extends Controller
@@ -17,6 +18,137 @@ class CmsController extends Controller
     {
         $this->middleware('permission:cms');
     }
+
+    public function home(Request $request) {
+        $data['dataList'] = Home::first();
+
+        return view('cms::home',$data);
+    }
+
+    public function submit_home(Request $request) {
+        $validated = $request->validate([
+            'title1' => 'required|string|max:255',
+            'title2' => 'required|string|max:255',
+            'section1_title' => 'required|string|max:255',
+            'section1_title2' => 'nullable|string|max:255',
+            'section1_button_text' => 'required|string|max:255',
+            'section1_button_url' => 'required|string|max:255',
+            'section2_title' => 'required|string|max:255',
+            'section2_title2' => 'nullable|string|max:255',
+            'section2_title3' => 'nullable|string|max:255',
+            'meta_title' => 'required|string|max:255',
+            'meta_keyword' => 'nullable|string',
+            'meta_desc' => 'nullable|string',
+        ]);
+
+        $data = Home::first();
+        $input = $request->all();
+
+        if ($request->has('banner')) {
+            $validated = $request->validate([
+                'banner' => 'required|image|mimes:jpg,jpeg,png,webp|max:1024',
+            ]);
+
+            // Get the uploaded image
+            $image = $request->file('banner');
+
+            // Create a custom file name
+            $imageName = 'image_' . Str::random(10) . time() . '.' . $image->getClientOriginalExtension();
+
+            // Define the directory path for where you want to store the image
+            $uploadPath = public_path('uploads/cmsImage');  // This is outside of the storage folder
+
+            // Check if the directory exists, if not create it
+            if (!File::exists($uploadPath)) {
+                File::makeDirectory($uploadPath, 0775, true);
+            }
+
+            // Move the image to the custom location
+            $image->move($uploadPath, $imageName);
+
+            // Check if the file exists and delete it
+            $imagePath = public_path('uploads/cmsImage/' . $data->banner);
+            if (File::exists($imagePath)) {
+                // Delete the file
+                File::delete($imagePath);
+            }
+
+            $input['banner'] = $imageName;
+        } 
+
+        if ($request->has('section1_image')) {
+            $validated = $request->validate([
+                'section1_image' => 'required|image|mimes:jpg,jpeg,png,webp|max:1024',
+            ]);
+
+            // Get the uploaded image
+            $image = $request->file('section1_image');
+
+            // Create a custom file name
+            $imageName = 'image_' . Str::random(10) . time() . '.' . $image->getClientOriginalExtension();
+
+            // Define the directory path for where you want to store the image
+            $uploadPath = public_path('uploads/cmsImage');  // This is outside of the storage folder
+
+            // Check if the directory exists, if not create it
+            if (!File::exists($uploadPath)) {
+                File::makeDirectory($uploadPath, 0775, true);
+            }
+
+            // Move the image to the custom location
+            $image->move($uploadPath, $imageName);
+
+            // Check if the file exists and delete it
+            $imagePath = public_path('uploads/cmsImage/' . $data->section1_image);
+            if (File::exists($imagePath)) {
+                // Delete the file
+                File::delete($imagePath);
+            }
+
+            $input['section1_image'] = $imageName;
+        }
+
+        if ($request->has('section2_image')) {
+            $validated = $request->validate([
+                'section2_image' => 'required|image|mimes:jpg,jpeg,png,webp|max:1024',
+            ]);
+
+            // Get the uploaded image
+            $image = $request->file('section2_image');
+
+            // Create a custom file name
+            $imageName = 'image_' . Str::random(10) . time() . '.' . $image->getClientOriginalExtension();
+
+            // Define the directory path for where you want to store the image
+            $uploadPath = public_path('uploads/cmsImage');  // This is outside of the storage folder
+
+            // Check if the directory exists, if not create it
+            if (!File::exists($uploadPath)) {
+                File::makeDirectory($uploadPath, 0775, true);
+            }
+
+            // Move the image to the custom location
+            $image->move($uploadPath, $imageName);
+
+            // Check if the file exists and delete it
+            $imagePath = public_path('uploads/cmsImage/' . $data->section2_image);
+            if (File::exists($imagePath)) {
+                // Delete the file
+                File::delete($imagePath);
+            }
+
+            $input['section2_image'] = $imageName;
+        }
+    
+
+        $result = $data->update($input);
+        if ($result) {
+            return redirect()->back()->with('success', 'Home updated successfully');
+        } else {
+            return redirect()->back()->with('error', 'something went wrong!');
+        }
+    }
+
     public function about_us(Request $request) {
         $data['dataList'] = Aboutus::first();
 

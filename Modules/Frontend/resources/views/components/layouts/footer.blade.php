@@ -34,7 +34,7 @@
             <div class="cipi">
             	<h2>Get <span>In Touch</span></h2>
                 <ul>
-                    <li><span><i class="fas fa-envelope"></i></span><span>Email: <a href="mailto:info@turftrader.net">info@turftrader.net</a></span></li>
+                    <li><span><i class="fas fa-envelope"></i></span><span>Email: <a href="mailto:{{ sitesetting()->contact_email }}">{{ sitesetting()->contact_email }}</a></span></li>
                  </ul>                   
             </div>
                     

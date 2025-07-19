@@ -7,6 +7,7 @@ use App\Rules\PhoneNumber;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Modules\Banner\Models\Banner;
 use Modules\Customer\Models\Customer;
@@ -52,6 +53,7 @@ class CustomerController extends Controller
         'state'=> 'required|string|max:100',
         'country'=> 'required|string|max:100',
         'postal_code'=> 'required|string|max:5',
+        'password'=> 'required|string',
         'image' => 'required|image|mimes:jpg,jpeg,png,webp|max:1024',
        ]);
 
@@ -115,6 +117,7 @@ class CustomerController extends Controller
         }
         
 
+        $input['password']= Hash::make($request->password);
         $input['role'] = $request->role;
         $input['status'] = $request->status ? 1 : 0;
         

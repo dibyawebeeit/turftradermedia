@@ -114,7 +114,13 @@
                                                 placeholder="Postal Code" value="{{ old('postal_code') }}" required>
                                         </div>
                                     </div>
-                                    
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label for="password" class="form-label">Create Password<sup>*</sup></label>
+                                            <input type="password" class="form-control" name="password"
+                                                placeholder="Create Password" value="{{ old('password') }}" required>
+                                        </div>
+                                    </div>
                                     <div class="col-md-4">
                                         <div class="mb-3">
                                             <label for="image" class="form-label">Image <sup>*</sup></label>

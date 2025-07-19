@@ -197,9 +197,9 @@
                 </a>
                 <div class="collapse" id="cmsSection">
                     <ul class="side-nav-second-level">
-                        {{-- <li>
+                        <li>
                             <a href="{{ route('cms.home') }}">Home</a>
-                        </li> --}}
+                        </li>
                         <li>
                             <a href="{{ route('cms.about_us') }}">About Us</a>
                         </li>

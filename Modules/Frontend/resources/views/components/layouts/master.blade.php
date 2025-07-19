@@ -24,6 +24,7 @@
         <link rel="profile" href="https://gmpg.org/xfn/11">
         <link rel="stylesheet" href="{{ asset('frontendassets/css/all.min.css') }}">
         <link rel="stylesheet" href="{{ asset('frontendassets/css/style.css') }}">
+        <link rel="stylesheet" href="{{ asset('frontendassets/css/custom.css') }}">
         <link rel="stylesheet" href="{{ asset('frontendassets/css/style-main.css') }}">
         <link rel="icon" href="{{ asset('frontendassets/image/fab.png') }}" sizes="32x32" />
         <link rel="icon" href="{{ asset('frontendassets/image/fab.png') }}" sizes="192x192" />

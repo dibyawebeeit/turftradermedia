@@ -27,19 +27,35 @@ class CustomerSubscriptionController extends Controller
     
     public function index()
     {
+        
         $this->activemenu = "subscription";
         $data['activemenu'] = $this->activemenu;
 
         $data['activeSubscription'] =null;
-        $subscription = Subscription::where('customer_id', $this->activeCustomerId)
+
+        if(Auth::guard('customer')->user()->is_free == true)
+        {
+            $data['status'] = "free";
+        }
+        else
+        {
+            $subscription = Subscription::where('customer_id', $this->activeCustomerId)
             ->where('status', 'active')
             ->whereDate('end_date', '>=', now())
             ->latest()
             ->first();
 
-        if ($subscription) {
-            $data['activeSubscription'] = $subscription;
+            if ($subscription) {
+                $data['activeSubscription'] = $subscription;
+                $data['status'] = "active";
+            }
+            else
+            {
+                $data['status'] = "expired";
+            }
         }
+
+
 
         $data['subscriptionplan'] = Subscriptionplan::active()->get();
 

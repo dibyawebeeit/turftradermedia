@@ -9,39 +9,58 @@
                <div class="col-cmn col-lg-8 col-md-8 col-sm-12 two">
                   <div class="section-content dashboard-right">
                      <h2>Subscription Plan</h2>
-                     @if ($activeSubscription !=null)
-                        <div>
-                            <p>Your Active Plan : {{ $activeSubscription->plan->name }}</p>
-                            {!! $activeSubscription->plan->description !!}
-                            <span>Expairy : {{ $activeSubscription->end_date }}</span>
-                        </div>
-                     @else
-                         <p>You have no active plan!</p>
-                     @endif
-
-                    <h2>Renew Subscription Plan</h2>
-                    <div class="container6">    
-                        @foreach ($subscriptionplan as $item)
-                        <div class="offers">
-                            <h2>{{ $item['name'] }}</h2>
-                            <h3 class="price monthly_price">${{ $item['monthly_price'] }} 
-                            <small>Monthly</small>
-                            </h3>
-                            <h3 class="price annual_price" style="display:none;">${{ $item['annual_price'] }} 
-                            <small>Annually</small>
-                            {{-- <span class="offer">{{ $item['offer'] }}</span> --}}
-                            </h3>
-                            
-                            <div class="content">
-                                {!! $item['description'] !!}
+                     @if ($status == "free")
+                         <p class="free-subscription-msg">You have a free subscription plan. Enjoy your listing!</p>
+                     @elseif($status == "expired")
+                        <p class="expired-subscription-msg">Your active plan has expired!</p>
+                        @if ($activeSubscription !=null)
+                            <div class="active_plan">
+                                <p class="plan-title">Your Plan: <strong>{{ $activeSubscription->plan->name }}</strong></p>
+                                <div class="plan-description">
+                                    {!! $activeSubscription->plan->description !!}
+                                </div>
+                                <span class="plan-expiry">Expiry: {{ $activeSubscription->end_date }}</span>
                             </div>
-                            
-                            <button class="btn1 subscribe-btn" data-id="{{ $item['id'] }}">
-                                Proceed
-                            </button>
+                        @endif
+                     @else
+                        @if ($activeSubscription !=null)
+                            <div class="active_plan">
+                                <p class="plan-title">Your Active Plan: <strong>{{ $activeSubscription->plan->name }}</strong></p>
+                                <div class="plan-description">
+                                    {!! $activeSubscription->plan->description !!}
+                                </div>
+                                <span class="plan-expiry">Expiry: {{ $activeSubscription->end_date }}</span>
+                            </div>
+                        @endif
+                     @endif
+                     
+
+                    @if ($status !="free")
+                        <h2>Renew Subscription Plan</h2>
+                        <div class="container6">    
+                            @foreach ($subscriptionplan as $item)
+                            <div class="offers">
+                                <h2>{{ $item['name'] }}</h2>
+                                <h3 class="price monthly_price">${{ $item['monthly_price'] }} 
+                                <small>Monthly</small>
+                                </h3>
+                                <h3 class="price annual_price" style="display:none;">${{ $item['annual_price'] }} 
+                                <small>Annually</small>
+                                {{-- <span class="offer">{{ $item['offer'] }}</span> --}}
+                                </h3>
+                                
+                                <div class="content">
+                                    {!! $item['description'] !!}
+                                </div>
+                                
+                                <button class="btn1 subscribe-btn" data-id="{{ $item['id'] }}">
+                                    Proceed
+                                </button>
+                            </div>
+                            @endforeach
                         </div>
-                        @endforeach
-                    </div>
+                    @endif
+                    
                   </div>
                </div>
             </div>

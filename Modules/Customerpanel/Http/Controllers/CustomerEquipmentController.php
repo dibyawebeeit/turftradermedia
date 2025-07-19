@@ -103,6 +103,30 @@ class CustomerEquipmentController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request) {
+
+        if(Auth::guard('customer')->user()->is_free == false)
+        {
+            $subscription = Subscription::where('customer_id', $this->activeCustomerId)
+            ->where('status', 'active')
+            ->whereDate('end_date', '>=', now())
+            ->latest()
+            ->first();
+
+            if (!$subscription) {
+                return redirect()->back()->with('error', 'No active subscription found.');
+            }
+
+            // $listingCount = Equipment::where('customer_id', $this->activeCustomerId)
+            //     ->whereDate('expires_at', '>=', now())->count();
+            $listingCount = Equipment::where('customer_id', $this->activeCustomerId)->count();
+
+            if ($listingCount >= $subscription->plan->no_of_listing) {
+                return redirect()->back()->with('error', 'You have reached your listing limit.');
+            }
+        }
+        
+
+
         $request->validate([
             'vin' => 'nullable|string|max:50',
             'manufacturer_id' => 'required|numeric',
@@ -129,23 +153,7 @@ class CustomerEquipmentController extends Controller
             'images.*' => 'required|mimes:jpeg,jpg,png,webp|max:1024', // 1MB per file
         ]);
 
-        $subscription = Subscription::where('customer_id', $this->activeCustomerId)
-            ->where('status', 'active')
-            ->whereDate('end_date', '>=', now())
-            ->latest()
-            ->first();
-
-        if (!$subscription) {
-            return redirect()->back()->with('error', 'No active subscription found.');
-        }
-
-        // $listingCount = Equipment::where('customer_id', $this->activeCustomerId)
-        //     ->whereDate('expires_at', '>=', now())->count();
-        $listingCount = Equipment::where('customer_id', $this->activeCustomerId)->count();
-
-        if ($listingCount >= $subscription->plan->no_of_listing) {
-            return redirect()->back()->with('error', 'You have reached your listing limit.');
-        }
+        
 
         $input = $request->all();
 

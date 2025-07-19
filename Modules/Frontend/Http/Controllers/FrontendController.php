@@ -31,6 +31,7 @@ use Modules\Subscriptionplan\Models\Subscriptionplan;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
 use Srmklive\PayPal\Services\PayPal;
 use Illuminate\Validation\ValidationException;
+use Modules\Cms\Models\Home;
 
 class FrontendController extends Controller
 {
@@ -38,9 +39,28 @@ class FrontendController extends Controller
     {
         $data['banner'] = Banner::active()->get();
         $data['categoryList'] = Category::active()->where('parent_id',0)->get();
-        $data['allEquipments'] = Equipment::published()->approved()->orderBy('id','desc')->get();
+
+        // $data['allEquipments'] = Equipment::published()->approved()->orderBy('id','desc')->get();
+        $data['allEquipments'] = Equipment::published()->approved()
+                                ->whereHas('customer', function ($query) {
+                                    $query->where('is_free', true)
+                                        ->orWhere(function ($q) {
+                                            $q->where('is_free', false)
+                                            ->whereHas('subscriptions', function ($sub) {
+                                                $today = Carbon::today();
+                                                $sub->where('status', 'active')
+                                                    ->where('start_date', '<=', $today)
+                                                    ->where('end_date', '>=', $today);
+                                            });
+                                        });
+                                })
+                                ->with('customer') // optional, if you want customer data too
+                                ->orderBy('id', 'desc')
+                                ->get();
 
         $data['manufacturerListing'] = Manufacturer::select('id','name')->active()->get();
+
+        $data['home']=Home::first();
         return view('frontend::index', $data);
     }
 
@@ -133,47 +153,93 @@ class FrontendController extends Controller
         }
         $data['allCategory'] = $category;
 
-        // $data['allEquipments'] = Equipment::published()->approved()->orderBy('id','desc')->paginate(2);
-        $equipments = Equipment::published()->approved();
+        $equipments = Equipment::published()->approved()
+                ->whereHas('customer', function ($query) {
+                    $query->where('is_free', true)
+                        ->orWhere(function ($q) {
+                            $today = \Carbon\Carbon::today();
+                            $q->where('is_free', false)
+                                ->whereHas('subscriptions', function ($sub) use ($today) {
+                                    $sub->where('status', 'active')
+                                        ->where('start_date', '<=', $today)
+                                        ->where('end_date', '>=', $today);
+                                });
+                        });
+                });
 
-        // Filter by category if selected
-        if ($request->filled('category')) {
-            $equipments->where('category_id', $request->category);
-        }
+            // Filter by category
+            if ($request->filled('category')) {
+                $equipments->where('category_id', $request->category);
+            }
 
-        // Filter by name if not null
-        if ($request->filled('name')) {
-            $equipments->where('name', 'like', '%' . $request->name . '%');
-            $data['search_keyword'] = $request->name;
-        }
+            // Filter by name
+            if ($request->filled('name')) {
+                $equipments->where('name', 'like', '%' . $request->name . '%');
+                $data['search_keyword'] = $request->name;
+            }
 
-        //Filter by manufacturer
-        if ($request->filled('manufacturer_id')) {
-            $equipments->where('manufacturer_id', $request->manufacturer_id);
-        }
+            // Filter by manufacturer
+            if ($request->filled('manufacturer_id')) {
+                $equipments->where('manufacturer_id', $request->manufacturer_id);
+            }
 
-        //Filter by model
-        if ($request->filled('equipment_model_id')) {
-            $equipments->where('equipment_model_id', $request->equipment_model_id);
-        }
+            // Filter by model
+            if ($request->filled('equipment_model_id')) {
+                $equipments->where('equipment_model_id', $request->equipment_model_id);
+            }
 
-
-        $data['allEquipments'] = $equipments->orderBy('id', 'desc')->paginate(9)->withQueryString();
+            // Final query execution
+            $data['allEquipments'] = $equipments
+                ->with('customer') // Optional: eager load customer
+                ->orderBy('id', 'desc')
+                ->paginate(9)
+                ->withQueryString();
 
         return view('frontend::products', $data);
     }
     public function product_details($slug)
     {
-        $isExist = Equipment::where('slug',$slug)->exists();
-        if(!$isExist)
-        {
-            abort(404);
+        $today = \Carbon\Carbon::today();
+
+        $equipment = Equipment::with(['customer.subscriptions'])
+            ->where('slug', $slug)
+            ->whereHas('customer', function ($query) use ($today) {
+                $query->where('is_free', true)
+                    ->orWhere(function ($q) use ($today) {
+                        $q->where('is_free', false)
+                            ->whereHas('subscriptions', function ($sub) use ($today) {
+                                $sub->where('status', 'active')
+                                    ->where('start_date', '<=', $today)
+                                    ->where('end_date', '>=', $today);
+                            });
+                    });
+            })
+            ->first();
+
+        // Optional: handle if equipment is not accessible
+        if (!$equipment) {
+           abort(403);
         }
-
-        $equipment = Equipment::where('slug',$slug)->first();
-        $recommendedList = Equipment::where('category_id',$equipment->category_id)->where('id','!=',$equipment->id)->get();
-
         $data['equipment'] = $equipment;
+
+
+        $recommendedList = Equipment::published()->approved() // Optional: add if needed
+            ->where('category_id', $equipment->category_id)
+            ->where('id', '!=', $equipment->id)
+            ->whereHas('customer', function ($query) use ($today) {
+                $query->where('is_free', true)
+                    ->orWhere(function ($q) use ($today) {
+                        $q->where('is_free', false)
+                            ->whereHas('subscriptions', function ($sub) use ($today) {
+                                $sub->where('status', 'active')
+                                    ->where('start_date', '<=', $today)
+                                    ->where('end_date', '>=', $today);
+                            });
+                    });
+            })
+            ->orderBy('id', 'desc')
+            ->limit(6)
+            ->get();
         $data['recommendedList'] = $recommendedList;
 
         //Watchlist Section Start

@@ -112,7 +112,7 @@
             
                 <div class="section-content">
 					@if (isset($categoryList))
-						<h2>New & Used Lawn, Turf, And Golf Course Equipment For Sale</h2>
+						<h2>{{ $home->title1 }}</h2>
 						<div class="homeSlider2">
 							@foreach ($categoryList as $category)
 								<div class="homeSlider2Col">
@@ -127,7 +127,8 @@
 						</div>
 					@endif
                     
-                    <div class="section-botmImg"><img src="{{ asset('frontendassets/image/home-bnr-img.png') }}"></div>
+                    <div class="section-botmImg">
+						<img src="{{ asset('uploads/cmsImage/'.$home->banner) }}"></div>
                 </div>  
                 
             </div>   
@@ -137,12 +138,12 @@
                     
                 	<div class="curve-container">
                       <div class="content">
-                        <h2><span>Sell Golf</span> <br>EQUIPMENT</h2>
-                        <p>Duis cursus placerat magna, ut posuere ante auctor consectetur</p>
+                        <h2>{{ $home->section1_title }}</h2>
+                        <p>{{ $home->section1_title2 }}</p>
                       </div>
                       <div class="image-curve">
                         <img src="{{ asset('frontendassets/image/curve-img2.png') }}" class="curveImg">
-                        <img src="{{ asset('frontendassets/image/home-golf-img.jpg') }}" class="curveMainImg">
+                        <img src="{{ asset('uploads/cmsImage/'.$home->section1_image) }}" class="curveMainImg">
                       </div>
                     </div>
 
@@ -163,7 +164,7 @@
     	<div class="row rowOne">    
         	<div class="col-cmn col-lg-9 col-md-9 col-sm-12 one">
             	<div class="section-content">
-            		<h2>Latest Added Listings For Sale</h2>
+            		<h2>{{ $home->title2 }}</h2>
                 </div>
             </div>   
         	<div class="col-cmn col-lg-3 col-md-3 col-sm-12 two text-right">
@@ -216,14 +217,14 @@
     	<div class="row">    
         	<div class="col-cmn col-lg-5 col-md-5 col-sm-12 one">
             	<div class="section-content">
-            		<h3>Sell Golf</h3>
-                    <h2>EQUIPMENT</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin interdum venenatis nibh, id pretium diam euismod id.</p>
+            		<h3>{{ $home->section2_title }}</h3>
+                    <h2>{{ $home->section2_title2 }}</h2>
+                    <p>{{ $home->section2_title3 }}</p>
                 </div>
             </div>   
         	<div class="col-cmn col-lg-7 col-md-7 col-sm-12 two">
             	<div class="section-img">
-            		<img src="{{ asset('frontendassets/image/home-bnr2.jpg') }}">
+            		<img src="{{ asset('uploads/cmsImage/'.$home->section2_image) }}">
                 </div>
             </div>                     
        </div>
