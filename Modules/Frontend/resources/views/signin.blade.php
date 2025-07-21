@@ -10,8 +10,8 @@
             	<div class="section-content">
                 	
                     <div class="login-block">
-                        <h3>Log in to your account</h3>
-                        <p>You can log in below using your email or customer ID. If you need any help logging in, please contact your account manager for assistance</p>
+                        <h3>{{ sitesetting()->login_title }}</h3>
+                        <p>{{ sitesetting()->login_desc }}</p>
                         @if ($errors->any())
                             <div class="alert alert-danger">
                                 <ul>
@@ -48,16 +48,17 @@
                 	
                     	
                       <div class="login-block registerBlock">
-                        <h3>Im New Customer</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque a pharetra ante. Etiam eros arcu, mollis sed elementum at, sagittis sit amet neque. Aliquam tempus euismod velit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi vel dignissim magna. Aenean tincidunt nisi erat, at euismod lorem condimentum nec.</p>
+                        <h3>{{ sitesetting()->register_title }}</h3>
+                        <p>{{ sitesetting()->register_desc }}</p>
                         <a href="{{ route('register') }}" class="btn">Continue</a>
                         <div class="terms-block">
-                            <h3>Sign up today and you will be able to:</h3>
+                            {{-- <h3>Sign up today and you will be able to:</h3>
                             <ul>
                                 <li>View all products, prices and promotions.</li>
                                 <li>Place orders online and buy in store.</li>
                                 <li>Favourite products and Quick Order. </li>
-                            </ul>
+                            </ul> --}}
+                            {!! sitesetting()->register_info !!}
                         </div>
                       </div>
                     

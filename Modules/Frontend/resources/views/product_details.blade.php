@@ -1,4 +1,4 @@
-<x-frontend::layouts.master>
+<x-frontend::layouts.master :title="$equipment->meta_title" :keywords="$equipment->meta_keyword" :description="$equipment->meta_desc">
 <hr>
 <style>
 

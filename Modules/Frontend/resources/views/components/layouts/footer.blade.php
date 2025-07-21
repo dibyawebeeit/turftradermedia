@@ -8,7 +8,7 @@
                 
             <div class="cipi">
                 <div class="footer-logo"><img src="{{ asset('frontendassets/image/footer-logo.png') }}" class="autosize"></div>
-                <p>Bringing together buyers and sellers of turf equipment.</p>                
+                <p>{{ sitesetting()->footer_text }}</p>                
             </div>
                     
           </div>

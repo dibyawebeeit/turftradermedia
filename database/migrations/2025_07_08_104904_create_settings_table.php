@@ -22,6 +22,13 @@ return new class extends Migration
             $table->string('footer_text')->nullable();
             $table->string('newsletter_title')->nullable();
             $table->text('newsletter_desc')->nullable();
+
+            $table->string('login_title')->nullable();
+            $table->text('login_desc')->nullable();
+            $table->string('register_title')->nullable();
+            $table->text('register_desc')->nullable();
+            $table->text('register_info')->nullable();
+
             $table->string('facebook')->nullable();
             $table->string('twitter')->nullable();
             $table->string('instagram')->nullable();

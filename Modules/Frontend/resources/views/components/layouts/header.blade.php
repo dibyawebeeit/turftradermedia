@@ -82,7 +82,13 @@
                     <ul>
                         <li><a href="{{ route('advertising') }}">Advertising</a></li>
                         <li><a href="{{ route('contact_us') }}">Contact Us</a></li>
-                        <li><a href="#">Sell Your Equipment</a></li>
+                        <li>
+                          @if (Auth::guard('customer')->check() && Auth::guard('customer')->user()->role =='seller')
+                              <a href="{{ route('customer.equipment.create') }}">Sell Your Equipment</a>
+                          @else
+                              <a href="{{ route('signin') }}">Sell Your Equipment</a>
+                          @endif
+                        </li>
                     </ul>
                 </div>
                 
@@ -141,7 +147,12 @@
                     </form>
                 </div>
             	<div class="header-searchLink">
-                	<a href="#" class="btn">Sell Your Equipment</a>
+                  @if (Auth::guard('customer')->check() && Auth::guard('customer')->user()->role =='seller')
+                      <a href="{{ route('customer.equipment.create') }}" class="btn">Sell Your Equipment</a>
+                  @else
+                      <a href="{{ route('signin') }}" class="btn">Sell Your Equipment</a>
+                  @endif
+                	
                 </div>
             </div>        
         </div>

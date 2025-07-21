@@ -128,6 +128,44 @@
                                         </div>
                                     </div>
                                 </div>
+                                <h5 class="mb-3 text-uppercase bg-light p-2"><i class="mdi mdi-earth me-1"></i> Login Page Section</h5>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="login_title" class="form-label">Title <sup>*</sup></label>
+                                            <input type="text" class="form-control" name="login_title" placeholder="Title"
+                                                value="{{ $dataList->login_title }}" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="login_desc" class="form-label">Desc </label>
+                                            <textarea class="form-control" name="login_desc" placeholder=" Desc">{{ $dataList->login_desc }}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h5 class="mb-3 text-uppercase bg-light p-2"><i class="mdi mdi-earth me-1"></i> Register Page Section</h5>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="register_title" class="form-label">Title <sup>*</sup></label>
+                                            <input type="text" class="form-control" name="register_title" placeholder="Title"
+                                                value="{{ $dataList->register_title }}" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="register_desc" class="form-label">Desc </label>
+                                            <textarea class="form-control" name="register_desc" placeholder=" Desc">{{ $dataList->register_desc }}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="mb-3">
+                                            <label for="register_info" class="form-label">Info </label>
+                                            <textarea class="editor form-control" name="register_info" placeholder=" Desc">{{ $dataList->register_info }}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
 
 
                                 <h5 class="mb-3 text-uppercase bg-light p-2"><i class="mdi mdi-earth me-1"></i> Social</h5>
