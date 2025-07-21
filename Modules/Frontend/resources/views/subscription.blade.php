@@ -48,28 +48,29 @@
 <script>
     
 
-   document.getElementById('togBtn').addEventListener('change', function () {
-      const monthly = document.querySelectorAll('.monthly_price');
-      const annual = document.querySelectorAll('.annual_price');
+//    document.getElementById('togBtn').addEventListener('change', function () {
+//       const monthly = document.querySelectorAll('.monthly_price');
+//       const annual = document.querySelectorAll('.annual_price');
 
-      if (this.checked) {
-         // Show yearly, hide monthly
-         monthly.forEach(el => el.style.display = 'none');
-         annual.forEach(el => el.style.display = 'block');
-      } else {
-         // Show monthly, hide yearly
-         monthly.forEach(el => el.style.display = 'block');
-         annual.forEach(el => el.style.display = 'none');
-      }
-   });
+//       if (this.checked) {
+//          // Show yearly, hide monthly
+//          monthly.forEach(el => el.style.display = 'none');
+//          annual.forEach(el => el.style.display = 'block');
+//       } else {
+//          // Show monthly, hide yearly
+//          monthly.forEach(el => el.style.display = 'block');
+//          annual.forEach(el => el.style.display = 'none');
+//       }
+//    });
 
     document.addEventListener("DOMContentLoaded", function () {
-        const planToggle = document.getElementById('togBtn');
+        // const planToggle = document.getElementById('togBtn');
 
         document.querySelectorAll(".subscribe-btn").forEach(function (btn) {
             btn.addEventListener("click", function () {
                 const subscriptionId = this.getAttribute("data-id");
-                const subscriptionType = planToggle.checked ? 'annual' : 'monthly';
+                // const subscriptionType = planToggle.checked ? 'annual' : 'monthly';
+                const subscriptionType = 'monthly';
 
                 const url = "{{ route('startPayment') }}" + `?id=${subscriptionId}&type=${subscriptionType}`;
                 window.location.href = url;

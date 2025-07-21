@@ -182,7 +182,7 @@
                             <div class="proItemdetailsTbl-tr">
                                 <div class="proItemdetailsTbl-td">Description</div>
                                 <div class="proItemdetailsTbl-td">
-                                    {{ $equipment->description }}
+                                    {!! $equipment->description !!}
                                 </div>
                             </div>
                         </div>                    	
@@ -219,7 +219,7 @@
                 	<div class="section-content">
                     
                     	<h2>Details</h2>
-                        {{ $equipment->details }}
+                        {!! $equipment->details !!}
                         
                     </div> 
                 </div>
@@ -315,10 +315,7 @@
                 <i class="fa-solid fa-circle-exclamation"></i> {{ $message }}
             </div>
             @enderror
-        </div>
-      </div>
-
-      <div class="checkbox-section">
+            <div class="checkbox-section">
         <label>
           <input type="checkbox" name="marketing_opt_in">
           I would like to receive reoccurring weekly updates, product, and promotional emails from Sandhills Global, Inc., NeedTurfEquipment, our Affiliates, Currency and our Brands (“Sandhills”).
@@ -328,6 +325,11 @@
       <div class="submit-container">
         <button type="submit" class="btn">Submit</button>
       </div>
+
+        </div>
+      </div>
+
+      
     </form>
   </div>
 </div>

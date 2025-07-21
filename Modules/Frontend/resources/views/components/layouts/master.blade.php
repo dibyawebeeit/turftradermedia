@@ -33,6 +33,7 @@
         <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
        <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css">
         <script src="{{ asset('frontendassets/js/jquery-3.6.0.min.js') }}"></script>
+        <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
 
     </head>
 
@@ -75,6 +76,20 @@
                 //     alert(table.row( this ).data()[0]);
 
                 // } );
+            });
+        </script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const editors = document.querySelectorAll('.ckeditor');
+
+                editors.forEach(editor => {
+                    ClassicEditor
+                        .create(editor)
+                        .catch(error => {
+                            console.error('CKEditor Error:', error);
+                        });
+                });
             });
         </script>
 

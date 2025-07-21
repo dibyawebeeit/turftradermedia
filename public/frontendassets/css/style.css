@@ -1449,4 +1449,63 @@ left: -10px;
 }
 
 
+/* Frontend Thank You page  */
+ .message-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+    padding: 40px 20px;
+    background-color: #f9f9f9;
+}
+
+.message-box {
+    width: 100%;
+    max-width: 380px;
+    padding: 25px 20px;
+    background-color: #fff;
+    border: 2px solid #38a169;
+    border-left: 6px solid #38a169;
+    border-radius: 10px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.07);
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.message-box .fa {
+    font-size: 42px;
+    color: #38a169;
+    margin-bottom: 10px;
+}
+
+.message-box h1 {
+    font-size: 22px;
+    color: #2f855a;
+    margin-bottom: 8px;
+}
+
+.message-box p {
+    font-size: 15px;
+    color: #2d3748;
+    margin-bottom: 20px;
+}
+
+.message-box a {
+    display: inline-block;
+    padding: 8px 18px;
+    background-color: #38a169;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.message-box a:hover {
+    background-color: #2f855a;
+}
+
+
+
 

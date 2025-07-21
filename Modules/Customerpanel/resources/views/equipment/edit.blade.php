@@ -173,7 +173,7 @@
                                     <div class="col-cmn col-lg-12">
                                         <div class="form-wrap">
                                             <label class="col-form-label">Description <span class="text-danger">*</span></label>
-                                            <textarea name="description" class="form-control-4" placeholder="Description" required>{{ old('description',$equipment->description) }}</textarea>
+                                            <textarea name="description" class="ckeditor form-control-4" placeholder="Description" required>{{ old('description',$equipment->description) }}</textarea>
                                             @error('description')
                                             <div class="errmsg">
                                             <i class="fa-solid fa-circle-exclamation"></i> {{ $message }}
@@ -184,7 +184,7 @@
                                     <div class="col-cmn col-lg-12">
                                         <div class="form-wrap">
                                             <label class="col-form-label">Details <span class="text-danger">*</span></label>
-                                            <textarea name="details" class="form-control-4" placeholder="Details" required>{{ old('details',$equipment->details) }}</textarea>
+                                            <textarea name="details" class="ckeditor form-control-4" placeholder="Details" required>{{ old('details',$equipment->details) }}</textarea>
                                             @error('details')
                                             <div class="errmsg">
                                             <i class="fa-solid fa-circle-exclamation"></i> {{ $message }}
@@ -348,10 +348,11 @@
                                     </div>
                                     <div class="col-cmn col-lg-4">
                                         <div class="mb-3">
-                                            <label for="siteurl" class="form-label">Publish Status <sup>*</sup></label>
-                                            <br>
-                                            <input type="checkbox" id="switch1" name="publish_status" {{ $equipment->publish_status==1?'checked':'' }} data-switch="bool"/>
-                                            <label for="switch1" data-on-label="On" data-off-label="Off"></label>
+                                            <label for="switch1" class="form-label">Publish Status <sup>*</sup></label><br>
+                                            <label class="my-toggle">
+                                                <input type="checkbox" id="switch1" name="publish_status" {{ $equipment->publish_status == 1 ? 'checked' : '' }}>
+                                                <span class="my-slider"></span>
+                                            </label>
                                         </div>
                                     </div>
                                     
