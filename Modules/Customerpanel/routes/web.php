@@ -35,7 +35,14 @@ Route::prefix('customer')->middleware(['auth.customer', 'customerrole:seller'])-
     Route::post('getEquipmentModel',[CustomerEquipmentController::class,'getEquipmentModel'])->name('customer.getEquipmentModel');
     Route::post('/delete_equipment_image', [CustomerEquipmentController::class, 'delete_equipment_image'])->name('customer.delete_equipment_image');
 
+    //Renew Subscription
     Route::get('/subscription', [CustomerSubscriptionController::class, 'index'])->name('customer.subscription');
+    Route::get('renew-start-payment', [CustomerSubscriptionController::class, 'renewstartPayment'])->name('customer.renewstartPayment');
+    Route::get('renew_subscription_booking',[CustomerSubscriptionController::class, 'renew_subscription_booking'])->name('customer.renew_subscription_booking');
+    Route::get('renew_subscription_success',[CustomerSubscriptionController::class, 'renew_subscription_success'])->name('customer.renew_subscription_success');
+    Route::get('renew_subscription_cancel',[CustomerSubscriptionController::class, 'renew_subscription_cancel'])->name('customer.renew_subscription_cancel');
+    Route::get('thankyou',[CustomerSubscriptionController::class,'thankyou'])->name('customer.thankyou');
+    Route::get('oops',[CustomerSubscriptionController::class,'oops'])->name('customer.oops');
 
     
 });

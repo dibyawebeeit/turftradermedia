@@ -28,6 +28,7 @@ class Customer extends Authenticatable
         'country',
         'postal_code',
         'password',
+        'forgotpassword_code',
         'image',
         'role',
         'is_free',
@@ -35,7 +36,8 @@ class Customer extends Authenticatable
     ];
 
     protected $hidden = [
-        'password'
+        'password',
+        'forgotpassword_code'
     ];
 
     public function subscriptions()

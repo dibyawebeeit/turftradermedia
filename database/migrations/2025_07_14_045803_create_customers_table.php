@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('country',100)->nullable();
             $table->string('postal_code',5)->nullable();
             $table->string('password')->nullable();
+            $table->string('forgotpassword_code',10)->nullable();
             $table->string('image',100)->nullable();
             $table->enum('role', ['buyer','seller'])->default('buyer');
             $table->boolean('is_free')->default(false);

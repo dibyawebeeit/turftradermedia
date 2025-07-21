@@ -66,4 +66,22 @@
             </div>
          </div>
       </section>
+
+
+@section('script')
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        document.querySelectorAll(".subscribe-btn").forEach(function (btn) {
+            btn.addEventListener("click", function () {
+                const subscriptionId = this.getAttribute("data-id");
+                const subscriptionType = 'monthly';
+
+                const url = "{{ route('customer.renewstartPayment') }}" + `?id=${subscriptionId}&type=${subscriptionType}`;
+                window.location.href = url;
+            });
+        });
+    });
+</script>
+@endsection
 </x-frontend::layouts.master>

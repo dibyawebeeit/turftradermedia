@@ -13,6 +13,13 @@ Route::controller(FrontendController::class)->group(function(){
     Route::post("/submit_signin","submit_signin")->name("submit_signin");
     Route::get("/register","register")->name("register");
     Route::post("/submit_register","submit_register")->name("submit_register");
+
+    Route::get("/forgot-password","forgot_password")->name("forgot_password");
+    Route::post('/submit_forgot_password', 'submit_forgot_password')->name('frontend.submit_forgot_password');
+    Route::post('/submit_otp', 'submit_otp')->name('frontend.submit_otp');
+    Route::get('/change-password', 'change_password')->name('frontend.change_password');
+    Route::post('/submit_change_password',  'submit_change_password')->name('frontend.submit_change_password');
+
     Route::get("/advertising","advertising")->name("advertising");
     Route::get("/about-us","about_us")->name("about_us");
     Route::get("/contact-us","contact_us")->name("contact_us");

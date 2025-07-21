@@ -30,12 +30,12 @@
                           @csrf
                           <div class="form-group">
                             <label class="control-label" for="input-email">Email ID</label>
-                            <input autocomplete="off" type="text" name="email" value="{{ old('email') }}" placeholder="Email ID" id="input-email" class="form-control" required>
+                            <input autocomplete="off" type="email" name="email" value="{{ old('email') }}" placeholder="Email ID" id="input-email" class="form-control" required>
                           </div>
                           <div class="form-group">
                             <label class="control-label" for="input-password">Password</label>
                             <input autocomplete="off" type="password" name="password" value="{{ old('password') }}" placeholder="Password" id="input-password" class="form-control" required>
-                            <a class="forgot-pass-btn" href="#">Forgot Password</a></div>
+                            <a class="forgot-pass-btn" href="{{ route('forgot_password') }}">Forgot Password</a></div>
                           <input type="submit" value="Login" class="">
                          </form>
                         <span class="block-sep"></span>

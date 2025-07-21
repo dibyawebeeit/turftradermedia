@@ -3,8 +3,10 @@
 namespace Modules\Frontend\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Mail\ForgotpasswordMail;
 use App\Mail\SendEnquiryMail;
 use App\Mail\WelcomeMail;
+use App\Models\User;
 use App\Models\Watchlist;
 use App\Rules\PhoneNumber;
 use Illuminate\Http\Request;
@@ -14,12 +16,15 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 use Modules\Banner\Models\Banner;
 use Modules\Category\Models\Category;
 use Modules\Cms\Models\Aboutus;
 use Modules\Cms\Models\Advertising;
 use Modules\Cms\Models\Contactuscms;
+use Modules\Cms\Models\Home;
 use Modules\Customer\Models\Customer;
 use Modules\Customer\Models\CustomerDocument;
 use Modules\Equipment\Models\Equipment;
@@ -30,8 +35,6 @@ use Modules\Subscription\Models\Subscription;
 use Modules\Subscriptionplan\Models\Subscriptionplan;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
 use Srmklive\PayPal\Services\PayPal;
-use Illuminate\Validation\ValidationException;
-use Modules\Cms\Models\Home;
 
 class FrontendController extends Controller
 {
@@ -102,6 +105,104 @@ class FrontendController extends Controller
 
         return redirect()->route('signin')->with('error','Invalid Credentials');
     }
+
+    public function forgot_password()
+    {
+        return view('frontend::forgot_password');
+    }
+
+    public function submit_forgot_password(Request $request)
+    {
+        $email = $request->email;
+        $isExist = Customer::where('email', $email)->exists();
+
+        if ($isExist) {
+            $otp = rand(111111, 999999);
+
+            $mailData = array(
+                'otp' => $otp
+            );
+
+            Mail::to($email)->send(new ForgotpasswordMail($mailData));
+            
+            Session::put('user_email', $email);
+            $user = Customer::where('email', $email)->first();
+            $user->forgotpassword_code = $otp;
+            $user->save();
+            return response()->json([
+                'status' => true,
+                'msg' => 'OTP sent successfully',
+                'data' => array('otp' => $otp),
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'msg' => 'Invalid Email ID',
+                'data' => null,
+            ]);
+        }
+    }
+
+    public function submit_otp(Request $request)
+    {
+        $email = Session::get('user_email');
+        $otp = $request->otp;
+        if ($email == '') {
+            return response()->json([
+                'status' => false,
+                'msg' => 'OTP not match',
+            ]);
+        }
+
+        $userDetails = Customer::where('email', $email)->first();
+
+        if ($otp == $userDetails->forgotpassword_code) {
+            return response()->json([
+                'status' => true,
+                'msg' => 'OTP matched',
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'msg' => 'OTP not match',
+            ]);
+        }
+    }
+
+    public function change_password()
+    {
+        $email = Session::get('user_email');
+        if ($email == '') {
+            return redirect()->route('signin');
+        }
+        return view('frontend::change_password');
+    }
+
+    public function submit_change_password(Request $request)
+    {
+        $email = Session::get('user_email');
+        if ($email == '') {
+             return redirect()->route('signin');
+        }
+        $request->validate([
+            'password' => 'required|string',
+            'confirm_password' => 'required|string|same:password',
+        ]);
+
+
+        $user = Customer::where('email', $email)->first();
+        $user->password = Hash::make($request->password);
+        $result = $user->save();
+
+        if ($result) {
+            // Session::forget('user_email');
+            session()->forget('user_email');
+            return redirect()->back()->with('success', 'Password changed successfully')->with('redirect_login', true);
+        } else {
+            return redirect()->back()->withInput()->with('error', 'Something went wrong!');
+        }
+    }
+
     public function register()
     {
         $cachedData = Cache::get('cached_customer_data');
@@ -470,18 +571,20 @@ class FrontendController extends Controller
 
         $subscription = Subscriptionplan::findOrFail($subscriptionId);
 
-        if (!in_array($type, ['monthly', 'annual'])) {
-            abort(400, 'Invalid subscription type');
+        if (!$subscription) {
+            abort(400, 'Invalid subscription');
         }
 
-        $price = $type === 'monthly' ? $subscription->monthly_price : $subscription->annual_price;
+        $price = $subscription->monthly_price;
+        // Start date is now
         $start_date = Carbon::now();
-        $end_date = $type === 'monthly' ? $start_date->copy()->addMonth() : $start_date->copy()->addYear();
+
+        // Use duration (in days) to calculate end date
+        $end_date = $start_date->copy()->addDays($subscription->duration);
 
         session([
             'subscription' => [
                 'id' => $subscriptionId,
-                'type' => $type,
                 'price' => $price,
                 'start_date' => $start_date->toDateString(),
                 'end_date' => $price == 0 ? null : $end_date->toDateString(),
