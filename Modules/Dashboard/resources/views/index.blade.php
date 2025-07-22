@@ -58,7 +58,7 @@
                                 <h3 class="mt-3 mb-3">{{ $total_equipment }}</h3>
                                 <p class="mb-0 text-muted">
                                     {{-- <span class="text-danger me-2"><i class="mdi mdi-arrow-down-bold"></i> 1.08%</span> --}}
-                                    <a href="#"><span class="text-nowrap">view</span></a>
+                                    <a href="{{ route('equipment.index') }}"><span class="text-nowrap">view</span></a>
                                 </p>
                             </div> <!-- end card-body-->
                         </div> <!-- end card-->
