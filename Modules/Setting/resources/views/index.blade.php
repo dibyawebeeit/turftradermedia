@@ -165,6 +165,12 @@
                                             <textarea class="editor form-control" name="register_info" placeholder=" Desc">{{ $dataList->register_info }}</textarea>
                                         </div>
                                     </div>
+                                    <div class="col-md-12">
+                                        <div class="mb-3">
+                                            <label for="register_doc" class="form-label">Document </label>
+                                            <textarea class="editor form-control" name="register_doc" placeholder=" Desc">{{ $dataList->register_doc }}</textarea>
+                                        </div>
+                                    </div>
                                 </div>
 
 

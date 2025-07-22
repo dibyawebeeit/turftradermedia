@@ -1,9 +1,10 @@
 <x-frontend::layouts.master :title="'Equipment List'">
     <hr>
     <section class="productlist-row-list p-t-60 p-b-60">
+    <form class="datatable-form">
          <div class="container">
             <div class="row col-middle-gap">
-               
+             
                 <x-customerpanel::layouts.sidebar :activemenu="$activemenu" />
 
                 <div class="col-cmn col-lg-8 col-md-8 col-sm-12 two">
@@ -86,6 +87,7 @@
                </div>
             </div>
          </div>
+                                      </form>
       </section>
 
 @section('script')

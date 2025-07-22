@@ -42,41 +42,21 @@
                         </div>
                     </div> --}}
 
-                    <!-- GOOGLE TRANSLATE WIDGET (Hidden) -->
-                  <div id="google_translate_element" style="display: none;"></div>
+                    <!-- add this to your header -->
+                   <div class="languageDropdown">
+                        <div class="custom-select-wrapper"> <div id="google_translate_element"></div> </div></div>
 
-                  <!-- CUSTOM LANGUAGE DROPDOWN -->
-                  {{-- <select id="custom-translate" class="form-select">
-                      <option value="">🌐 Select Language</option>
-                      <option value="en">🇬🇧 English</option>
-                      <option value="fr">🇫🇷 French</option>
-                      <option value="hi">🇮🇳 Hindi</option>
-                      <option value="es">🇪🇸 Spanish</option>
-                  </select> --}}
+                    <!-- to your js part -->
+                    <script type="text/javascript">
+                      function googleTranslateElementInit() {
+                          new google.translate.TranslateElement(
+                              {pageLanguage: 'en'},
+                              'google_translate_element'
+                          );
+                      } 
+                    </script>
+                    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
-                  <!-- CUSTOM STYLED LANGUAGE DROPDOWN (Your Version Enhanced) -->
-                  <div class="languageDropdown">
-    <div class="custom-select-wrapper">
-        <div class="custom-select">
-            <div class="selected-option" id="selected-option">
-                <img src="{{ asset('frontendassets/image/en.jpg') }}" alt="EN" width="20"> English
-            </div>
-            <div class="options" id="options-list" style="display: none;">
-                <div class="option" data-lang="en">
-                    <img src="{{ asset('frontendassets/image/en.jpg') }}" alt="EN" width="20"> English
-                </div>
-                <div class="option" data-lang="fr">
-                    <img src="{{ asset('frontendassets/image/fr.jpg') }}" alt="FR" width="20"> French
-                </div>
-            </div>
-        </div>
-        <input type="hidden" id="language-select" name="language">
-    </div>
-</div>
-
-
-
-                    
                     
                 <div class="mobile_nav">
                     <ul>

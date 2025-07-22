@@ -27,6 +27,7 @@ Route::controller(FrontendController::class)->group(function(){
     Route::get("/product/{slug}","product_details")->name("product_details");
     Route::get("/subscription","subscription")->name("subscription");
     Route::post("/getEquipmentModel","getEquipmentModel")->name("frontend.getEquipmentModel");
+    Route::get("/seller-listing/{id}","seller_listing")->name("seller_listing");
 
     //Watchlist
     Route::get("/watchlist","watchlist")->name("frontend.watchlist");

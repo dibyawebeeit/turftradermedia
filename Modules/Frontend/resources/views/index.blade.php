@@ -117,7 +117,7 @@
 							@foreach ($categoryList as $category)
 								<div class="homeSlider2Col">
 									<div class="homeSlider2Img">
-										<a href="#"><img src="{{ asset('uploads/categoryImage/'.$category->image) }}"></a>
+										<a href="{{ route('products') }}?category={{ $category->id }}"><img src="{{ asset('uploads/categoryImage/'.$category->image) }}"></a>
 									</div>
 									<div class="homeSlider2Cont">
 										<a href="#"><p>{{ $category->name }}</p></a>

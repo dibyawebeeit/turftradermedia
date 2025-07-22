@@ -5,7 +5,7 @@
 <section class="signin-row p-t-60 p-b-60">
     <div class="container">    
     
-    	<div class="row">    
+    	<div class="row forgot-center">    
         	<div class="col-cmn col-lg-6 col-md-6 col-sm-12 one">
             	<div class="section-content">
                 	
@@ -55,7 +55,7 @@
                            <button type="submit" class="btn">Submit</button>
                           </div>
                          </form>
-                        <span class="block-sep"></span>
+                        <span class="block-sep" style="display:none;"></span>
                      </div>
                 
                 </div>

@@ -34,13 +34,7 @@
                         </div>
                     @endif --}}
                     <div class="doc_section">
-                      <p>Required Documents:</p>
-                      <ol>
-                      <li>Company registration Certificate (Company House registration letter, UTR letter from HMRC or VAT registration certificate)</li>
-                      <li>Proof of your business address (lease agreement, bank statement, utility bill)</li>
-                      <li>Copy of owner's ID (passport or driver's license)</li>
-                      <li>Copy of representative's ID</li>
-                      </ol>
+                      {!! sitesetting()->register_doc !!}
                     </div>
 
                     <form action="{{ route('submit_register') }}" method="post" enctype="multipart/form-data">

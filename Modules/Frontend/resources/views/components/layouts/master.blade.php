@@ -24,7 +24,7 @@
         <link rel="profile" href="https://gmpg.org/xfn/11">
         <link rel="stylesheet" href="{{ asset('frontendassets/css/all.min.css') }}">
         <link rel="stylesheet" href="{{ asset('frontendassets/css/style.css') }}">
-        <link rel="stylesheet" href="{{ asset('frontendassets/css/custom.css') }}">
+      
         <link rel="stylesheet" href="{{ asset('frontendassets/css/style-main.css') }}">
         <link rel="icon" href="{{ asset('frontendassets/image/fab.png') }}" sizes="32x32" />
         <link rel="icon" href="{{ asset('frontendassets/image/fab.png') }}" sizes="192x192" />
@@ -34,6 +34,7 @@
        <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css">
         <script src="{{ asset('frontendassets/js/jquery-3.6.0.min.js') }}"></script>
         <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+            <link rel="stylesheet" href="{{ asset('frontendassets/css/custom.css') }}">
 
     </head>
 
@@ -180,7 +181,6 @@
             }
         </script>
 
-        <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
         <script src="{{ asset('frontendassets/js/google-translate.js') }}"></script>
 
         

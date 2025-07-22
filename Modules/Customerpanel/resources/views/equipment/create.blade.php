@@ -125,16 +125,17 @@
                                     <div class="col-cmn col-lg-4">
                                         <div class="form-wrap">
                                             <label class="col-form-label">Price <span class="text-danger">*</span></label>
-                                            <input type="number" step="any" name="price" class="form-control-4" placeholder="Enter Price" value="{{ old('price') }}" required>
+                                           
+                                        </div>
+                                        
+                                        
+                                        <div class="form-wrap form-wrap-price">
+                                              <input type="number" step="any" name="price" class="form-control-4 form-control-p" placeholder="Enter Price" value="{{ old('price') }}" required>
                                             @error('price')
                                             <div class="errmsg">
                                             <i class="fa-solid fa-circle-exclamation"></i> {{ $message }}
                                             </div>
                                             @enderror
-                                        </div>
-                                        
-                                        
-                                        <div class="form-wrap">
                                             <select name="currency_id" class="form-control-4" required>
                                                 @foreach ($currencyList as $currency)
                                                     <option value="{{ $currency->id }}">{{ $currency->name }}</option>
@@ -142,6 +143,7 @@
                                                 
                                             </select>
                                         </div>
+                                          
                                     </div>
                                     <div class="col-cmn col-lg-4">
                                         <div class="form-wrap">
@@ -168,7 +170,7 @@
                                     <div class="col-cmn col-lg-12">
                                         <div class="form-wrap">
                                             <label class="col-form-label">Description <span class="text-danger">*</span></label>
-                                            <textarea name="description" class="ckeditor form-control-4" placeholder="Description" required>{{ old('description') }}</textarea>
+                                            <textarea name="description" class="ckeditor form-control-4" placeholder="Description" >{{ old('description') }}</textarea>
                                             @error('description')
                                             <div class="errmsg">
                                             <i class="fa-solid fa-circle-exclamation"></i> {{ $message }}
@@ -179,7 +181,7 @@
                                     <div class="col-cmn col-lg-12">
                                         <div class="form-wrap">
                                             <label class="col-form-label">Details <span class="text-danger">*</span></label>
-                                            <textarea name="details" class="ckeditor form-control-4" placeholder="Details" required>{{ old('details') }}</textarea>
+                                            <textarea name="details" class="ckeditor form-control-4" placeholder="Details" >{{ old('details') }}</textarea>
                                             @error('details')
                                             <div class="errmsg">
                                             <i class="fa-solid fa-circle-exclamation"></i> {{ $message }}

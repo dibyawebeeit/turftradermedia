@@ -26,6 +26,7 @@ class Setting extends Model
         'register_title',
         'register_desc',
         'register_info',
+        'register_doc',
         'facebook',
         'twitter',
         'instagram',

@@ -15,7 +15,7 @@
                                   <div class="productBoxImg">
                                       <a href="{{ route('product_details',$equipment->slug) }}">
                                         <img src="{{ asset('uploads/equipmentImage/'.$equipment->thumbnail) }}"></a>
-                                        <span onclick="removeWatchlist({{ $equipment->id }})">X</span>
+                                        <span class="watchlist-close" onclick="removeWatchlist({{ $equipment->id }})"><i class="fa-solid fa-xmark"></i></span>
                                     </div>
                                   <div class="productBoxCont">
                                       <div class="productBoxTitle"><a href="{{ route('product_details',$equipment->slug) }}">{{ strlen($equipment->name)>20 ? substr($equipment->name,0,20):$equipment->name }}</a></div>

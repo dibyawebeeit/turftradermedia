@@ -225,6 +225,50 @@ class FrontendController extends Controller
         $data['contactus'] = Contactuscms::first();
         return view('frontend::contact_us', $data);
     }
+
+    public function seller_listing($id)
+    {
+        $decoded = base64_decode($id);
+
+        if (!is_numeric($decoded)) {
+            abort(404, 'Invalid Seller ID');
+        }
+
+        $customerId = (int)$decoded;
+
+        $customer = Customer::with('subscriptions')->findOrFail($customerId);
+
+        $today = \Carbon\Carbon::today();
+        $isAllowed = false;
+
+        if ($customer->is_free) {
+            $isAllowed = true;
+        } else {
+            $activeSubscription = $customer->subscriptions()
+                ->where('status', 'active')
+                ->where('start_date', '<=', $today)
+                ->where('end_date', '>=', $today)
+                ->exists();
+
+            if ($activeSubscription) {
+                $isAllowed = true;
+            }
+        }
+
+        if (!$isAllowed) {
+            // Optional: redirect or abort if not allowed
+            abort(403, 'This seller does not have an active subscription.');
+        }
+
+        // Get only published and approved equipments from this seller
+        $equipments = Equipment::published()
+            ->approved()
+            ->where('customer_id', $customerId);
+
+        $data['allEquipments'] = $equipments->orderBy('id', 'desc')->paginate(9)->withQueryString();
+
+        return view('frontend::seller_listing', $data);
+    }
     public function products(Request $request)
     {
         $category =null;
@@ -270,7 +314,17 @@ class FrontendController extends Controller
 
             // Filter by category
             if ($request->filled('category')) {
-                $equipments->where('category_id', $request->category);
+                $categoryQuery = Category::find($request->category);
+                if($categoryQuery->parent_id == 0)
+                {
+                    $categoryIds = Category::where('parent_id',$request->category)->pluck('id');
+                    $equipments->whereIn('category_id', $categoryIds);
+                }
+                else
+                {
+                    $equipments->where('category_id', $request->category);
+                }
+                
             }
 
             // Filter by name
@@ -553,10 +607,10 @@ class FrontendController extends Controller
     }
     public function subscription(Request $request)
     {
-        $data = Cache::get('cached_customer_data');
-        if (!$data) {
-            return redirect()->route('register');
-        } 
+        // $data = Cache::get('cached_customer_data');
+        // if (!$data) {
+        //     return redirect()->route('register');
+        // } 
 
 
         $data['subscriptionplan']=Subscriptionplan::active()->get();

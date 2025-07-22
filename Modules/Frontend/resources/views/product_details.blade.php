@@ -1,106 +1,7 @@
 <x-frontend::layouts.master :title="$equipment->meta_title" :keywords="$equipment->meta_keyword" :description="$equipment->meta_desc">
 <hr>
-<style>
 
-    #popup {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0,0,0,0.6);
-      z-index: 9999;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .popup-content {
-      background-color: #fff;
-      padding: 25px;
-      border-radius: 8px;
-      max-width: 750px;
-      width: 95%;
-      position: relative;
-    }
-
-    .popup-content h2 {
-      margin-top: 0;
-      text-align: center;
-    }
-
-    .popup-grid {
-      display: flex;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
-
-    .left-column,
-    .right-column {
-      flex: 1;
-      min-width: 250px;
-    }
-
-    label {
-      display: block;
-      font-weight: bold;
-      margin: 10px 0 5px;
-    }
-
-    input, textarea {
-      width: 100%;
-      padding: 8px;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-      box-sizing: border-box;
-    }
-
-    textarea {
-      height: 100%;
-      min-height: 215px;
-      resize: vertical;
-    }
-
-    .checkbox-section {
-      margin-top: 20px;
-    }
-
-    .checkbox-section label {
-      font-weight: normal;
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      font-size: 14px;
-      line-height: 1.4;
-    }
-
-    .checkbox-section input[type="checkbox"] {
-      margin-top: 3px;
-    }
-
-    .close-btn {
-      position: absolute;
-      right: 15px;
-      top: 10px;
-      font-size: 20px;
-      color: #888;
-      cursor: pointer;
-    }
-
-    .close-btn:hover {
-      color: red;
-    }
-
-    .submit-container {
-      text-align: center;
-      margin-top: 20px;
-    }
-
-    .submit-container .btn {
-      background-color: #28a745;
-    }
-  </style>
-<section class="productDetails-row-tow p-t-60 p-b-60">
+<section class="productDetails-row-tow p-t-60 p-b-60 product-details-5">
     <div class="container">           
            <div class="row productGal-row col-middle-gap">              	
                 <div class="col-cmn col-lg-6 col-md-6 col-sm-12 one pro-detls-gal">   
@@ -187,7 +88,9 @@
                             </div>
                         </div>                    	
                     </div>
-                    <div class="pro-detls-otherList"><p><b>View Sellers Other Listings</b></p></div>                    
+                    <div class="pro-detls-otherList">
+                        <a href="{{ route('seller_listing',base64_encode($equipment->customer->id)) }}"><p><b>View Sellers Other Listings</b></p></a>
+                    </div>                    
                     <div class="pro-detls-sellerInform">
                     	<h2>Seller Information</h2>
                         
@@ -257,7 +160,7 @@
 </section>
 
 <!-- Popup Modal -->
-<div id="popup">
+<div id="popup" class="popup-main-details">
   <div class="popup-content">
     <span class="close-btn" onclick="document.getElementById('popup').style.display='none'">&times;</span>
     <h2>Send Your Enquiry</h2>

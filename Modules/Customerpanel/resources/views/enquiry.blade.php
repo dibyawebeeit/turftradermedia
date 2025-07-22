@@ -1,6 +1,7 @@
 <x-frontend::layouts.master :title="'Enquiry List'">
     <hr>
     <section class="productlist-row-list p-t-60 p-b-60">
+  <form class="datatable-form">
          <div class="container">
             <div class="row col-middle-gap">
                
@@ -53,6 +54,7 @@
                </div>
             </div>
          </div>
+             </form>                         
       </section>
 
 

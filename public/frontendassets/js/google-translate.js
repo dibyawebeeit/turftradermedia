@@ -1,49 +1,56 @@
-function googleTranslateElementInit() {
-    new google.translate.TranslateElement({
-        pageLanguage: 'en',
-        includedLanguages: 'en,fr,hi,es',
-        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-    }, 'google_translate_element');
-}
-
 document.addEventListener("DOMContentLoaded", function () {
     const selected = document.getElementById("selected-option");
     const options = document.getElementById("options-list");
     const hiddenInput = document.getElementById("language-select");
     const optionItems = options.querySelectorAll(".option");
 
-    let attempts = 0;
-
-    function triggerGoogleTranslate(lang) {
-        const googleCombo = document.querySelector(".goog-te-combo");
-        if (googleCombo) {
-            googleCombo.value = lang;
-            googleCombo.dispatchEvent(new Event("change"));
-        } else if (attempts < 20) {
-            attempts++;
-            setTimeout(() => triggerGoogleTranslate(lang), 500);
-        } else {
-            console.error("Google Translate dropdown not loaded.");
-        }
+    function log(msg) {
+        console.log("[Translate Debug]", msg);
     }
 
-    // Toggle dropdown
+    function triggerGoogleTranslate(lang) {
+        log(`Trying to translate to: ${lang}`);
+
+        const interval = setInterval(() => {
+            const googleCombo = document.querySelector(".goog-te-combo");
+
+            if (googleCombo) {
+                log("Google combo found. Triggering change...");
+
+                googleCombo.value = lang;
+                googleCombo.dispatchEvent(new Event("change"));
+
+                clearInterval(interval);
+            } else {
+                log("Waiting for .goog-te-combo...");
+            }
+        }, 300);
+
+        setTimeout(() => {
+            clearInterval(interval);
+            log("Stopped waiting after 5 seconds.");
+        }, 5000);
+    }
+
+    // Show/hide dropdown
     selected.addEventListener("click", (e) => {
-        e.stopPropagation(); // Prevent click from bubbling
+        e.stopPropagation();
         options.style.display = options.style.display === "block" ? "none" : "block";
     });
 
-    // Close dropdown if clicked outside
-    document.addEventListener("click", function (e) {
+    // Click outside closes dropdown
+    document.addEventListener("click", (e) => {
         if (!e.target.closest(".custom-select-wrapper")) {
             options.style.display = "none";
         }
     });
 
-    // Handle language option click
+    // Language selection
     optionItems.forEach(option => {
         option.addEventListener("click", () => {
-            const lang = option.getAttribute("data-lang") || option.getAttribute("data-value")?.split("|")[1] || "en";
+            const lang = option.getAttribute("data-lang") || "en";
+
+            log(`Language selected: ${lang}`);
 
             selected.innerHTML = option.innerHTML;
             hiddenInput.value = lang;
@@ -52,4 +59,13 @@ document.addEventListener("DOMContentLoaded", function () {
             triggerGoogleTranslate(lang);
         });
     });
+
+    // Optional: hide Google widget
+    setTimeout(() => {
+        const widget = document.getElementById("google_translate_element");
+        if (widget) {
+            widget.style.display = "none";
+            log("Google translate widget hidden.");
+        }
+    }, 5000);
 });

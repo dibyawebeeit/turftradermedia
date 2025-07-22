@@ -29,9 +29,16 @@
                             {!! $item['description'] !!}
                         </div>
                         
-                        <button class="btn1 subscribe-btn" data-id="{{ $item['id'] }}">
-                            Proceed
-                        </button>
+                        @if (Cache::get('cached_customer_data'))
+                            <button class="btn1 subscribe-btn" data-id="{{ $item['id'] }}">
+                                Proceed
+                            </button>
+                        @else
+                            <a href="{{ route('register') }}" class="btn1">
+                                Proceed
+                            </a>
+                        @endif
+                        
                     </div>
                 @endforeach
                                 

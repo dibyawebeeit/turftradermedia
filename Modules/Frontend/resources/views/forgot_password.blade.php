@@ -5,7 +5,7 @@
 <section class="signin-row p-t-60 p-b-60">
     <div class="container">    
     
-    	<div class="row">    
+    	<div class="row forgot-center">    
         	<div class="col-cmn col-lg-6 col-md-6 col-sm-12 one">
             	<div class="section-content">
                 	
@@ -23,15 +23,17 @@
                             <span class="errmsg" id="otp_error"></span>
                             
                           </div>
+                           <div class="forgot-div">   
                           <a class="forgot-pass-btn" href="{{ route('signin') }}">Go to login page</a>
                           <div class="form-group" id="submitButton">
                            <button type="button" class="btn" id="firstBtn" onclick="submitBtn()">Submit</button>
                           </div>
+                              </div>
                           <div class="form-group" id="submitOtp" style="display: none;">
                            <button type="button" class="btn" id="secondBtn" onclick="submitOtpbtn()">Submit OTP</button>
                           </div>
                          </form>
-                        <span class="block-sep"></span>
+                        <span class="block-sep" style="display:none;"></span>
                      </div>
                 
                 </div>
