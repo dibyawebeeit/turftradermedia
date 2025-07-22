@@ -7,6 +7,9 @@
             <div class="header-top-left">
               @if (Auth::guard('customer')->check())
                   <a href="{{ route('customer.dashboard') }}">Dashboard</a>
+                  <a href="{{ route('frontend.watchlist') }}">
+                      <i class="far fa-heart"></i> Watchlist
+                  </a>
               @else
                   <a href="{{ route('signin') }}">Sign-In</a>
             	    <a href="{{ route('register') }}">Register</a>
@@ -63,11 +66,17 @@
                         <li><a href="{{ route('advertising') }}">Advertising</a></li>
                         <li><a href="{{ route('contact_us') }}">Contact Us</a></li>
                         <li>
-                          @if (Auth::guard('customer')->check() && Auth::guard('customer')->user()->role =='seller')
-                              <a href="{{ route('customer.equipment.create') }}">Sell Your Equipment</a>
+                          @if (Auth::guard('customer')->check())
+                              @if (Auth::guard('customer')->user()->role =='seller')
+                                  <a href="{{ route('customer.equipment.create') }}">Sell Your Equipment</a>
+                              @else
+                                  <a href="javascript:void(0);" onclick="alert('Please login as a seller!')">Sell Your Equipment</a>
+                              @endif
                           @else
                               <a href="{{ route('signin') }}">Sell Your Equipment</a>
                           @endif
+
+                          
                         </li>
                     </ul>
                 </div>
@@ -127,12 +136,17 @@
                     </form>
                 </div>
             	<div class="header-searchLink">
-                  @if (Auth::guard('customer')->check() && Auth::guard('customer')->user()->role =='seller')
-                      <a href="{{ route('customer.equipment.create') }}" class="btn">Sell Your Equipment</a>
+                  @if (Auth::guard('customer')->check())
+                      @if (Auth::guard('customer')->user()->role =='seller')
+                          <a href="{{ route('customer.equipment.create') }}" class="btn">Sell Your Equipment</a>
+                      @else
+                          <a class="btn" href="javascript:void(0);" onclick="alert('Please login as a seller!')">Sell Your Equipment</a>
+                      @endif
                   @else
-                      <a href="{{ route('signin') }}" class="btn">Sell Your Equipment</a>
+                      <a class="btn" href="{{ route('signin') }}">Sell Your Equipment</a>
                   @endif
-                	
+
+             
                 </div>
             </div>        
         </div>
