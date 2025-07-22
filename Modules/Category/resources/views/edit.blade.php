@@ -50,11 +50,14 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label for="parent" class="form-label">Parent </label>
+                                            <label for="parent" class="form-label">Parent (Optional)</label>
                                             <select class="form-control" name="parent_id">
                                                 <option value="0">Select Parent</option>
-                                                @foreach ($categoryList as $key => $value)
+                                                {{-- @foreach ($categoryList as $key => $value)
                                                     <option value="{{ $key }}" {{ $dataList->parent_id == $key?'selected':'' }}>{{ $value }}</option>
+                                                @endforeach --}}
+                                                @foreach ($categoryList as $key => $value)
+                                                    <option value="{{ $value->id }}" {{ $dataList->parent_id == $value->id?'selected':'' }}>{{ $value->name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>

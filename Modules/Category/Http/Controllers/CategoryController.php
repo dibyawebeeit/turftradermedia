@@ -27,14 +27,19 @@ class CategoryController extends Controller
 
     public function create()
     {
+        // $categoryQuery=Category::where('parent_id',0)->get();
+        // if(!empty($categoryQuery))
+        // {
+        //     foreach ($categoryQuery as $category) {
+        //         $this->getChildren($category,0);
+        //     }
+        // }
+        // $data['categoryList']=$this->categoryList;
+
         $categoryQuery=Category::where('parent_id',0)->get();
-        if(!empty($categoryQuery))
-        {
-            foreach ($categoryQuery as $category) {
-                $this->getChildren($category,0);
-            }
-        }
-        $data['categoryList']=$this->categoryList;
+        $data['categoryList']=$categoryQuery;
+
+
         // dd($data['categoryList']);
         return view('category::create',$data);
     }
@@ -106,14 +111,19 @@ class CategoryController extends Controller
     public function edit($id)
     {
         $data['dataList'] = Category::findOrFail($id);
+
+        // $categoryQuery=Category::where('parent_id',0)->get();
+        // if(!empty($categoryQuery))
+        // {
+        //     foreach ($categoryQuery as $category) {
+        //         $this->getChildren($category,0);
+        //     }
+        // }
+        // $data['categoryList']=$this->categoryList;
+
         $categoryQuery=Category::where('parent_id',0)->get();
-        if(!empty($categoryQuery))
-        {
-            foreach ($categoryQuery as $category) {
-                $this->getChildren($category,0);
-            }
-        }
-        $data['categoryList']=$this->categoryList;
+        $data['categoryList']=$categoryQuery;
+        
         return view('category::edit',$data);
     }
 
