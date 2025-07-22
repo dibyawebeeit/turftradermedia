@@ -13,6 +13,8 @@ use Modules\Banner\Models\Banner;
 use Modules\Customer\Models\Customer;
 use Modules\Customer\Models\CustomerDocument;
 use Pest\ArchPresets\Custom;
+use App\Mail\WelcomeMail;
+use Illuminate\Support\Facades\Mail;
 
 class CustomerController extends Controller
 {
@@ -56,6 +58,7 @@ class CustomerController extends Controller
         'password'=> 'required|string',
         'image' => 'required|image|mimes:jpg,jpeg,png,webp|max:1024',
        ]);
+
 
         $input = $request->all();
 
@@ -123,6 +126,9 @@ class CustomerController extends Controller
         
         $result = Customer::create($input);
         if ($result) {
+
+            $name = $request->first_name." ".$request->last_name;
+            Mail::to($request->email)->send(new WelcomeMail($name, route('signin')));
 
             if($request->role =='seller')
             {
