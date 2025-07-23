@@ -33,14 +33,24 @@
                                     @endcan
                                     
                                 </div>
-                                {{-- <div class="col-sm-7">
+                                <div class="col-sm-7">
                                     <div class="text-sm-end">
-                                        <button type="button" class="btn btn-success mb-2 me-1"><i
-                                                class="mdi mdi-cog-outline"></i></button>
-                                        <button type="button" class="btn btn-light mb-2 me-1">Import</button>
-                                        <button type="button" class="btn btn-light mb-2">Export</button>
+                                        <form action="{{ route('exportCustomers') }}" method="POST">
+                                            @csrf
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <input type="date" class="form-control" name="start_date" required>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <input type="date" class="form-control" name="end_date" required>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <button type="submit" class="btn btn-light mb-2">Export as Excel</button>
+                                                </div>
+                                            </div>
+                                        </form>
                                     </div>
-                                </div><!-- end col--> --}}
+                                </div><!-- end col-->
                             </div>
 
                             <div class="table-responsive">

@@ -27,7 +27,7 @@ Route::prefix('customer')->middleware(['auth.customer', 'customerrole:buyer,sell
     Route::get('/logout', [CustomerpanelController::class, 'logout'])->name('customer.logout');
 
     // Chat Section 
-    Route::get('/chat', [ChatController::class, 'index']);
+    Route::get('/chat', [ChatController::class, 'index'])->name('customer.chat');
     Route::get('/chat/search', [ChatController::class, 'searchUsers']);
     Route::post('/chat/initiate/{receiver_id}', [ChatController::class, 'initiateChat']);
     Route::get('/chat/threads', [ChatController::class, 'getThreads']);

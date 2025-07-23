@@ -40,6 +40,11 @@ class Customer extends Authenticatable
         'forgotpassword_code'
     ];
 
+    public function fullname(): Attribute
+    {
+        return Attribute::get(fn () => "{$this->first_name} {$this->last_name}");
+    }
+
     public function subscriptions()
     {
         return $this->hasMany(Subscription::class);

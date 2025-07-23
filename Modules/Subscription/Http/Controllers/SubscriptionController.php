@@ -5,6 +5,7 @@ namespace Modules\Subscription\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Modules\Subscription\Models\Subscription;
+use Spatie\SimpleExcel\SimpleExcelWriter;
 
 class SubscriptionController extends Controller
 {
@@ -19,9 +20,45 @@ class SubscriptionController extends Controller
         return view('subscription::index', $data);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    public function exportSubscriptions(Request $request)
+    {
+        $request->validate([
+            'start_date' => 'required|date',
+            'end_date'   => 'required|date|after_or_equal:start_date',
+        ]);
+
+        $subscriptions = Subscription::whereBetween('created_at', [
+            $request->start_date,
+            $request->end_date
+        ])->get();
+
+        // Prepare data with SL No
+        $rows = [];
+        foreach ($subscriptions as $index => $data) {
+            $rows[] = [
+                'SL No'      => $index + 1,
+                'Customer'   => $data->customer->fullname ?? '',
+                'Plan'       => $data->plan->name ?? '',
+                'Start Date' => $data->start_date,
+                'End Date'   => $data->end_date,
+                'Amount'   => $data->amount,
+                'Txn Id'    => $data->txn_id,
+                'Status'      => ucwords($data->status),
+                'Created At' => $data->created_at->format('Y-m-d H:i:s'),
+            ];
+        }
+
+         // Generate dynamic filename
+        $date = now()->format('Y-m-d');
+        $fileName = "subscripton_{$date}.xlsx";
+        $filePath = storage_path("app/{$fileName}");
+
+        SimpleExcelWriter::create($filePath)
+            ->addHeader(['SL No', 'Customer', 'Plan', 'Start Date','End Date','Amount','Txn Id','Status', 'Created At'])
+            ->addRows($rows);
+
+        return response()->download($filePath)->deleteFileAfterSend(true);
+    }
     public function create()
     {
         return view('subscription::create');

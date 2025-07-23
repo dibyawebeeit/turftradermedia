@@ -43,6 +43,11 @@
                                  </li>
                               @endif
 
+
+                              <li><a class="btn-profile-menu {{ $activemenu && $activemenu=='chat'?'active':'' }}" href="{{ route('customer.chat') }}">
+                                    <i class="fa-solid fa-comments me-2"></i> Chat </a>
+                              </li>
+
                               
 
                               {{-- <li><a class="btn-profile-menu " href="#">

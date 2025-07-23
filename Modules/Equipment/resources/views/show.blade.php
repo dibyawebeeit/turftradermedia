@@ -30,7 +30,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <p><b>Seller : </b> {{ $equipment->customer->first_name ?? '' }} {{ $equipment->customer->last_name ?? '' }}
+                                            <p><b>Seller : </b> {{ $equipment->customer->fullname ?? '' }} 
                                             <a href="{{ route('customer.show',$equipment->customer->id ?? '') }}" target="_blank"><i class="fas fa-external-link-alt"></i></a>
                                             </p>
                                             <p><b>Category : </b> {{ $equipment->category->name ?? '' }}</p>

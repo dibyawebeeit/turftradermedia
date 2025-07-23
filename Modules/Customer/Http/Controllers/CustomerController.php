@@ -3,18 +3,19 @@
 namespace Modules\Customer\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Mail\WelcomeMail;
 use App\Rules\PhoneNumber;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Modules\Banner\Models\Banner;
 use Modules\Customer\Models\Customer;
 use Modules\Customer\Models\CustomerDocument;
 use Pest\ArchPresets\Custom;
-use App\Mail\WelcomeMail;
-use Illuminate\Support\Facades\Mail;
+use Spatie\SimpleExcel\SimpleExcelWriter;
 
 class CustomerController extends Controller
 {
@@ -33,9 +34,48 @@ class CustomerController extends Controller
         return view('customer::index', $data);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    public function exportCustomers(Request $request)
+    {
+        $request->validate([
+            'start_date' => 'required|date',
+            'end_date'   => 'required|date|after_or_equal:start_date',
+        ]);
+
+        $customers = Customer::whereBetween('created_at', [
+            $request->start_date,
+            $request->end_date
+        ])->get();
+
+        // Prepare data with SL No
+        $rows = [];
+        foreach ($customers as $index => $customer) {
+            $rows[] = [
+                'SL No'      => $index + 1,
+                'First Name' => $customer->first_name,
+                'Last Name'  => $customer->last_name,
+                'Email'      => $customer->email,
+                'Phone'      => $customer->phone,
+                'Address'      => $customer->address,
+                'City'      => $customer->city,
+                'State'      => $customer->state,
+                'Country'      => $customer->country,
+                'Postal Code'      => $customer->postal_code,
+                'Role'      => ucwords($customer->role),
+                'Created At' => $customer->created_at->format('Y-m-d H:i:s'),
+            ];
+        }
+
+         // Generate dynamic filename
+        $date = now()->format('Y-m-d');
+        $fileName = "customers_{$date}.xlsx";
+        $filePath = storage_path("app/{$fileName}");
+
+        SimpleExcelWriter::create($filePath)
+            ->addHeader(['SL No', 'First Name', 'Last Name', 'Email','Phone','Address','City','State','Country','Postal Code','Role', 'Created At'])
+            ->addRows($rows);
+
+        return response()->download($filePath)->deleteFileAfterSend(true);
+    }
     public function create()
     {
         return view('customer::create');
