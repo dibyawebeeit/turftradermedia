@@ -65,6 +65,9 @@ Route::prefix('customer')->middleware(['auth.customer', 'customerrole:seller'])-
     Route::resource('/equipment', CustomerEquipmentController::class)->names('customer.equipment');
     Route::post('getEquipmentModel',[CustomerEquipmentController::class,'getEquipmentModel'])->name('customer.getEquipmentModel');
     Route::post('/delete_equipment_image', [CustomerEquipmentController::class, 'delete_equipment_image'])->name('customer.delete_equipment_image');
+    Route::post('/equipment/toggle-publish', [CustomerEquipmentController::class, 'togglePublishStatus'])
+    ->name('customer.equipment.togglePublishStatus');
+
 
     //Renew Subscription
     Route::get('/subscription', [CustomerSubscriptionController::class, 'index'])->name('customer.subscription');

@@ -62,6 +62,10 @@ class CustomerSubscriptionController extends Controller
 
         $data['subscriptionplan'] = Subscriptionplan::active()->get();
 
+        $data['upcomingSubscription'] = Subscription::where('customer_id', $this->activeCustomerId)
+            ->where('status', 'pending')
+            ->get();
+
         return view('customerpanel::subscription',$data);
     }
 

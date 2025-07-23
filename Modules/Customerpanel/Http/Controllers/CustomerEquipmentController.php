@@ -320,7 +320,6 @@ class CustomerEquipmentController extends Controller
 
         $equipment = Equipment::where('customer_id',$this->activeCustomerId)->findOrFail($id);
         $input = $request->all();
-        $input['publish_status'] = $request->publish_status ? 1 : 0;
 
         $manufacturer = Manufacturer::find($request->manufacturer_id);
         $eqipumentmodel = EquipmentModel::find($request->equipment_model_id);
@@ -416,9 +415,55 @@ class CustomerEquipmentController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    public function togglePublishStatus(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|integer|exists:equipments,id',
+            'publish_status' => 'required|boolean',
+        ]);
+
+        $equipment = Equipment::find($request->id);
+
+        // Optional: authorize this action, check customer ID match
+        if ($equipment->customer_id !== $this->activeCustomerId) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+        }
+
+        if($request->publish_status == 1)
+        {
+            if(Auth::guard('customer')->user()->is_free == false)
+            {
+                $currentSubscription = Subscription::where('customer_id', $this->activeCustomerId)
+                ->where('status', 'active')
+                ->orderBy('id') // Or start_date if pre-defined
+                ->first();
+
+                if(!$currentSubscription)
+                {
+                    return response()->json(['success' => false, 'message' => 'You have no active subscription right now!'], 200);
+                }
+
+                $no_of_listing = $currentSubscription->plan->no_of_listing;
+                $equipmentCount = Equipment::where('customer_id',$this->activeCustomerId)->where('publish_status',1)->count();
+                if($equipmentCount == $no_of_listing)
+                {
+                    $msg = "You can publish upto {$no_of_listing} equipments";
+                    return response()->json(['success' => false, 'message' => $msg], 200);
+                }
+            }
+            
+        }
+        
+        $equipment->publish_status = $request->publish_status;
+        $equipment->save();
+        
+
+        
+
+        
+
+        return response()->json(['success' => true]);
+    }
     public function destroy($id) {
 
         $data = Equipment::where('customer_id',$this->activeCustomerId)->findOrFail($id);

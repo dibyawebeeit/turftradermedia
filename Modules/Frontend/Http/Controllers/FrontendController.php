@@ -369,6 +369,7 @@ class FrontendController extends Controller
                             });
                     });
             })
+            ->approved()->published()
             ->first();
 
         // Optional: handle if equipment is not accessible

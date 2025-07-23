@@ -350,7 +350,7 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="col-cmn col-lg-4">
+                                    {{-- <div class="col-cmn col-lg-4">
                                         <div class="mb-3">
                                             <label for="switch1" class="form-label">Publish Status <sup>*</sup></label><br>
                                             <label class="my-toggle">
@@ -358,7 +358,7 @@
                                                 <span class="my-slider"></span>
                                             </label>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                     
                                 </div>
                             </div>

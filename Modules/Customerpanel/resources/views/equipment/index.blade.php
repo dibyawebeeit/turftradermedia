@@ -52,11 +52,10 @@
                                     {{ $item->currency->sign ?? '' }}{{ $item->price }}
                                     </td>
                                  <td>
-                                    @if ($item->publish_status==1)
-                                        <span class="badge badge-success">Active</span>
-                                    @else
-                                        <span class="badge badge-danger">Inactive</span>
-                                    @endif
+                                    <label class="my-toggle">
+                                       <input class="publish_status_toggle" type="checkbox" id="switch_{{ $item->id }}" value="{{ $item->id }}"  {{ $item->publish_status == 1 ? 'checked' : '' }}>
+                                       <span class="my-slider"></span>
+                                    </label>
                                  </td>
                                  <td>
                                     @if ($item->admin_approval==1)
@@ -87,11 +86,45 @@
                </div>
             </div>
          </div>
-                                      </form>
+      </form>
       </section>
 
 @section('script')
 <script>
+   
+document.querySelectorAll('.publish_status_toggle').forEach(toggle => {
+    toggle.addEventListener('change', function () {
+        const equipmentId = this.value;
+        const isChecked = this.checked ? 1 : 0;
+        const checkbox = this; // reference for later
+
+        fetch("{{ route('customer.equipment.togglePublishStatus') }}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": "{{ csrf_token() }}"
+            },
+            body: JSON.stringify({
+                id: equipmentId,
+                publish_status: isChecked
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log("Status updated successfully");
+            } else {
+               checkbox.checked = !checkbox.checked; // revert toggle
+                alert(data.message);
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+        });
+    });
+});
+
+
    function deleteData(id) {
             Swal.fire({
                 text: "Do you want to delete?",

@@ -33,6 +33,13 @@
                             </div>
                         @endif
                      @endif
+
+                     @if (count($upcomingSubscription) > 0)
+                         @foreach ($upcomingSubscription as $item)
+                             <p class="free-subscription-msg">Upcoming Plan : {{ $item->plan->name ?? '' }}</p>
+                         @endforeach
+                     @endif
+                     
                      
 
                     @if ($status !="free")
