@@ -116,6 +116,7 @@
                                     <div class="col-md-4">
                                         <div class="mb-3">
                                             <label for="price" class="form-label">Price <sup>*</sup></label>
+                                            <div class="d-flex gap-1">
                                             <input type="number" step="any" name="price" class="form-control" placeholder="Enter Price" value="{{ old('price',$equipment->price) }}" required>
                                             <select name="currency_id" class="form-control" required>
                                                 @foreach ($currencyList as $currency)
@@ -123,6 +124,7 @@
                                                 @endforeach
                                                 
                                             </select>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
@@ -140,13 +142,13 @@
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <label for="desc" class="form-label">Description</label>
-                                            <textarea name="description" class="form-control" placeholder="Description" required>{{ old('description',$equipment->description) }}</textarea>
+                                            <textarea name="description" class="editor form-control" placeholder="Description" required>{{ old('description',$equipment->description) }}</textarea>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <label for="details" class="form-label">Details</label>
-                                            <textarea name="details" class="form-control" placeholder="Details" required>{{ old('details',$equipment->details) }}</textarea>
+                                            <textarea name="details" class="editor form-control" placeholder="Details" required>{{ old('details',$equipment->details) }}</textarea>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
@@ -236,19 +238,19 @@
                                     @endif
                                     <h4>SEO Section</h4>
                                     <div class="row">
-                                    <div class="col-md-4">
+                                    <div class="col-md-12">
                                         <div class="mb-3">
                                             <label for="meta_title" class="form-label">Meta Title</label>
                                             <input type="text" name="meta_title" class="form-control" placeholder="Meta Title" value="{{ old('meta_title',$equipment->meta_title) }}" required>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-12">
                                         <div class="mb-3">
                                             <label for="meta_keyword" class="form-label">Meta Keyword</label>
                                             <input type="text" name="meta_keyword" class="form-control" placeholder="Meta Keyword" value="{{ old('meta_keyword',$equipment->keyword) }}">
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-12">
                                         <div class="mb-3">
                                             <label for="meta_desc" class="form-label">Meta Desc</label>
                                             <textarea name="meta_desc" class="form-control" placeholder="Meta Keyword">{{ old('meta_desc',$equipment->meta_desc) }}</textarea>
@@ -327,7 +329,7 @@ function populateEquipmentModels(data) {
 function deleteDoc(id)
     {
         Swal.fire({
-        title: "Do you want to delete the document?",
+        title: "Do you want to delete the image?",
         showDenyButton: false,
         showCancelButton: true,
         confirmButtonText: "Yes",

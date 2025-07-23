@@ -1531,3 +1531,12 @@ left: -10px;
 .message-box a:hover {
     background-color: #2f855a;
 }
+
+.productlistShopwatch{ }
+
+.productlistShopwatch .productlistShopCol{-ms-flex: 0 0 25%;
+    flex: 0 0 25%;
+    max-width: 25%;
+    padding: 0 7px;
+    height: 100%;
+    margin-bottom: 45px;}
