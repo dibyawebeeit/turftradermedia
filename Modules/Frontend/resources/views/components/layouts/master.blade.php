@@ -183,8 +183,6 @@
 
         <script src="{{ asset('frontendassets/js/google-translate.js') }}"></script>
 
-        
-
         @yield('script')
 
 
