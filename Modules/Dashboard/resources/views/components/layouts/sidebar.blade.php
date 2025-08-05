@@ -122,7 +122,7 @@
                 <li class="side-nav-item">
                     <a href="{{route('equipment.index')}}" class="side-nav-link">
                         <i class="fas fa-car"></i>
-                        <span> Equipment </span>
+                        <span> Listings </span>
                     </a>
                 </li>
             @endcan
@@ -154,14 +154,14 @@
                 </li>
             @endcan
 
-             @can('equipment_enquiry_list')
+             {{-- @can('equipment_enquiry_list')
                 <li class="side-nav-item">
                     <a href="{{route('equipmentenquiry.index')}}" class="side-nav-link">
                         <i class="fas fa-question"></i>
                         <span> Enquiry </span>
                     </a>
                 </li>
-            @endcan
+            @endcan --}}
 
             @can('faq_list')
                 <li class="side-nav-item">
@@ -192,7 +192,7 @@
                 <a data-bs-toggle="collapse" href="#cmsSection" aria-expanded="false"
                     aria-controls="cmsSection" class="side-nav-link">
                     <i class="fas fa-file-alt"></i>
-                    <span> CMS </span>
+                    <span> Site Content </span>
                     <span class="menu-arrow"></span>
                 </a>
                 <div class="collapse" id="cmsSection">

@@ -16,6 +16,16 @@ if (! function_exists('format_price')) {
     }
 }
 
+if (! function_exists('new_format_price')) {
+    function new_format_price($amount)
+    {
+        if (!is_null($amount)) {
+            return number_format(ceil((float)$amount), 0, '.', ','); // e.g. 1,001
+        }
+        return 'NA';
+    }
+}
+
 if (! function_exists('sitesetting')) {
     function sitesetting()
     {

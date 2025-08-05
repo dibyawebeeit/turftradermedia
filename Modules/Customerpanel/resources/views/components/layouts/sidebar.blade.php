@@ -26,36 +26,43 @@
                               </li>
 
                               @if (Auth::guard('customer')->user()->role === 'seller')
-                                <li><a class="btn-profile-menu {{ $activemenu && $activemenu=='business_document'?'active':'' }}" href="{{ route('customer.business_document') }}">
+
+                                {{-- <li><a class="btn-profile-menu {{ $activemenu && $activemenu=='business_document'?'active':'' }}" href="{{ route('customer.business_document') }}">
                                     <i class="fa-solid fa-file me-2"></i> Business Documents </a>
-                                </li>
+                                </li> --}}
 
                                  <li><a class="btn-profile-menu {{ $activemenu && $activemenu=='equipment'?'active':'' }}" href="{{ route('customer.equipment.index') }}">
-                                    <i class="fa-solid fa-car me-2"></i> Equipments </a>
+                                    <i class="fa-solid fa-car me-2"></i> Listings </a>
                                  </li>
 
                                  <li><a class="btn-profile-menu {{ $activemenu && $activemenu=='subscription'?'active':'' }}" href="{{ route('customer.subscription') }}">
                                     <i class="fa-solid fa-gift me-2"></i> Subscription </a>
                                  </li>
 
-                                 <li><a class="btn-profile-menu {{ $activemenu && $activemenu=='enquiry'?'active':'' }}" href="{{ route('customer.enquiry') }}">
-                                    <i class="fa-solid fa-question me-2"></i> Enquiry </a>
-                                 </li>
+                                 {{-- <li><a class="btn-profile-menu {{ $activemenu && $activemenu=='enquiry'?'active':'' }}" href="{{ route('customer.enquiry') }}">
+                                    <i class="fa-solid fa-question me-2"></i> Inquiries </a>
+                                 </li> --}}
+
                               @endif
 
 
-                              <li><a class="btn-profile-menu {{ $activemenu && $activemenu=='chat'?'active':'' }}" href="{{ route('customer.chat') }}">
+                              {{-- <li><a class="btn-profile-menu {{ $activemenu && $activemenu=='chat'?'active':'' }}" href="{{ route('customer.chat') }}">
                                     <i class="fa-solid fa-comments me-2"></i> Chat </a>
-                              </li>
+                              </li> --}}
 
                               
 
                               {{-- <li><a class="btn-profile-menu " href="#">
                                  <i class="fa-solid fa-cog me-2"></i> Settings </a>
                               </li> --}}
-                              <li><a class="btn-profile-menu " href="{{ route('customer.logout') }}">
-                                 <i class="fa-solid fa-right-from-bracket me-2"></i> Log Out </a>
+                              <li>
+                                 <a class="btn-profile-menu" 
+                                    href="{{ route('customer.logout') }}" 
+                                    onclick="return confirm('Are you sure you want to log out?');">
+                                    <i class="fa-solid fa-right-from-bracket me-2"></i> Log Out
+                                 </a>
                               </li>
+
                            </ul>
                         </div>
                      </div>

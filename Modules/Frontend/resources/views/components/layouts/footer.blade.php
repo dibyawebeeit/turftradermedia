@@ -7,7 +7,9 @@
         <div class="col-cmn col-lg-3 col-md-6 col-sm-12 one">                
                 
             <div class="cipi">
-                <div class="footer-logo"><img src="{{ asset('frontendassets/image/footer-logo.png') }}" class="autosize"></div>
+                <div class="footer-logo">
+                    <img src="{{ asset('frontendassets/image/footer-logo.png') }}" class="autosize">
+                </div>
                 <p>{{ sitesetting()->footer_text }}</p>                
             </div>
                     

@@ -1,4 +1,4 @@
-<x-frontend::layouts.master :title="'Edit Equipment'">
+<x-frontend::layouts.master :title="'Edit Listing'">
     <hr>
     <section class="productlist-row-list p-t-60 p-b-60">
          <div class="container">
@@ -9,7 +9,7 @@
                 <div class="col-cmn col-lg-8 col-md-8 col-sm-12 two">
                     <div class="section-content dashboard-right">
                         <div class="dashboard-header">
-                            <h2>Edit Equipment</h2>
+                            <h2>Edit Listing</h2>
                         </div>
                         <form action="{{ route('customer.equipment.update',$equipment->id) }}" method="post" enctype="multipart/form-data">
                             @csrf
@@ -86,13 +86,14 @@
                                     </div>
                                     <div class="col-cmn col-lg-4">
                                         <div class="form-wrap">
-                                            <label class="col-form-label">Year <span class="text-danger">*</span></label>
-                                            <select name="year" class="form-control-4" required>
-                                            <option value="">--Select--</option>
-                                            @for ($i = date('Y', strtotime('+1 year')); $i >=1980 ; $i--)
-                                                <option value="{{ $i }}" {{ old('year',$equipment->year)==$i?'selected':'' }}>{{ $i }}</option>
-                                            @endfor
-                                            </select>
+                                            <label class="col-form-label">Year </label>
+                                            {{-- <select name="year" class="form-control-4" required>
+                                                <option value="">--Select--</option>
+                                                @for ($i = date('Y', strtotime('+1 year')); $i >=1980 ; $i--)
+                                                    <option value="{{ $i }}" {{ old('year',$equipment->year)==$i?'selected':'' }}>{{ $i }}</option>
+                                                @endfor
+                                            </select> --}}
+                                            <input type="text" name="year" placeholder="Year" class="form-control-4" value="{{ old('year',$equipment->year) }}">
                                             @error('year')
                                             <div class="errmsg">
                                             <i class="fa-solid fa-circle-exclamation"></i> {{ $message }}
@@ -185,7 +186,7 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="col-cmn col-lg-12">
+                                    {{-- <div class="col-cmn col-lg-12">
                                         <div class="form-wrap">
                                             <label class="col-form-label">Details <span class="text-danger">*</span></label>
                                             <textarea name="details" class="ckeditor form-control-4" placeholder="Details" >{{ old('details',$equipment->details) }}</textarea>
@@ -195,7 +196,7 @@
                                             </div>
                                             @enderror
                                         </div>
-                                    </div>
+                                    </div> --}}
                                     <div class="col-cmn col-lg-12">
                                         <h4>Seller Information</h4>
                                     </div>
@@ -315,12 +316,12 @@
                                     @endif
 
                                     <div class="col-cmn col-lg-12">
-                                        <h4>SEO Information</h4>
+                                        <h4>SEO Information (Optional)</h4>
                                     </div>
                                     <div class="col-cmn col-lg-6">
                                         <div class="form-wrap">
-                                            <label class="col-form-label">Meta Title <span class="text-danger">*</span></label>
-                                            <input type="text" name="meta_title" class="form-control-4" placeholder="Meta Title" value="{{ old('meta_title',$equipment->meta_title) }}" required>
+                                            <label class="col-form-label">Meta Title </label>
+                                            <input type="text" name="meta_title" class="form-control-4" placeholder="Meta Title" value="{{ old('meta_title',$equipment->meta_title) }}">
                                             @error('meta_title')
                                             <div class="errmsg">
                                             <i class="fa-solid fa-circle-exclamation"></i> {{ $message }}

@@ -52,7 +52,7 @@
                                             @endif
                                         </div>
                                     </div>
-                                    @if (count($customer->documents) > 0)
+                                    {{-- @if (count($customer->documents) > 0)
                                     <div class="col-md-12">
                                         <h4>Business Documents</h4>
                                         <div class="mb-3">
@@ -76,7 +76,7 @@
                                                 </div>
                                         </div>
                                     </div>
-                                    @endif
+                                    @endif --}}
                                     
                                 </div> <!-- end row -->
 

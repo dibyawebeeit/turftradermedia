@@ -1,4 +1,4 @@
-<x-dashboard::layouts.master :title="'Add Banner'">
+<x-dashboard::layouts.master :title="'Add Listing'">
     <div class="content">
 
         <!-- Start Content-->

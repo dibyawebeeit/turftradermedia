@@ -1,4 +1,4 @@
-<x-dashboard::layouts.master :title="'View Equipment'">
+<x-dashboard::layouts.master :title="'View Listing'">
     <div class="content">
 
         <!-- Start Content-->
@@ -12,10 +12,10 @@
                             <ol class="breadcrumb m-0">
                                 <li class="breadcrumb-item"><a href="{{ route('dashboard.index') }}">Home</a></li>
                                 {{-- <li class="breadcrumb-item"><a href="javascript: void(0);">eCommerce</a></li> --}}
-                                <li class="breadcrumb-item active">View Equipment</li>
+                                <li class="breadcrumb-item active">View Listing</li>
                             </ol>
                         </div>
-                        <h4 class="page-title">View Equipment</h4>
+                        <h4 class="page-title">View Listing</h4>
                     </div>
                 </div>
             </div>
@@ -67,9 +67,8 @@
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <p><b>Description : </b> </p>
-                                            <div>{{ $equipment->description }}</div>
-                                            <p><b>Details : </b> </p>
-                                            <div>{{ $equipment->details }}</div>
+                                            <div>{!! $equipment->description !!}</div>
+                                            
                                         </div>
                                     </div>
                                     @if (count($equipment->images) > 0)

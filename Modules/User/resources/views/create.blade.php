@@ -95,7 +95,7 @@
                                         <div class="mb-3">
                                             <label for="siteurl" class="form-label">Status <sup>*</sup></label>
                                             <br>
-                                            <input type="checkbox" id="switch1" name="status" checked data-switch="bool"/>
+                                            <input type="checkbox" id="switch1" name="status" value="1" checked data-switch="bool"/>
                                             <label for="switch1" data-on-label="On" data-off-label="Off"></label>
                                         </div>
                                     </div>

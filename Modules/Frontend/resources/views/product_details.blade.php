@@ -43,9 +43,9 @@
                             <i class="fa fa-external-link" aria-hidden="true"></i> </a>
                         </p>
                     </div>
-                    <div class="pro-detls-price">{{ $equipment->currency->name ?? '' }} {{ $equipment->currency->sign ?? '' }}{{ $equipment->price }}</div>
+                    <div class="pro-detls-price">{{ $equipment->currency->name ?? '' }} {{ $equipment->currency->sign ?? '' }}{{ new_format_price($equipment->price) }}</div>
                     <div class="pro-detls-location">
-                        <a href="javascript:void(0)" class="btn" onclick="document.getElementById('popup').style.display='flex'">Send Enquiry</a>
+                        {{-- <a href="javascript:void(0)" class="btn" onclick="document.getElementById('popup').style.display='flex'">Send Enquiry</a> --}}
                         <p><b>Machine Location:</b> {{ $equipment->machine_location }}</p></div>
                     
                     
@@ -80,12 +80,12 @@
                                 <div class="proItemdetailsTbl-td">Condition</div>
                                 <div class="proItemdetailsTbl-td">{{ $equipment->condition }}</div>
                             </div>
-                            <div class="proItemdetailsTbl-tr">
-                                <div class="proItemdetailsTbl-td">Description</div>
+                            {{-- <div class="proItemdetailsTbl-tr">
+                                <div class="proItemdetailsTbl-td">Details</div>
                                 <div class="proItemdetailsTbl-td">
-                                    {!! $equipment->description !!}
+                                    {!! $equipment->details !!}
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>                    	
                     </div>
                     <div class="pro-detls-otherList">
@@ -121,8 +121,8 @@
                 <div class="col-cmn col-lg-12 col-md-12 col-sm-12 one"> 
                 	<div class="section-content">
                     
-                    	<h2>Details</h2>
-                        {!! $equipment->details !!}
+                    	<h2>Description</h2>
+                        {!! $equipment->description !!}
                         
                     </div> 
                 </div>
@@ -144,9 +144,10 @@
                                             <a href="{{ route('product_details',$item->slug) }}"><img src="{{ asset('uploads/equipmentImage/'.$item->thumbnail) }}"></a>
                                         </div>
                                         <div class="productBoxCont">
-                                            <div class="productBoxTitle"><a href="{{ route('product_details',$item->slug) }}">{{ strlen($item->name)>20 ? substr($item->name,0,20):$item->name }}</a></div>
+                                            <div class="productBoxTitle"><a href="{{ route('product_details',$item->slug) }}">{{ strlen($item->name)>16 ? substr($item->name,0,16):$item->name }}</a></div>
                                             <div class="productBoxText"><p>{{ $item->category->name ?? '-' }}</p></div>
-                                            <div class="productBoxPrice">{{ $item->currency->sign ?? '' }} {{ $item->price }}</div>
+                                            <div class="productBoxPrice">
+                                                {{ $item->currency->sign ?? '' }}{{ new_format_price($item->price) }}</div>
                                             <div class="productBoxBtn"><a href="{{ route('product_details',$item->slug) }}" class="btn">View Details</a></div>
                                         </div>
                                     </div>

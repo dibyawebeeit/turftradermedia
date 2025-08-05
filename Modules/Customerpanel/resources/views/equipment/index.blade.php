@@ -1,4 +1,4 @@
-<x-frontend::layouts.master :title="'Equipment List'">
+<x-frontend::layouts.master :title="'Listings'">
     <hr>
     <section class="productlist-row-list p-t-60 p-b-60">
     <form class="datatable-form">
@@ -10,7 +10,7 @@
                 <div class="col-cmn col-lg-8 col-md-8 col-sm-12 two">
                   <div class="section-content dashboard-right change-pass">
                      <div class="dashboard-header">
-                        <h2>Equipment List</h2>
+                        <h2>Listings</h2>
                      </div>
 
                      <p> <a href="{{ route('customer.equipment.create') }}" class="btn">Add+</a></p>

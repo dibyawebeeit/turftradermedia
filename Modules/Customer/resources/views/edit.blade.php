@@ -151,7 +151,7 @@
                                     @endif
                                     
                                 </div> <!-- end row -->
-                                @if (count($dataList->documents) > 0)
+                                {{-- @if (count($dataList->documents) > 0)
                                     <div class="col-md-12">
                                         <h4>Business Documents</h4>
                                         <div class="mb-3">
@@ -175,7 +175,7 @@
                                                 </div>
                                         </div>
                                     </div>
-                                    @endif
+                                @endif --}}
 
 
                                 <div class="text-end">

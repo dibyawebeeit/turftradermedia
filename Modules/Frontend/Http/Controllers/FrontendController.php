@@ -59,6 +59,7 @@ class FrontendController extends Controller
                                 })
                                 ->with('customer') // optional, if you want customer data too
                                 ->orderBy('id', 'desc')
+                                ->limit(24)
                                 ->get();
 
         $data['manufacturerListing'] = Manufacturer::select('id','name')->active()->get();
@@ -184,9 +185,23 @@ class FrontendController extends Controller
         if ($email == '') {
              return redirect()->route('signin');
         }
+
         $request->validate([
-            'password' => 'required|string',
-            'confirm_password' => 'required|string|same:password',
+            'password' => [
+                'required',
+                'string',
+                'min:8',
+                'max:100',
+                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/',
+            ],
+            'confirm_password' => [
+                'required',
+                'string',
+                'max:100',
+                'same:password',
+            ],
+        ], [
+            'password.regex' => 'Password must be at least 8 characters and include an uppercase letter, lowercase letter, a number, and a special character.',
         ]);
 
 
@@ -536,9 +551,23 @@ class FrontendController extends Controller
         'state'=> 'required|string|max:100',
         'country'=> 'required|string|max:100',
         'postal_code'=> 'required|string|max:5',
-        'password'=> 'required|string|same:repassword',
+        'password' => [
+            'required',
+            'string',
+            'min:8',
+            'max:100',
+            'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/',
+        ],
+        'repassword' => [
+            'required',
+            'string',
+            'max:100',
+            'same:password',
+        ],
         
-       ]);
+       ], [
+            'password.regex' => 'Password must be at least 8 characters and include an uppercase letter, lowercase letter, a number, and a special character.',
+        ]);
 
 
        $input = $request->all();

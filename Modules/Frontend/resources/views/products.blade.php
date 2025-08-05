@@ -75,14 +75,15 @@
                                   <div class="productBoxCont">
                                       <div class="productBoxTitle"><a href="{{ route('product_details',$equipment->slug) }}">{{ strlen($equipment->name)>20 ? substr($equipment->name,0,20):$equipment->name }}</a></div>
                                       <div class="productBoxText"><p>{{ $equipment->category->name ?? '-' }}</p></div>
-                                      <div class="productBoxPrice">{{ $equipment->currency->sign ?? '' }} {{ $equipment->price }}</div>
+                                      <div class="productBoxPrice">
+                                        {{ $equipment->currency->sign ?? '' }}{{ new_format_price($equipment->price) }}</div>
                                       <div class="productBoxBtn"><a href="{{ route('product_details',$equipment->slug) }}" class="btn">View Details</a></div>
                                     </div>
                                 </div>
                           </div>
                         @endforeach
                       @else
-                          <h5>No data found!</h5>
+                          <h5>No Matches Found</h5>
                       @endif
                     </div>
                     

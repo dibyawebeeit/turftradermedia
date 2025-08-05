@@ -25,7 +25,7 @@
                      @else
                         @if ($activeSubscription !=null)
                             <div class="active_plan">
-                                <p class="plan-title">Your Active Plan: <strong>{{ $activeSubscription->plan->name }}</strong></p>
+                                <p class="plan-title">Current Listing Plan: <strong>{{ $activeSubscription->plan->name }}</strong></p>
                                 <div class="plan-description">
                                     {!! $activeSubscription->plan->description !!}
                                 </div>
@@ -43,7 +43,7 @@
                      
 
                     @if ($status !="free")
-                        <h2>Renew Subscription Plan</h2>
+                        <h2>Upgrade Plan</h2>
                         <div class="container6">    
                             @foreach ($subscriptionplan as $item)
                             <div class="offers">

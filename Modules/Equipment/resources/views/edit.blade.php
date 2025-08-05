@@ -1,4 +1,4 @@
-<x-dashboard::layouts.master :title="'Edit Equipment'">
+<x-dashboard::layouts.master :title="'Edit Listing'">
     <div class="content">
 
         <!-- Start Content-->
@@ -12,10 +12,10 @@
                             <ol class="breadcrumb m-0">
                                 <li class="breadcrumb-item"><a href="{{ route('dashboard.index') }}">Home</a></li>
                                 {{-- <li class="breadcrumb-item"><a href="javascript: void(0);">eCommerce</a></li> --}}
-                                <li class="breadcrumb-item active">Edit Equipment</li>
+                                <li class="breadcrumb-item active">Edit Listing</li>
                             </ol>
                         </div>
-                        <h4 class="page-title">Edit Equipment</h4>
+                        <h4 class="page-title">Edit Listing</h4>
                     </div>
                 </div>
             </div>
@@ -43,9 +43,9 @@
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="mb-3">
-                                            <label for="vin" class="form-label">Serial Number / VIN <sup>*</sup></label>
+                                            <label for="vin" class="form-label">Serial Number / VIN </label>
                                             <input type="text" class="form-control" name="vin"
-                                                placeholder="Serial Number / VIN" value="{{ old('vin',$equipment->vin) }}" required>
+                                                placeholder="Serial Number / VIN" value="{{ old('vin',$equipment->vin) }}">
                                         </div>
                                     </div>
                                     <div class="col-md-4">
@@ -87,13 +87,14 @@
                                     </div>
                                     <div class="col-md-4">
                                         <div class="mb-3">
-                                            <label for="year" class="form-label">Year <sup>*</sup></label>
-                                            <select name="year" class="form-control" required>
-                                            <option value="">--Select--</option>
-                                            @for ($i = date('Y', strtotime('+1 year')); $i >=1980 ; $i--)
-                                                <option value="{{ $i }}" {{ old('year',$equipment->year)==$i?'selected':'' }}>{{ $i }}</option>
-                                            @endfor
-                                            </select>
+                                            <label for="year" class="form-label">Year </label>
+                                            {{-- <select name="year" class="form-control" required>
+                                                <option value="">--Select--</option>
+                                                @for ($i = date('Y', strtotime('+1 year')); $i >=1980 ; $i--)
+                                                    <option value="{{ $i }}" {{ old('year',$equipment->year)==$i?'selected':'' }}>{{ $i }}</option>
+                                                @endfor
+                                            </select> --}}
+                                            <input type="year" class="form-control" name="year" placeholder="Year" value="{{ old('year',$equipment->year) }}">
                                         </div>
                                     </div>
                                     <div class="col-md-4">
@@ -145,12 +146,12 @@
                                             <textarea name="description" class="editor form-control" placeholder="Description" required>{{ old('description',$equipment->description) }}</textarea>
                                         </div>
                                     </div>
-                                    <div class="col-md-12">
+                                    {{-- <div class="col-md-12">
                                         <div class="mb-3">
                                             <label for="details" class="form-label">Details</label>
                                             <textarea name="details" class="editor form-control" placeholder="Details" required>{{ old('details',$equipment->details) }}</textarea>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                     <div class="col-md-4">
                                         <div class="mb-3">
                                             <label for="company_name" class="form-label">Company Name</label>
@@ -241,7 +242,7 @@
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <label for="meta_title" class="form-label">Meta Title</label>
-                                            <input type="text" name="meta_title" class="form-control" placeholder="Meta Title" value="{{ old('meta_title',$equipment->meta_title) }}" required>
+                                            <input type="text" name="meta_title" class="form-control" placeholder="Meta Title" value="{{ old('meta_title',$equipment->meta_title) }}">
                                         </div>
                                     </div>
                                     <div class="col-md-12">

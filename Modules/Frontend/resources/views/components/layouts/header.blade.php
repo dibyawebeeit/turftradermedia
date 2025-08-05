@@ -23,6 +23,7 @@
                 
                 
                     <ul class="headerRightLink">
+                        <li><a href="{{ url('/') }}">Home</a></li>
                         <li><a href="{{ route('advertising') }}">Advertising</a></li>
                         <li><a href="{{ route('contact_us') }}">Contact Us</a></li>
                     </ul>      	
@@ -45,9 +46,12 @@
                         </div>
                     </div> --}}
 
-                    <!-- add this to your header -->
-                   <div class="languageDropdown">
-                        <div class="custom-select-wrapper"> <div id="google_translate_element"></div> </div></div>
+                    <!-- add this to your header- google translate -->
+                   {{-- <div class="languageDropdown">
+                      <div class="custom-select-wrapper"> 
+                          <div id="google_translate_element"></div> 
+                      </div>
+                    </div> --}}
 
                     <!-- to your js part -->
                     <script type="text/javascript">
@@ -63,6 +67,7 @@
                     
                 <div class="mobile_nav">
                     <ul>
+                        <li><a href="{{ url('/') }}">Home</a></li>
                         <li><a href="{{ route('advertising') }}">Advertising</a></li>
                         <li><a href="{{ route('contact_us') }}">Contact Us</a></li>
                         <li>
@@ -103,7 +108,10 @@
       <div class="row middle-content-row">
       
         <div class="col-cmn col-lg-3 col-md-3 col-sm-3 one">
-            <div class="sitelogo"><a href="{{ route('home') }}"><img src="{{ asset('frontendassets/image/logo.png') }}"></a></div>        
+            <div class="sitelogo"><a href="{{ route('home') }}">
+              {{-- <img src="{{ asset('frontendassets/image/logo.png') }}"> --}}
+              <img src="{{asset('uploads/siteImage/'.sitesetting()->logo)}}">
+            </a></div>        
         </div>
         <div class="col-cmn col-lg-9 col-md-9 col-sm-9 two text-right">
             <div class="header-searchMain">

@@ -1,5 +1,5 @@
 <x-authentication::layouts.master>
-    <div class="position-absolute start-0 end-0 start-0 bottom-0 w-100 h-100">
+    <div class="position-absolute start-0 end-0 bottom-0 w-100 h-100">
         <svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 800 800'>
             <g fill-opacity='0.22'>
                 <circle style="fill: rgba(var(--ct-primary-rgb), 0.1);" cx='400' cy='400' r='600' />
@@ -67,7 +67,7 @@
                                     </div>
                                 </div>
 
-                                <div class="mb-3 mb-3">
+                                <div class="mb-3">
                                     <div class="form-check">
                                         <input type="checkbox" class="form-check-input" id="checkbox-signin" name="remember"
                                             value="1" checked>
@@ -75,7 +75,7 @@
                                     </div>
                                 </div>
 
-                                <div class="mb-3 mb-0 text-center">
+                                <div class="mb-3 text-center">
                                     <button class="btn btn-primary" type="submit"> Log In </button>
                                 </div>
 

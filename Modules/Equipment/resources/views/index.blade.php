@@ -1,4 +1,4 @@
-<x-dashboard::layouts.master :title="'Equipment List'">
+<x-dashboard::layouts.master :title="'Listings'">
     <div class="content">
 
         <!-- Start Content-->
@@ -12,10 +12,10 @@
                             <ol class="breadcrumb m-0">
                                 <li class="breadcrumb-item"><a href="{{ route('dashboard.index') }}">Home</a></li>
                                 {{-- <li class="breadcrumb-item"><a href="javascript: void(0);">eCommerce</a></li> --}}
-                                <li class="breadcrumb-item active">Equipment List</li>
+                                <li class="breadcrumb-item active">Listings</li>
                             </ol>
                         </div>
-                        <h4 class="page-title">Equipment List</h4>
+                        <h4 class="page-title">Listings</h4>
                     </div>
                 </div>
             </div>

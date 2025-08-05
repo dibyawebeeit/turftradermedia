@@ -26,10 +26,10 @@
         <link rel="stylesheet" href="{{ asset('frontendassets/css/style.css') }}">
       
         <link rel="stylesheet" href="{{ asset('frontendassets/css/style-main.css') }}">
-        <link rel="icon" href="{{ asset('frontendassets/image/fab.png') }}" sizes="32x32" />
-        <link rel="icon" href="{{ asset('frontendassets/image/fab.png') }}" sizes="192x192" />
-        <link rel="apple-touch-icon" href="{{ asset('frontendassets/image/fab.png') }}" />
-        <meta name="msapplication-TileImage" content="{{ asset('frontendassets/image/fab.png') }}" />
+        <link rel="icon" href="{{asset('uploads/siteImage/'.sitesetting()->favicon)}}" sizes="32x32" />
+        <link rel="icon" href="{{asset('uploads/siteImage/'.sitesetting()->favicon)}}" sizes="192x192" />
+        <link rel="apple-touch-icon" href="{{asset('uploads/siteImage/'.sitesetting()->favicon)}}" />
+        <meta name="msapplication-TileImage" content="{{asset('uploads/siteImage/'.sitesetting()->favicon)}}" />
         <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
        <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css">
         <script src="{{ asset('frontendassets/js/jquery-3.6.0.min.js') }}"></script>
@@ -182,6 +182,8 @@
         </script>
 
         <script src="{{ asset('frontendassets/js/google-translate.js') }}"></script>
+
+        
 
         @yield('script')
 

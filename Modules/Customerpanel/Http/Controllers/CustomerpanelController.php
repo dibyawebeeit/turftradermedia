@@ -169,8 +169,21 @@ class CustomerpanelController extends Controller
         $id = $this->activeCustomerId;
         $request->validate([
             'old_password'=>'required|string',
-            'password'=> 'required|string|max:100',
-            'confirm_password'=> 'required|string|max:100|same:password',
+            'password' => [
+                'required',
+                'string',
+                'min:8',
+                'max:100',
+                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/',
+            ],
+            'confirm_password' => [
+                'required',
+                'string',
+                'max:100',
+                'same:password',
+            ],
+        ], [
+            'password.regex' => 'Password must be at least 8 characters and include an uppercase letter, lowercase letter, a number, and a special character.',
         ]);
 
         $customer = Customer::find($id);

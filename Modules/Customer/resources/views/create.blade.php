@@ -127,13 +127,15 @@
                                             <input type="file" class="form-control" name="image" accept="image/*" required>
                                         </div>
                                     </div>
-                                    <div class="col-md-4" id="document_section" style="display: none;">
+
+                                   
+                                    {{-- <div class="col-md-4" id="document_section" style="display: none;">
                                         <div class="mb-3">
                                             <label for="documents" class="form-label">Documents <sup>*</sup></label>
                                             <input type="file" class="form-control" id="document" name="documents[]" multiple accept=".jpg,.jpeg,.pdf">
                                             <span>accept jpg,webp,pdf only</span>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                 </div> <!-- end row -->
                                 <div class="row">
                                     <div class="col-md-6">
@@ -175,19 +177,19 @@
     document.addEventListener("DOMContentLoaded", function () {
         const userType = document.getElementById("usertype");
         const freeSection = document.getElementById("is_free_section");
-        const documentSection = document.getElementById("document_section");
-        const documentInput = document.getElementById("document");
+        // const documentSection = document.getElementById("document_section");
+        // const documentInput = document.getElementById("document");
 
         function toggleDocumentSection() {
             if (userType.value === "seller") {
                 freeSection.style.display = "block";
-                documentSection.style.display = "block";
-                documentInput.setAttribute("required", "required");
+                // documentSection.style.display = "block";
+                // documentInput.setAttribute("required", "required");
             } else {
                 freeSection.style.display = "none";
-                documentSection.style.display = "none";
-                documentInput.removeAttribute("required");
-                documentInput.value = ""; // optional: clear file
+                // documentSection.style.display = "none";
+                // documentInput.removeAttribute("required");
+                // documentInput.value = ""; // optional: clear file
             }
         }
 

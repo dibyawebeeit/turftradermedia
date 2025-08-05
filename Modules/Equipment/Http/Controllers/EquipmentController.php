@@ -138,7 +138,7 @@ class EquipmentController extends Controller
             'manufacturer_id' => 'required|numeric',
             'equipment_model_id' => 'required|numeric',
             'category_id' => 'required|numeric',
-            'year' => 'required|string|max:4',
+            'year' => 'nullable|string|max:4',
             'hours' => 'nullable|numeric',
             'condition' => 'required|string',
             'price' => 'required|numeric',
@@ -146,12 +146,12 @@ class EquipmentController extends Controller
             'machine_location' => 'required|string|max:250',
             'stock_no' => 'nullable|string|max:30',
             'description' => 'required|string',
-            'details' => 'required|string',
+            // 'details' => 'required|string',
             'company_name' => 'required|string|max:200',
             'contact_name' => 'required|string|max:100',
             'contact_email' => 'required|email|max:100',
             'contact_no' => ['required', new PhoneNumber()],
-            'meta_title' => 'required|string|max:250',
+            'meta_title' => 'nullable|string|max:250',
             'meta_keyword' => 'nullable|string',
             'meta_desc' => 'nullable|string',
         ]);
@@ -166,16 +166,32 @@ class EquipmentController extends Controller
         $categoryQuery = Category::find($request->category_id);
 
         if (
-            $request->year != $equipment->year ||
             $request->manufacturer_id != $equipment->manufacturer_id ||
             $request->equipment_model_id != $equipment->equipment_model_id ||
             $request->category_id != $equipment->category_id
         ) {
 
-            $input['name'] = $request->year . ' ' . strtoupper($manufacturer->name) . ' ' . strtoupper($eqipumentmodel->name);
+            $input['name'] = strtoupper($manufacturer->name) . ' ' . strtoupper($eqipumentmodel->name);
             $slugBase = $input['name'] . '-' . $categoryQuery->name;
             $input['slug'] = date('ymdhis') . rand(111, 999) . '-' . Str::slug($slugBase);
+
+            if($request->meta_title == '')
+            {
+                $input['meta_title'] = $slugBase;
+            }
         }
+
+        $desc = $request->description;
+        // 1. Remove anchor <a> tags, keep inner text
+        $desc = preg_replace('/<a\b[^>]*>(.*?)<\/a>/i', '$1', $desc);
+        // 2. Remove all plain links: https://, http://, www.
+        $desc = preg_replace('/\b(?:https?:\/\/|www\.)[^\s<]+/i', '', $desc);
+        // 3. Optional: remove empty tags (e.g., <b></b>)
+        $desc = preg_replace('/<(\w+)[^>]*>\s*<\/\1>/', '', $desc);
+        // 4. Optional: clean up whitespace
+        $desc = preg_replace('/\s+/', ' ', $desc);
+        $input['description'] = trim($desc);
+        
 
         if ($request->has('thumbnail')) {
             $request->validate([
@@ -211,7 +227,7 @@ class EquipmentController extends Controller
         if ($request->hasFile('images')) {
             $request->validate([
                 'images' => 'required', // optional: ensure at least one file is uploaded
-                'images.*' => 'required|mimes:jpeg,jpg,png,webp|max:1024', // 1MB per file
+                'images.*' => 'required|mimes:jpeg,jpg,png,webp|max:5120', // 5MB per file
             ]);
             foreach ($request->file('images') as $file) {
             // $filename = 'image_' . Str::random(10) . time() . '.' . $image->getClientOriginalExtension();
