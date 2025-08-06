@@ -13,6 +13,8 @@ Route::controller(FrontendController::class)->group(function(){
     Route::post("/submit_signin","submit_signin")->name("submit_signin");
     Route::get("/register","register")->name("register");
     Route::post("/submit_register","submit_register")->name("submit_register");
+    Route::get("/verify-email","verify_email")->name("verify_email");
+    Route::post("/submit_verify_email","submit_verify_email")->name("submit_verify_email");
 
     Route::get("/forgot-password","forgot_password")->name("forgot_password");
     Route::post('/submit_forgot_password', 'submit_forgot_password')->name('frontend.submit_forgot_password');
@@ -21,6 +23,7 @@ Route::controller(FrontendController::class)->group(function(){
     Route::post('/submit_change_password',  'submit_change_password')->name('frontend.submit_change_password');
 
     Route::get("/advertising","advertising")->name("advertising");
+    Route::get("/terms-conditions","terms_conditions")->name("terms_conditions");
     Route::get("/about-us","about_us")->name("about_us");
     Route::get("/contact-us","contact_us")->name("contact_us");
     Route::get("/products","products")->name("products");
@@ -41,6 +44,7 @@ Route::controller(FrontendController::class)->group(function(){
     Route::get("/oops","oops")->name("oops");
 
 
+    Route::get('register_as_buyer','register_as_buyer')->name('register_as_buyer');
     // PayPal integration
     Route::get('/start-payment', 'startPayment')->name('startPayment');
     Route::get('/subscription_booking', 'subscription_booking')->name('subscription_booking');

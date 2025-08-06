@@ -5,6 +5,7 @@ namespace Modules\Frontend\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Mail\ForgotpasswordMail;
 use App\Mail\SendEnquiryMail;
+use App\Mail\VerificationMail;
 use App\Mail\WelcomeMail;
 use App\Models\User;
 use App\Models\Watchlist;
@@ -25,6 +26,7 @@ use Modules\Cms\Models\Aboutus;
 use Modules\Cms\Models\Advertising;
 use Modules\Cms\Models\Contactuscms;
 use Modules\Cms\Models\Home;
+use Modules\Cms\Models\Termsconditions;
 use Modules\Customer\Models\Customer;
 use Modules\Customer\Models\CustomerDocument;
 use Modules\Equipment\Models\Equipment;
@@ -230,6 +232,14 @@ class FrontendController extends Controller
         $data['advertising'] = Advertising::first();
         return view('frontend::advertising', $data);
     }
+
+    public function terms_conditions(Request $request)
+    {
+        $data['termsconditions'] = Termsconditions::first();
+        return view('frontend::terms_conditions', $data);
+    }
+
+    
     public function about_us()
     {
         $data['aboutus']=Aboutus::first();
@@ -546,11 +556,11 @@ class FrontendController extends Controller
         'last_name'=> 'required|string|max:100',
         'email'=> 'required|email|max:100|unique:customers,email',
         'phone' => ['required', new PhoneNumber()],
-        'address'=> 'required|string|max:255',
-        'city'=> 'required|string|max:100',
-        'state'=> 'required|string|max:100',
-        'country'=> 'required|string|max:100',
-        'postal_code'=> 'required|string|max:5',
+        // 'address'=> 'required|string|max:255',
+        // 'city'=> 'required|string|max:100',
+        // 'state'=> 'required|string|max:100',
+        // 'country'=> 'required|string|max:100',
+        // 'postal_code'=> 'required|string|max:5',
         'password' => [
             'required',
             'string',
@@ -570,75 +580,128 @@ class FrontendController extends Controller
         ]);
 
 
-       $input = $request->all();
+        $input = $request->all();
 
-       if($request->role === 'Buyer')
-       {
-            $input['role']="buyer";
-            $input["password"]= Hash::make($request->password);
-            $result = Customer::create($input);
-            if($result)
-            {
-                $name = $request->first_name." ".$request->last_name;
-                Mail::to($request->email)->send(new WelcomeMail($name, route('signin')));
-                return redirect()->route('success')->with('success','You have registered successfully.');
-            }
-            else
-            {
-                return redirect()->route('oops')->with('error','Something went wrong!');
-            }
-       }
-       else
-       {
-            $request->validate([
-                'documents' => 'required', // optional: ensure at least one file is uploaded
-                'documents.*' => 'required|mimes:jpeg,jpg,pdf|max:1024', // 1MB per file
-            ]);
-            $uploadedFiles = [];
+        $otp = rand(111111, 999999);
+        $mailData = array(
+            'otp' => $otp
+        );
+        try {
+            Mail::to($input['email'])->send(new VerificationMail($mailData));
+            Cache::put('verification_otp', $otp, 7200);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->withInput()->with('error','Something went wrong!');
+        }
+        
 
-            if ($request->hasFile('documents')) {
-                foreach ($request->file('documents') as $file) {
-                    $ext = $file->getClientOriginalExtension(); // jpg, pdf
-                    $type = $ext === 'pdf' ? 'pdf' : 'image';
-                    $timestamp = Carbon::now()->format('Y_m_d_His');
-                    $random = Str::random(6);
-                    $filename = $timestamp . '_' . $random . '.' . $ext;
-
-                    // Ensure folder exists
-                    $destinationPath = public_path('uploads/tempCustomerDoc');
-                    if (!file_exists($destinationPath)) {
-                        mkdir($destinationPath, 0755, true);
-                    }
-
-                    $file->move($destinationPath, $filename);
-
-                    $uploadedFiles[] = [
-                        'file' => 'uploads/tempCustomerDoc/' . $filename,
-                        'type' => $type,
-                        'original_name' => $file->getClientOriginalName(),
-                    ];
-                }
-            }
-
-            // Add uploaded file data to the rest of validatedData
-            $validatedData['documents'] = $uploadedFiles;
-
-            // Cache for 120 minutes (7200 seconds)
-            Cache::put('cached_customer_data', $validatedData, 7200);
-
-            return redirect()->route('subscription');
-
-           
-       }
-
-
+        // Cache for 120 minutes (7200 seconds)
+        Cache::put('cached_customer_data', $validatedData, 7200);
+        return redirect()->route('verify_email');
 
        
+        // $request->validate([
+        //     'documents' => 'required', // optional: ensure at least one file is uploaded
+        //     'documents.*' => 'required|mimes:jpeg,jpg,pdf|max:1024', // 1MB per file
+        // ]);
+        // $uploadedFiles = [];
+
+        // if ($request->hasFile('documents')) {
+        //     foreach ($request->file('documents') as $file) {
+        //         $ext = $file->getClientOriginalExtension(); // jpg, pdf
+        //         $type = $ext === 'pdf' ? 'pdf' : 'image';
+        //         $timestamp = Carbon::now()->format('Y_m_d_His');
+        //         $random = Str::random(6);
+        //         $filename = $timestamp . '_' . $random . '.' . $ext;
+
+        //         // Ensure folder exists
+        //         $destinationPath = public_path('uploads/tempCustomerDoc');
+        //         if (!file_exists($destinationPath)) {
+        //             mkdir($destinationPath, 0755, true);
+        //         }
+
+        //         $file->move($destinationPath, $filename);
+
+        //         $uploadedFiles[] = [
+        //             'file' => 'uploads/tempCustomerDoc/' . $filename,
+        //             'type' => $type,
+        //             'original_name' => $file->getClientOriginalName(),
+        //         ];
+        //     }
+        // }
+        // $validatedData['documents'] = $uploadedFiles;
+
+       
+    }
+
+    public function verify_email(Request $request) {
+        $data = Cache::get('cached_customer_data');
+        // dd($data);
+        if (!$data) {
+            return redirect()->route('register');
+        } 
+        return view('frontend::verify_email');
+    }
+
+    public function submit_verify_email(Request $request)
+    {
+        $request->validate([
+            'otp' => 'required|min:6|max:6'
+        ]);
+
+        $current_otp = $request->otp;
+        $system_otp = Cache::get('verification_otp');
+        if($current_otp != $system_otp)
+        {
+            return redirect()->back()->withInput()->with('error','Invalid OTP!');
+        }
+
+        Cache::forget('verification_otp');
+        Cache::put('email_verified', true, 7200);
+        return redirect()->route('subscription');
+
+    }
+
+    public function register_as_buyer(Request $request) {
+        $data = Cache::get('cached_customer_data');
+        // dd($data);
+        if (!$data) {
+            return redirect()->route('register');
+        } 
+
+        $input = $data;
+        $input['role']="buyer";
+        $input["password"]= Hash::make($request->password);
+        $result = Customer::create($input);
+        if($result)
+        {
+            try {
+                $name = $data['first_name']." ".$data['last_name'];
+                Mail::to($data['email'])->send(new WelcomeMail($name, route('signin')));
+            } catch (\Throwable $th) {
+                //throw $th;
+            }
+
+            session()->forget(['subscription']);
+            Cache::forget('cached_customer_data');
+            Cache::forget('email_verified');
+
+            return redirect()->route('success')->with('success','You have registered successfully.');
+        }
+        else
+        {
+            return redirect()->route('oops')->with('error','Something went wrong!');
+        }
     }
     public function subscription(Request $request)
     {
         // $data = Cache::get('cached_customer_data');
         // if (!$data) {
+        //     return redirect()->route('register');
+        // } 
+
+        // $email_verified = Cache::get('email_verified');
+        // if ($email_verified == false) {
         //     return redirect()->route('register');
         // } 
 
@@ -750,30 +813,26 @@ class FrontendController extends Controller
             $data = Cache::get('cached_customer_data');
 
             // Create permanent document folder
-            $permanentPath = public_path('uploads/customerDoc');
-            if (!file_exists($permanentPath)) {
-                mkdir($permanentPath, 0755, true);
-            }
+            // $permanentPath = public_path('uploads/customerDoc');
+            // if (!file_exists($permanentPath)) {
+            //     mkdir($permanentPath, 0755, true);
+            // }
+            // $movedFiles = [];
+            // foreach ($data['documents'] as $doc) {
+            //     $tempFilePath = public_path($doc['file']);
+            //     $fileName = basename($doc['file']);
 
-            // Move each document
-            $movedFiles = [];
-            foreach ($data['documents'] as $doc) {
-                $tempFilePath = public_path($doc['file']);
-                $fileName = basename($doc['file']);
+            //     $newPath = $permanentPath . '/' . $fileName;
+            //     if (file_exists($tempFilePath)) {
+            //         rename($tempFilePath, $newPath); // Move from temp to permanent
+            //     }
 
-                $newPath = $permanentPath . '/' . $fileName;
-                if (file_exists($tempFilePath)) {
-                    rename($tempFilePath, $newPath); // Move from temp to permanent
-                }
-
-                $movedFiles[] = [
-                    'file' => $fileName,
-                    'type' => $doc['type'],
-                ];
-            }
-
-            // Replace temp paths with final paths
-            $data['documents'] = $movedFiles;
+            //     $movedFiles[] = [
+            //         'file' => $fileName,
+            //         'type' => $doc['type'],
+            //     ];
+            // }
+            // $data['documents'] = $movedFiles;
             
 
 
@@ -785,13 +844,13 @@ class FrontendController extends Controller
 
 
             //Document Upload Section
-            foreach ($data['documents'] as $doc) {
-                CustomerDocument::create([
-                    'customer_id' => $customer->id,
-                    'file' => $doc['file'],
-                    'type' => $doc['type'],
-                ]);
-            }
+            // foreach ($data['documents'] as $doc) {
+            //     CustomerDocument::create([
+            //         'customer_id' => $customer->id,
+            //         'file' => $doc['file'],
+            //         'type' => $doc['type'],
+            //     ]);
+            // }
             //Document Upload Section
 
             $subscriptionData = [
@@ -812,6 +871,7 @@ class FrontendController extends Controller
 
             session()->forget(['subscription']);
             Cache::forget('cached_customer_data');
+            Cache::forget('email_verified');
 
             DB::commit();
 

@@ -57,6 +57,7 @@
                               <span class="proListFilter-slider"></span>
                             </label>
                           </div>
+                          
                           <div class="proListFilter-sort-button">
                             <span class="proListFilter-sort-icon"></span>
                             Sort
@@ -73,8 +74,16 @@
                                       <a href="{{ route('product_details',$equipment->slug) }}"><img src="{{ asset('uploads/equipmentImage/'.$equipment->thumbnail) }}"></a>
                                     </div>
                                   <div class="productBoxCont">
-                                      <div class="productBoxTitle"><a href="{{ route('product_details',$equipment->slug) }}">{{ strlen($equipment->name)>20 ? substr($equipment->name,0,20):$equipment->name }}</a></div>
-                                      <div class="productBoxText"><p>{{ $equipment->category->name ?? '-' }}</p></div>
+                                      <div class="productBoxTitle">
+                                        <a href="{{ route('product_details',$equipment->slug) }}">
+                                        {{ $equipment->name }}
+                                        </a>
+                                      </div>
+                                      {{-- <div class="productBoxText"><p>{{ $equipment->category->name ?? '-' }}</p></div> --}}
+                                      <div class="productBoxText">
+                                        <p>{{ $equipment->machine_location }}</p>
+                                      </div>
+
                                       <div class="productBoxPrice">
                                         {{ $equipment->currency->sign ?? '' }}{{ new_format_price($equipment->price) }}</div>
                                       <div class="productBoxBtn"><a href="{{ route('product_details',$equipment->slug) }}" class="btn">View Details</a></div>

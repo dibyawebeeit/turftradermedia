@@ -29,7 +29,7 @@
                             {!! $item['description'] !!}
                         </div>
                         
-                        @if (Cache::get('cached_customer_data'))
+                        @if (Cache::get('cached_customer_data') && Cache::get('email_verified') == true)
                             <button class="btn1 subscribe-btn" data-id="{{ $item['id'] }}">
                                 Proceed
                             </button>
@@ -43,8 +43,10 @@
                 @endforeach
                                 
                     
-                    {{-- <button class="btn" id="backBtn">Back</button> --}}
                 </div>
+                @if (Cache::get('cached_customer_data'))
+                    <a href="{{ route('register_as_buyer') }}"><button class="btn">Skip the plan</button></a>
+                @endif
             </div>
 
         </div>

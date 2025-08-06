@@ -123,6 +123,7 @@
                     
                     	<h2>Description</h2>
                         {!! $equipment->description !!}
+                        <a href="{{ route('products') }}"><button class="btn">Back to listing</button></a>
                         
                     </div> 
                 </div>
@@ -144,8 +145,15 @@
                                             <a href="{{ route('product_details',$item->slug) }}"><img src="{{ asset('uploads/equipmentImage/'.$item->thumbnail) }}"></a>
                                         </div>
                                         <div class="productBoxCont">
-                                            <div class="productBoxTitle"><a href="{{ route('product_details',$item->slug) }}">{{ strlen($item->name)>16 ? substr($item->name,0,16):$item->name }}</a></div>
-                                            <div class="productBoxText"><p>{{ $item->category->name ?? '-' }}</p></div>
+                                            <div class="productBoxTitle">
+                                                <a href="{{ route('product_details',$item->slug) }}">
+                                                    {{ $item->name }}
+                                                </a>
+                                            </div>
+                                            {{-- <div class="productBoxText"><p>{{ $item->category->name ?? '-' }}</p></div> --}}
+                                            <div class="productBoxText">
+                                                <p>{{ $item->machine_location }}</p>
+                                            </div>
                                             <div class="productBoxPrice">
                                                 {{ $item->currency->sign ?? '' }}{{ new_format_price($item->price) }}</div>
                                             <div class="productBoxBtn"><a href="{{ route('product_details',$item->slug) }}" class="btn">View Details</a></div>

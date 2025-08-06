@@ -1,4 +1,4 @@
-<x-frontend::layouts.master>
+<x-frontend::layouts.master :title="'Register'">
 <hr>
 
 
@@ -8,13 +8,13 @@
           <div class="col-cmn col-lg-8 col-md-8 col-sm-12 one text-center">
             <div class="section-content">
                 <h2>Register Account</h2>
-                  <label class="switch">
+                  {{-- <label class="switch">
                     <input type="checkbox" id="togBtn">
                     <div class="slider round"><!--ADDED HTML -->
                         <span class="on">Seller</span>
                         <span class="off">Buyer</span><!--END-->
                     </div>
-                  </label>
+                  </label> --}}
               </div>
           </div>
         </div>
@@ -23,7 +23,7 @@
         	<div class="col-cmn col-lg-8 col-md-8 col-sm-12 one">
             <div class="section-content">
               <div class="register-block">
-                    <h3>New Customer Application Form</h3>
+                    <h3>New Customer Registration Form</h3>
                     {{-- @if ($errors->any())
                         <div class="alert alert-danger">
                             <ul>
@@ -41,7 +41,7 @@
                       @csrf
 
                       
-                      <div class="form-group form-groupFile doc_section">
+                      {{-- <div class="form-group form-groupFile doc_section">
                         <label>Upload Images</label>
                         <div class="dropzone-wrapper" id="dropzone-wrapper">
                             <div class="dropzone-desc">
@@ -70,12 +70,12 @@
                                 </div>
                             @endforeach
                         @endforeach
-                      </div>
+                      </div> --}}
                       
                       
-                      <div class="form-heading">
+                      {{-- <div class="form-heading">
                         <h3>Your Details</h3>
-                      </div>
+                      </div> --}}
                       
                       <div class="frm-col2">
                           <div class="form-group">
@@ -119,55 +119,8 @@
                             @enderror
                           </div>
                       </div>
-                      <div class="form-group">
-                        <label class="control-label">Address</label>
-                        <input type="text" name="address" value="{{ old('address') }}" class="form-control" required>
-                        @error('address')
-                            <div class="errmsg">
-                              <i class="fa-solid fa-circle-exclamation"></i> {{ $message }}
-                            </div>
-                        @enderror
-                      </div>                          
-                      <div class="frm-col2">
-                          <div class="form-group">
-                            <label class="control-label">City</label>
-                            <input type="text" name="city" value="{{ old('city') }}" class="form-control" required>
-                            @error('city')
-                            <div class="errmsg">
-                              <i class="fa-solid fa-circle-exclamation"></i> {{ $message }}
-                            </div>
-                            @enderror
-                          </div>
-                          <div class="form-group">
-                            <label class="control-label">State/Region</label>
-                            <input type="text" name="state" value="{{ old('state') }}" class="form-control" required>
-                            @error('state')
-                            <div class="errmsg">
-                              <i class="fa-solid fa-circle-exclamation"></i> {{ $message }}
-                            </div>
-                            @enderror
-                          </div>
-                      </div>                        
-                      <div class="frm-col2">
-                          <div class="form-group">
-                            <label class="control-label">Country/Region</label>
-                            <input type="text" name="country" value="{{ old('country') }}" class="form-control" required>
-                            @error('country')
-                            <div class="errmsg">
-                              <i class="fa-solid fa-circle-exclamation"></i> {{ $message }}
-                            </div>
-                            @enderror
-                          </div>
-                          <div class="form-group">
-                            <label class="control-label">Postal code</label>
-                            <input type="tel" name="postal_code" pattern="[0-9]{5}" onkeypress="if(this.value.length==5) return false;"  value="{{ old('postal_code') }}" class="form-control" required>
-                            @error('postal_code')
-                            <div class="errmsg">
-                              <i class="fa-solid fa-circle-exclamation"></i> {{ $message }}
-                            </div>
-                            @enderror
-                          </div>
-                      </div>                      
+                          
+
                       <div class="frm-col2">
                           <div class="form-group">
                             <label class="control-label">Password</label>
@@ -188,7 +141,14 @@
                             @enderror
                           </div>
                       </div>
-                    
+                      <div class="form-group">
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" value="" name="agree" id="flexCheckChecked" required>
+                          <label class="form-check-label" for="flexCheckChecked">
+                            I agree with the <a href="{{ route('terms_conditions') }}" target="_blank" style="text-decoration: underline;">terms & conditions</a>
+                          </label>
+                        </div>
+                      </div>
                       <div class="form-group">
                       <input type="submit" value="Submit" class="">
                       </div>
