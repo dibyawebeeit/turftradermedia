@@ -18,8 +18,8 @@
                                         <span class="watchlist-close" onclick="removeWatchlist({{ $equipment->id }})"><i class="fa-solid fa-xmark"></i></span>
                                     </div>
                                   <div class="productBoxCont">
-                                      <div class="productBoxTitle"><a href="{{ route('product_details',$equipment->slug) }}">{{ strlen($equipment->name)>17 ? substr($equipment->name,0,17):$equipment->name }}</a></div>
-                                      <div class="productBoxText"><p>{{ $equipment->category->name ?? '-' }}</p></div>
+                                      <div class="productBoxTitle"><a href="{{ route('product_details',$equipment->slug) }}">{{ $equipment->name }}</a></div>
+                                      <div class="productBoxText"><p>{{ $equipment->machine_location }}</p></div>
                                       <div class="productBoxPrice">{{ $equipment->currency->sign ?? '' }} {{ $equipment->price }}</div>
                                       <div class="productBoxBtn"><a href="{{ route('product_details',$equipment->slug) }}" class="btn">View Details</a></div>
                                     </div>
