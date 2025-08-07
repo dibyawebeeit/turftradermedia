@@ -12,7 +12,7 @@
                 <div class="category-sidebar">
                   <h2>Shop By Category</h2>
                   <div class="category-menu">
-                    <ul>
+                    <ul class="subcategory-list">
                         @if ($allCategory != null)
                             @foreach ($allCategory as $key => $item)
                                 @php
@@ -26,6 +26,8 @@
                                       class="{{ request('category') == $item['id'] ? 'active' : '' }}">
                                         {{ $item['name'] }}
                                     </a>
+                                    {{-- <span class="toggle-arrow" style="cursor: pointer;">&#x25BC;</span> <!-- ▼ icon --> --}}
+                                    <span class="toggle-arrow" style="cursor: pointer;"></span> 
 
                                     @if (!empty($item['subcategory']))
                                         <ul>
@@ -112,4 +114,30 @@
         
     </div>
 </section>
+
+@section('script')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const toggles = document.querySelectorAll('.toggle-arrow');
+
+        toggles.forEach(toggle => {
+            toggle.addEventListener('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                // Get the next <ul> element after the parent <li>
+                const subList = this.previousElementSibling.nextElementSibling;
+
+                if (subList && subList.classList.contains('subcategory-list')) {
+                    subList.classList.toggle('active');
+
+                    // Optional: toggle arrow up/down
+                    this.innerHTML = subList.classList.contains('active') ? '&#x25B2;' : '&#x25BC;';
+                }
+            });
+        });
+    });
+</script>
+
+@endsection
 </x-frontend::layouts.master>

@@ -42,9 +42,14 @@
                             	<div class="proSearchtabFrmCol">
                                 	<select class="searchCat" name="category">
 										<option value="">All Categories</option>
-										@foreach ($categoryListing as $key => $value)
+										{{-- @foreach ($categoryListing as $key => $value)
 											<option value="{{ $key }}"
 												{{ in_array($key, $parentIds) ? 'disabled' : '' }}>
+												{{ $value }}
+											</option>
+										@endforeach --}}
+										@foreach ($categoryListing as $key => $value)
+											<option value="{{ $key }}">
 												{{ $value }}
 											</option>
 										@endforeach
@@ -80,9 +85,14 @@
                             	<div class="proSearchtabFrmCol">
                                 	<select class="searchCat" name="category">
 										<option value="">All Categories</option>
-										@foreach ($categoryListing as $key => $value)
+										{{-- @foreach ($categoryListing as $key => $value)
 											<option value="{{ $key }}"
 												{{ in_array($key, $parentIds) ? 'disabled' : '' }}>
+												{{ $value }}
+											</option>
+										@endforeach --}}
+										@foreach ($categoryListing as $key => $value)
+											<option value="{{ $key }}">
 												{{ $value }}
 											</option>
 										@endforeach
