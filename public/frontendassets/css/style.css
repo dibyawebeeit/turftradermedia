@@ -1540,3 +1540,33 @@ left: -10px;
     padding: 0 7px;
     height: 100%;
     margin-bottom: 45px;}
+
+.productBox .productBoxTitle a{ height: 58px;
+    overflow: hidden;}
+
+.productBox .productBoxText{ height: 48px; overflow: hidden;}
+
+.filter-div {
+    display: none;
+    position: absolute;
+    top: 29px;
+    width: 200px;
+    right: 0;
+    z-index: 9;
+    background-color: #245d42;
+    color: #fff;
+    border-radius: 6px;
+    padding: 15px 10px 11px;
+}
+
+.filter-div ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.filter-div ul li{ color:#fff; }
+.filter-div ul li a{ color:#fff; display: block; padding: 4px 15px; border-radius: 6px; margin-bottom:5px; }
+.filter-div ul li a.active, .filter-div ul li a:hover{ background-color: #149e43;  }
+
+.sort-button-pan{ position:relative; }

@@ -60,10 +60,34 @@
                             </label>
                           </div>
                           
+                        <div class="sort-button-pan">
+
                           <div class="proListFilter-sort-button">
                             <span class="proListFilter-sort-icon"></span>
                             Sort
                           </div>
+
+                          <div class="filter-div">
+                            <ul>
+                              <li>
+                                <a href="{{ route('products', array_merge(request()->query(), ['sort' => 1])) }}"
+                                  class="{{ request('sort') == 1 ? 'active' : '' }}">
+                                    Low to High (Price)
+                                </a>
+                              </li>
+                              <li>
+                                <a href="{{ route('products', array_merge(request()->query(), ['sort' => 2])) }}"
+                                  class="{{ request('sort') == 2 ? 'active' : '' }}">
+                                    High to Low (Price)
+                                </a>
+                              </li>
+                            </ul>
+                          </div>
+
+                        </div>
+
+
+
                     </div>
                     
                     

@@ -290,7 +290,7 @@ class FrontendController extends Controller
             ->approved()
             ->where('customer_id', $customerId);
 
-        $data['allEquipments'] = $equipments->orderBy('id', 'desc')->paginate(9)->withQueryString();
+        $data['allEquipments'] = $equipments->orderBy('id', 'desc')->paginate(12)->withQueryString();
 
         return view('frontend::seller_listing', $data);
     }
@@ -366,6 +366,20 @@ class FrontendController extends Controller
             // Filter by model
             if ($request->filled('equipment_model_id')) {
                 $equipments->where('equipment_model_id', $request->equipment_model_id);
+            }
+
+            if ($request->filled('sort')) {
+                // Low to High (Price) = 1 
+                // High to Low (Price) = 2
+                if($request->sort == 1)
+                {
+                    $equipments->orderBy('price', 'asc');
+                }
+                if($request->sort == 2)
+                {
+                    $equipments->orderBy('price', 'desc');
+                }
+                
             }
 
             // Final query execution

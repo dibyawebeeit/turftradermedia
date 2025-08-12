@@ -182,7 +182,13 @@
         </script>
 
         {{-- <script src="{{ asset('frontendassets/js/google-translate.js') }}"></script> --}}
-
+        <script>
+            $(document).ready(function(){
+            $(".proListFilter-sort-button").click(function(){
+                $(".filter-div").toggle();
+            });
+            });
+        </script>
         
 
         @yield('script')
