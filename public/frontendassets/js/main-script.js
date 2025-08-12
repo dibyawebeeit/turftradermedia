@@ -1,4 +1,3 @@
-
 // document.addEventListener("DOMContentLoaded", function () {
 //   const selected = document.getElementById("selected-option");
 //   const options = document.getElementById("options-list");
@@ -102,7 +101,7 @@ jQuery('.saleSlider').slick({
   speed: 500,
   slidesToShow: 4,         // Number of columns
   slidesToScroll: 1,
-  arrows: false,
+  arrows: true,
   autoplay: true,
   autoplaySpeed: 7000,
   rows: 4,                 // Number of rows
@@ -266,7 +265,4 @@ document.querySelectorAll('.category-menu li > a').forEach(anchor => {
     e.preventDefault();
     jQuery( this ).toggleClass('active');
     jQuery( ".mobile_nav" ).toggleClass('open');
-}); 
- 
- 
- 
+});

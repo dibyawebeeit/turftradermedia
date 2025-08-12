@@ -34,7 +34,8 @@
        <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css">
         <script src="{{ asset('frontendassets/js/jquery-3.6.0.min.js') }}"></script>
         <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
-            <link rel="stylesheet" href="{{ asset('frontendassets/css/custom.css') }}">
+        <link rel="stylesheet" href="{{ asset('frontendassets/css/custom.css') }}">
+        <link rel="stylesheet" href="{{ asset('frontendassets/css/responsive.css') }}">
 
     </head>
 

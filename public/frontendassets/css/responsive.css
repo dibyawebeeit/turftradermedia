@@ -1,66 +1,66 @@
+@media screen and (max-width: 960px) {
 
-/* 
-  ##Device = Desktops
-  ##Screen = 1281px to higher resolution desktops
-*/
-
-@media (min-width: 1281px) {
-  
-  /* CSS */
-  
+  .saleSlider .slick-prev {
+    left: 40%;
+    bottom: 17px;
+    top: inherit;
 }
 
-/* 
-  ##Device = Laptops, Desktops
-  ##Screen = B/w 1025px to 1280px
-*/
-
-@media (min-width: 1025px) and (max-width: 1280px) {
+  .saleSlider .slick-next {
+    right: 40%;
+    bottom: 17px;
+    top: inherit;
+}
   
-  /* CSS */
+     .setting-card .col-lg-4 {
+        width: 100%;
+        -ms-flex: 0 0 100%;
+        flex: 0 0 100%;
+        max-width: 100%;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
   
+  .dataTables_wrapper{ overflow-x: scroll;}
+  .pro-detls-watchlist p{ justify-content: start;}
+  
+      .header-searchTbl .productsearch {
+        padding-top: 7px;
+        padding-bottom: 8px;
+    }
+  
+      .header-searchTbl .searchCat {
+        padding-top: 7px;
+        padding-bottom: 7px;
+    }
+  .header-searchTbl .submit{ padding-top: 5px !important;
+    padding-bottom: 5px !important;}
+  
+  .setting-card .col-lg-12{ padding-right:15px; padding-left:15px;}
+  .setting-card  .col-lg-6{padding-right:15px; padding-left:15px;     -ms-flex: 0 0 100%;
+    flex: 0 0 100%;
+    max-width: 100%;}
+.productlistShopwatch .productlistShopCol {
+    -ms-flex: 0 0 100%;
+    flex: 0 0 100%;
+    max-width: 100%;
+    padding: 0 7px;
+    height: 100%;
+    margin-bottom: 45px;
+}
+  
+ .productBox .productBoxTitle a {
+    height: auto;
+    overflow: hidden;
+} 
+  
+.productBox .productBoxText {
+    height: auto;
+    overflow: hidden;
 }
 
-/* 
-  ##Device = Tablets, Ipads (portrait)
-  ##Screen = B/w 768px to 1024px
-*/
 
-@media (min-width: 768px) and (max-width: 1024px) {
   
-  /* CSS */
   
-}
 
-/* 
-  ##Device = Tablets, Ipads (landscape)
-  ##Screen = B/w 768px to 1024px
-*/
-
-@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
-  
-  /* CSS */
-  
-}
-
-/* 
-  ##Device = Low Resolution Tablets, Mobiles (Landscape)
-  ##Screen = B/w 481px to 767px
-*/
-
-@media (min-width: 481px) and (max-width: 767px) {
-  
-  /* CSS */
-  
-}
-
-/* 
-  ##Device = Most of the Smartphones Mobiles (Portrait)
-  ##Screen = B/w 320px to 479px
-*/
-
-@media (min-width: 320px) and (max-width: 480px) {
-  
-  /* CSS */
-  
 }
