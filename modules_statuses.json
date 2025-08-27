@@ -18,5 +18,6 @@
     "Manufacturer": true,
     "EquipmentModel": true,
     "Equipment": true,
-    "EquipmentEnquiry": true
+    "EquipmentEnquiry": true,
+    "Ads": true
 }

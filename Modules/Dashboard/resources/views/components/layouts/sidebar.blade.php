@@ -91,6 +91,15 @@
                 </li>
             @endcan
 
+            @can('ads_list')
+                <li class="side-nav-item">
+                    <a href="{{route('ads.index')}}" class="side-nav-link">
+                        <i class="fas fa-images"></i>
+                        <span> Ads </span>
+                    </a>
+                </li>
+            @endcan
+
             @can('category_list')
                 <li class="side-nav-item">
                     <a href="{{route('category.index')}}" class="side-nav-link">
