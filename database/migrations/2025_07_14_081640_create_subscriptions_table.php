@@ -17,6 +17,9 @@ return new class extends Migration
             $table->foreignId('subscription_plan_id')->constrained();
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
+            $table->date('end_date')->nullable();
+            $table->date('cancel_date')->nullable();
+            $table->double('used_amount')->default(0);
             $table->enum('type', ['monthly', 'annual']);
             $table->double('amount')->nullable();
             $table->string('txn_id',100)->nullable();

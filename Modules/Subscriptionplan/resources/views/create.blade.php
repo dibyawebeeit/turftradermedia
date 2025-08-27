@@ -48,10 +48,19 @@
                                                 placeholder="Name" value="{{ old('name') }}" required>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-3">
                                         <div class="mb-3">
-                                            <label for="monthly_price" class="form-label">Monthly Price ($) <sup>*</sup></label>
-                                            <input type="number" step="any" class="form-control" name="monthly_price" placeholder="Monthly Price" value="{{ old('monthly_price') }}" required>
+                                            <label for="monthly_price" class="form-label"> Price ($) <sup>*</sup></label>
+                                            <input type="number" step="any" class="form-control" name="monthly_price" placeholder="Price" value="{{ old('monthly_price') }}" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="mb-3">
+                                            <label for="type" class="form-label"> Type <sup>*</sup></label>
+                                            <select class="form-control" name="type" required>
+                                                <option value="monthly">Monthly</option>
+                                                <option value="onetime">One Time</option>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="col-md-6">

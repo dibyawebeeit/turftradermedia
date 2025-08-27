@@ -123,8 +123,8 @@
                                     </div>
                                     <div class="col-md-4">
                                         <div class="mb-3">
-                                            <label for="image" class="form-label">Image <sup>*</sup></label>
-                                            <input type="file" class="form-control" name="image" accept="image/*" required>
+                                            <label for="image" class="form-label">Image</label>
+                                            <input type="file" class="form-control" name="image" accept="image/*">
                                         </div>
                                     </div>
 

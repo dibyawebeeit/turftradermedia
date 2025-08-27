@@ -21,6 +21,7 @@ class Subscriptionplan extends Model
         'offer',
         'duration',
         'no_of_listing',
+        'type',
         'status'
     ];
 

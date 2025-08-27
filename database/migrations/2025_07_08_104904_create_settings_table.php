@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('footer_text')->nullable();
             $table->string('newsletter_title')->nullable();
             $table->text('newsletter_desc')->nullable();
+            $table->integer('listing_no_for_free_seller')->default(0);
 
             $table->string('login_title')->nullable();
             $table->text('login_desc')->nullable();

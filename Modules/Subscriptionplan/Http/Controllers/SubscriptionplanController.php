@@ -42,6 +42,7 @@ class SubscriptionplanController extends Controller
             'duration' => 'required',
             'no_of_listing' => 'required',
             'description' => 'nullable',
+            'type'=>'required',
             'offer' => 'nullable',
         ]);
 
@@ -83,6 +84,7 @@ class SubscriptionplanController extends Controller
             'duration' => 'required',
             'no_of_listing' => 'required',
             'description' => 'nullable',
+            'type'=>'required',
             'offer' => 'nullable',
         ]);
 

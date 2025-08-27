@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('offer',100)->nullable();
             $table->integer('duration')->default(0)->comment('in days');
             $table->integer('no_of_listing')->default(0);
+            $table->string('type',20)->nullable();
             $table->tinyInteger('status')->default(1);
             $table->SoftDeletes();
             $table->timestamps();

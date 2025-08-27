@@ -18,7 +18,7 @@
                             {{-- <div class="setting-title">
                                 <h5>Information</h5>
                             </div> --}}
-                            <div class="setting-card custom-table">
+                            <div class="setting-card custom-table panel-form">
                                 <div class="row clearfix">
                                     <div class="col-cmn col-lg-4">
                                         <div class="form-wrap">
@@ -202,8 +202,8 @@
                                     </div>
                                     <div class="col-cmn col-lg-6">
                                         <div class="form-wrap">
-                                            <label class="col-form-label">Company Name <span class="text-danger">*</span></label>
-                                            <input type="text" name="company_name" class="form-control-4" placeholder="Company Name" value="{{ old('company_name',$equipment->company_name) }}" required>
+                                            <label class="col-form-label">Company Name </label>
+                                            <input type="text" name="company_name" class="form-control-4" placeholder="Company Name" value="{{ old('company_name',$equipment->company_name) }}">
                                             @error('company_name')
                                             <div class="errmsg">
                                             <i class="fa-solid fa-circle-exclamation"></i> {{ $message }}
@@ -246,7 +246,7 @@
                                     </div>
                                     <div class="col-cmn col-lg-12">
                                         <h4>Gallery Information</h4>
-                                        <span>*Accepted formats: JPEG, JPG, PNG, WEBP. Maximum file size: 1 MB.</span>
+                                        <span>*Accepted formats: JPEG, JPG, PNG, WEBP. Maximum file size: 2 MB.</span>
                                     </div>
                                     <div class="col-cmn col-lg-6">
                                         <div class="form-wrap">

@@ -21,6 +21,7 @@ class Setting extends Model
         'footer_text',
         'newsletter_title',
         'newsletter_desc',
+        'listing_no_for_free_seller',
         'login_title',
         'login_desc',
         'register_title',

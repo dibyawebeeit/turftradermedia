@@ -17,6 +17,7 @@ use Modules\Equipment\Models\EquipmentImage;
 use Modules\EquipmentModel\Models\EquipmentModel;
 use Modules\Manufacturer\Models\Manufacturer;
 use Modules\Subscription\Models\Subscription;
+use Illuminate\Support\Facades\Validator;
 
 class CustomerEquipmentController extends Controller
 {
@@ -124,10 +125,17 @@ class CustomerEquipmentController extends Controller
                 return redirect()->back()->with('error', 'You have reached your listing limit.');
             }
         }
+        else
+        {
+            $listingCount = Equipment::where('customer_id', $this->activeCustomerId)->count();
+            $listing_no_for_free_seller = sitesetting()->listing_no_for_free_seller;
+            if ($listingCount >= $listing_no_for_free_seller ) {
+                return redirect()->back()->with('error', 'You have reached your listing limit.');
+            }
+        }
         
 
-
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'vin' => 'nullable|string|max:50',
             'manufacturer_id' => 'required|numeric',
             'equipment_model_id' => 'required|numeric',
@@ -141,20 +149,34 @@ class CustomerEquipmentController extends Controller
             'stock_no' => 'nullable|string|max:30',
             'description' => 'required|string',
             // 'details' => 'required|string',
-            'company_name' => 'required|string|max:200',
+            'company_name' => 'nullable|string|max:200',
             'contact_name' => 'required|string|max:100',
             'contact_email' => 'required|email|max:100',
             'contact_no' => ['required', new PhoneNumber()],
             'meta_title' => 'nullable|string|max:250',
             'meta_keyword' => 'nullable|string',
             'meta_desc' => 'nullable|string',
-            'thumbnail' => 'required|image|mimes:jpg,jpeg,png,webp|max:1024',
+            'thumbnail' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
             'images' => 'required', // optional: ensure at least one file is uploaded
             'images.*' => 'required|mimes:jpeg,jpg,png,webp|max:5120', // 5MB per file
         ]);
 
-        
+        if ($validator->fails()) {
+            $all_model_list = [];
 
+            if ($request->manufacturer_id) {
+                $all_model_list = EquipmentModel::select('id','name')
+                    ->where('manufacturer_id', $request->manufacturer_id)
+                    ->get();
+            }
+
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput()
+                ->with('all_model_list', $all_model_list);
+        }
+        
         $input = $request->all();
 
         $manufacturer = Manufacturer::find($request->manufacturer_id);
@@ -227,6 +249,12 @@ class CustomerEquipmentController extends Controller
         $result = Equipment::create($input);
         if ($result) {
 
+            $all_model_list = [];
+            if($request->manufacturer_id)
+            {
+                $all_model_list = EquipmentModel::select('id','name')->where('manufacturer_id',$request->manufacturer_id)->get();
+            }
+
             //Images Upload Section
             foreach ($uploadedFiles as $doc) {
                 EquipmentImage::create([
@@ -239,7 +267,16 @@ class CustomerEquipmentController extends Controller
 
             return redirect()->route('customer.equipment.index')->with('success', 'Equipment added successfully');
         } else {
-            return redirect()->back()->with('error', 'something went wrong!');
+
+            $all_model_list = [];
+
+            if ($request->manufacturer_id) {
+                $all_model_list = EquipmentModel::select('id','name')
+                    ->where('manufacturer_id', $request->manufacturer_id)
+                    ->get();
+            }
+
+            return redirect()->back()->withInput()->with('error', 'something went wrong!')->with('all_model_list', $all_model_list);
         }
     }
 
@@ -325,7 +362,7 @@ class CustomerEquipmentController extends Controller
             'stock_no' => 'nullable|string|max:30',
             'description' => 'required|string',
             // 'details' => 'required|string',
-            'company_name' => 'required|string|max:200',
+            'company_name' => 'nullable|string|max:200',
             'contact_name' => 'required|string|max:100',
             'contact_email' => 'required|email|max:100',
             'contact_no' => ['required', new PhoneNumber()],
@@ -370,7 +407,7 @@ class CustomerEquipmentController extends Controller
 
         if ($request->has('thumbnail')) {
             $request->validate([
-                'thumbnail' => 'required|image|mimes:jpg,jpeg,png,webp|max:1024',
+                'thumbnail' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
             ]);
             $image = $request->file('thumbnail');
             // $imageName = 'thumbnail_' . Str::random(10).time(). '.' .$image->getClientOriginalExtension();
@@ -476,7 +513,17 @@ class CustomerEquipmentController extends Controller
 
                 $no_of_listing = $currentSubscription->plan->no_of_listing;
                 $equipmentCount = Equipment::where('customer_id',$this->activeCustomerId)->where('publish_status',1)->count();
-                if($equipmentCount == $no_of_listing)
+                if($equipmentCount >= $no_of_listing)
+                {
+                    $msg = "You can publish upto {$no_of_listing} equipments";
+                    return response()->json(['success' => false, 'message' => $msg], 200);
+                }
+            }
+            else
+            {
+                $no_of_listing = sitesetting()->listing_no_for_free_seller;
+                $equipmentCount = Equipment::where('customer_id',$this->activeCustomerId)->where('publish_status',1)->count();
+                if($equipmentCount >= $no_of_listing)
                 {
                     $msg = "You can publish upto {$no_of_listing} equipments";
                     return response()->json(['success' => false, 'message' => $msg], 200);

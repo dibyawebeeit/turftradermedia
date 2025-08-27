@@ -45,6 +45,7 @@ p a:hover {    text-decoration: none;color:#000000;}
 .navbar ul li{padding-top: 5px;padding-bottom: 5px;margin-bottom: 0px; margin-right: 30px; }
 
 .errmsg{ color:red; margin-top: -14px; }
+.panel-form .errmsg{ color:red; margin-top: 0px; }
 
 
 .navbar ul li:last-child{margin-right: 0;}

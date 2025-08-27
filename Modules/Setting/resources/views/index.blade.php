@@ -127,6 +127,13 @@
                                                 value="{{ $dataList->newsletter_desc }}" required>
                                         </div>
                                     </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="newsletter_desc" class="form-label">No of listing for Free Seller <sup>*</sup></label>
+                                            <input type="number" class="form-control" name="listing_no_for_free_seller" placeholder="Enter Number"
+                                                value="{{ $dataList->listing_no_for_free_seller }}" required>
+                                        </div>
+                                    </div>
                                 </div>
                                 <h5 class="mb-3 text-uppercase bg-light p-2"><i class="mdi mdi-earth me-1"></i> Login Page Section</h5>
                                 <div class="row">

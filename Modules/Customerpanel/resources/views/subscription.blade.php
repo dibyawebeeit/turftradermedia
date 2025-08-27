@@ -49,7 +49,7 @@
                             <div class="offers">
                                 <h2>{{ $item['name'] }}</h2>
                                 <h3 class="price monthly_price">${{ $item['monthly_price'] }} 
-                                <small>Monthly</small>
+                                <small>{{ ucwords($item['type']) }}</small>
                                 </h3>
                                 <h3 class="price annual_price" style="display:none;">${{ $item['annual_price'] }} 
                                 <small>Annually</small>

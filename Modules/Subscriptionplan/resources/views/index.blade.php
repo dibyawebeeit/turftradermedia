@@ -50,6 +50,7 @@
                                             <th> Sl </th>
                                             <th>Name</th>
                                             <th>Price</th>
+                                            <th>Type</th>
                                             <th>Duration (Days)</th>
                                             <th>No of Listing</th>
                                             <th>Status</th>
@@ -64,6 +65,7 @@
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $item->name }}</td>
                                                 <td>{{ format_price($item->monthly_price) }}</td>
+                                                <td>{{ strtoupper($item->type) }}</td>
                                                 <td>{{ $item->duration }}</td>
                                                 <td>{{ $item->no_of_listing }}</td>
                                                 <td>

@@ -17,7 +17,7 @@
                             {{-- <div class="setting-title">
                                 <h5>Information</h5>
                             </div> --}}
-                            <div class="setting-card custom-table">
+                            <div class="setting-card custom-table panel-form">
                                 <div class="row clearfix">
                                     <div class="col-cmn col-lg-4">
                                         <div class="form-wrap">
@@ -36,7 +36,8 @@
                                             <select name="manufacturer_id" id="manufacturer" class="form-control-4" required="">
                                                 <option value="">--Select--</option>
                                                 @foreach ($manufacturerList as $manufacturer)
-                                                    <option value="{{ $manufacturer->id }}">{{ $manufacturer->name }}</option>
+                                                    <option value="{{ $manufacturer->id }}" 
+                                                        {{ old('manufacturer_id')==$manufacturer->id?'selected':'' }}>{{ $manufacturer->name }}</option>
                                                 @endforeach
                                             </select>
                                             @error('manufacturer_id')
@@ -51,6 +52,12 @@
                                             <label class="col-form-label">Model <span class="text-danger">*</span></label>
                                             <select name="equipment_model_id" id="equipment_model" class="form-control-4" required="">
                                                 <option value="">--Select--</option>
+                                                @if (session('all_model_list'))
+                                                    @foreach (session('all_model_list') as $model_item)
+                                                        <option value="{{ $model_item->id }}" {{ old('equipment_model_id')==$model_item->id?'selected':'' }}>
+                                                            {{ $model_item->name }}</option>
+                                                    @endforeach
+                                                @endif
                                             </select>
                                             @error('equipment_model_id')
                                             <div class="errmsg">
@@ -67,7 +74,9 @@
                                                 <option value="">--Select--</option>
                                                 @foreach ($categoryList as $key => $value)
                                                     <option value="{{ $key }}"
-                                                        {{ in_array($key, $parentIds) ? 'disabled' : '' }}>
+                                                        {{ in_array($key, $parentIds) ? 'disabled' : '' }}
+                                                        {{ old('category_id')==$key?'selected':'' }}
+                                                        >
                                                         {{ $value }}
                                                     </option>
                                                 @endforeach
@@ -195,8 +204,8 @@
                                     </div>
                                     <div class="col-cmn col-lg-6">
                                         <div class="form-wrap">
-                                            <label class="col-form-label">Company Name <span class="text-danger">*</span></label>
-                                            <input type="text" name="company_name" class="form-control-4" placeholder="Company Name" value="{{ old('company_name') }}" required>
+                                            <label class="col-form-label">Company Name </label>
+                                            <input type="text" name="company_name" class="form-control-4" placeholder="Company Name" value="{{ old('company_name') }}">
                                             @error('company_name')
                                             <div class="errmsg">
                                             <i class="fa-solid fa-circle-exclamation"></i> {{ $message }}
@@ -239,7 +248,7 @@
                                     </div>
                                     <div class="col-cmn col-lg-12">
                                         <h4>Gallery Information</h4>
-                                        <span>*Accepted formats: JPEG, JPG, PNG, WEBP. Maximum file size: 1 MB.</span>
+                                        <span>*Accepted formats: JPEG, JPG, PNG, WEBP. Maximum file size: 2 MB.</span>
                                     </div>
                                     <div class="col-cmn col-lg-6">
                                         <div class="form-wrap">
@@ -261,7 +270,7 @@
                                         </div>
                                     </div>
                                     <div class="col-cmn col-lg-12">
-                                        <label>Upload Images</label>
+                                        <label>Upload Images <span class="text-danger">*</span></label>
                                         <div class="dropzone-wrapper" id="dropzone-wrapper">
                                             <div class="dropzone-desc">
                                                 <i class="fa fa-upload" style="font-size: 24px;"></i>
@@ -272,6 +281,7 @@
                                             name="images[]" 
                                             multiple 
                                             accept=".jpg,.jpeg,.webp,.png"
+                                            required
                                             style="opacity:0; position:absolute; top:0; left:0; right:0; bottom:0; width:100%; height:100%; cursor:pointer;">
                                         </div>
 
