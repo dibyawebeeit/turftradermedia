@@ -92,34 +92,54 @@
                     
                     
                     <div class="productlistShop">
-                      @if (count($allEquipments)>0)
-                        @foreach ($allEquipments as $equipment)
-                          <div class="productlistShopCol">
-                              <div class="productBox">
-                                  <div class="productBoxImg">
-                                      <a href="{{ route('product_details',$equipment->slug) }}"><img src="{{ asset('uploads/equipmentImage/'.$equipment->thumbnail) }}"></a>
-                                    </div>
-                                  <div class="productBoxCont">
-                                      <div class="productBoxTitle">
-                                        <a href="{{ route('product_details',$equipment->slug) }}">
-                                        {{ $equipment->name }}
-                                        </a>
-                                      </div>
-                                      {{-- <div class="productBoxText"><p>{{ $equipment->category->name ?? '-' }}</p></div> --}}
-                                      <div class="productBoxText">
-                                        <p>{{ $equipment->machine_location }}</p>
-                                      </div>
-
-                                      <div class="productBoxPrice">
-                                        {{ $equipment->currency->sign ?? '' }}{{ new_format_price($equipment->price) }}</div>
-                                      <div class="productBoxBtn"><a href="{{ route('product_details',$equipment->slug) }}" class="btn">View Details</a></div>
+                        @if ($allEquipments->count() > 0)
+                            @foreach ($allEquipments as $index => $equipment)
+                                {{-- Equipment --}}
+                                <div class="productlistShopCol">
+                                    <div class="productBox">
+                                        <div class="productBoxImg">
+                                            <a href="{{ route('product_details',$equipment->slug) }}">
+                                                <img src="{{ asset('uploads/equipmentImage/'.$equipment->thumbnail) }}">
+                                            </a>
+                                        </div>
+                                        <div class="productBoxCont">
+                                            <div class="productBoxTitle">
+                                                <a href="{{ route('product_details',$equipment->slug) }}">
+                                                    {{ $equipment->name }}
+                                                </a>
+                                            </div>
+                                            <div class="productBoxText">
+                                                <p>{{ $equipment->machine_location }}</p>
+                                            </div>
+                                            <div class="productBoxPrice">
+                                                {{ $equipment->currency->sign ?? '' }}{{ new_format_price($equipment->price) }}
+                                            </div>
+                                            <div class="productBoxBtn">
+                                                <a href="{{ route('product_details',$equipment->slug) }}" class="btn">View Details</a>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                          </div>
-                        @endforeach
-                      @else
-                          <h5>No Matches Found</h5>
-                      @endif
+
+                                {{-- Insert Ad after every 3 equipments --}}
+                                @if(($index+1) % 3 == 0 && isset($smallAds) && $smallAds->count())
+                                    @php
+                                        $randomAd = $smallAds->random();
+                                    @endphp
+                                    <div class="productlistShopCol">
+                                        <div class="productBox adBox">
+                                            <div class="productBoxImg product-add-img">
+                                                <a href="{{ $randomAd->external_link ?? '#' }}" target="_blank">
+                                                    <img src="{{ asset('uploads/adsImage/'.$randomAd->image) }}" alt="Advertisement">
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+                            @endforeach
+                        @else
+                            <h5>No Matches Found</h5>
+                        @endif
                     </div>
                     
                     

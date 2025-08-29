@@ -137,28 +137,29 @@
 						</div>
 					@endif
                     
-                    <div class="section-botmImg">
-						<img src="{{ asset('uploads/cmsImage/'.$home->banner) }}"></div>
+					@if (count($mediumAds)>0)
+					<div class="section-botmImg">
+						@foreach ($mediumAds as $item)
+							<div><a target="_blank" href="{{ $item->external_link }}"><img src="{{ asset('uploads/adsImage/'.$item->image) }}"></a></div>
+						@endforeach
+                    </div>
+					@endif
+                    
                 </div>  
                 
             </div>   
-        	<div class="col-cmn col-lg-3 col-md-3 col-sm-12 two">            
-                <div class="section-img">
-                	<!--<img src="image/home-img-1.jpg">-->
-                    
-                	<div class="curve-container">
-                      <div class="content">
-                        <h2>{{ $home->section1_title }}</h2>
-                        <p>{{ $home->section1_title2 }}</p>
-                      </div>
-                      <div class="image-curve">
-                        <img src="{{ asset('frontendassets/image/curve-img2.png') }}" class="curveImg">
-                        <img src="{{ asset('uploads/cmsImage/'.$home->section1_image) }}" class="curveMainImg">
-                      </div>
-                    </div>
+        	<div class="col-cmn col-lg-3 col-md-3 col-sm-12 two">     
 
-                
+				@if (count($smallAds)>0)
+				<div class="section-img section-img1">
+                	@foreach ($smallAds as $item)
+						<div>
+							<a target="_blank" href="{{ $item->external_link }}"><img src="{{ asset('uploads/adsImage/'.$item->image) }}"></a>
+						</div> 
+					@endforeach
                 </div>
+				@endif       
+                
             </div>
                                
        </div>
@@ -229,28 +230,27 @@
 
 
 
+@if (count($largeAds)>0)
 
 <section class="home-row-saleGolf p-b-98">
-    <div class="container">    
-    
-    	<div class="row">    
-        	<div class="col-cmn col-lg-5 col-md-5 col-sm-12 one">
-            	<div class="section-content">
-            		<h3>{{ $home->section2_title }}</h3>
-                    <h2>{{ $home->section2_title2 }}</h2>
-                    <p>{{ $home->section2_title3 }}</p>
-                </div>
-            </div>   
-        	<div class="col-cmn col-lg-7 col-md-7 col-sm-12 two">
-            	<div class="section-img">
-            		<img src="{{ asset('uploads/cmsImage/'.$home->section2_image) }}">
-                </div>
-            </div>                     
-       </div>
-
-
-    </div>
+   <div class="container">
+      <div class="row">
+         <div class="col-cmn col-lg-12">
+            <div class="foot-banr1">
+				@foreach ($largeAds as $item)
+					<div>
+						<a target="_blank" href="{{ $item->external_link }}"><img src="{{ asset('uploads/adsImage/'.$item->image) }}">
+						</a>
+					</div>
+				@endforeach
+                
+				{{-- <div><a target="_blank" href="#"><img src="https://turftradermedia.viewourprojects.com/uploads/adsImage/ad_ZSslV3wwnW1756382120.jpg"></a></div> --}}
+            </div>
+         </div>
+      </div>
+   </div>
 </section>
+@endif
 
 @section('script')
 	<script>

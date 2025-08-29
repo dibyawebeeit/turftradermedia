@@ -266,3 +266,111 @@ document.querySelectorAll('.category-menu li > a').forEach(anchor => {
     jQuery( this ).toggleClass('active');
     jQuery( ".mobile_nav" ).toggleClass('open');
 });
+
+
+$('.section-botmImg').slick({
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+      autoplay: true,          // enable autoplay
+    autoplaySpeed: 2000, 
+    slidesToScroll: 1,
+    responsive: [
+      {
+        breakpoint: 1024, // for tablets & small laptops
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          infinite: true,
+          dots: true
+        }
+      },
+      {
+        breakpoint: 768, // for tablets
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1
+        }
+      },
+      {
+        breakpoint: 480, // for mobile
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1
+        }
+      }
+    ]
+  });
+
+$('.section-img1').slick({
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+      autoplay: true,          // enable autoplay
+    autoplaySpeed: 2000, 
+    slidesToScroll: 1,
+    responsive: [
+      {
+        breakpoint: 1024, // for tablets & small laptops
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          infinite: true,
+          dots: true
+        }
+      },
+      {
+        breakpoint: 768, // for tablets
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1
+        }
+      },
+      {
+        breakpoint: 480, // for mobile
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1
+        }
+      }
+    ]
+  });
+
+
+$('.foot-banr1').slick({
+    dots: false,
+    infinite: true,
+    speed: 500,
+  arrows: false,
+    slidesToShow: 1,
+      autoplay: true,          // enable autoplay
+    autoplaySpeed: 2000, 
+    slidesToScroll: 1,
+    responsive: [
+      {
+        breakpoint: 1024, // for tablets & small laptops
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          infinite: true,
+          dots: true
+        }
+      },
+      {
+        breakpoint: 768, // for tablets
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1
+        }
+      },
+      {
+        breakpoint: 480, // for mobile
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1
+        }
+      }
+    ]
+  });

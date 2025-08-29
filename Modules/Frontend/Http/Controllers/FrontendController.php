@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use Modules\Ads\Models\Ads;
 use Modules\Banner\Models\Banner;
 use Modules\Category\Models\Category;
 use Modules\Cms\Models\Aboutus;
@@ -65,6 +66,10 @@ class FrontendController extends Controller
                                 ->get();
 
         $data['manufacturerListing'] = Manufacturer::select('id','name')->active()->get();
+
+        $data['largeAds']= Ads::where('type','large')->active()->get();
+        $data['mediumAds']= Ads::where('type','medium')->active()->get();
+        $data['smallAds']= Ads::where('type','small')->active()->get();
 
         $data['home']=Home::first();
         return view('frontend::index', $data);
@@ -243,6 +248,11 @@ class FrontendController extends Controller
     public function about_us()
     {
         $data['aboutus']=Aboutus::first();
+
+        $data['largeAds']= Ads::where('type','large')->active()->get();
+        $data['mediumAds']= Ads::where('type','medium')->active()->get();
+        $data['smallAds']= Ads::where('type','small')->active()->get();
+        
         return view('frontend::about_us', $data);
     }
     public function contact_us()
@@ -294,103 +304,97 @@ class FrontendController extends Controller
 
         return view('frontend::seller_listing', $data);
     }
+
+
+
     public function products(Request $request)
     {
-        $category =null;
-        $catQuery = Category::with('childs')->where('parent_id',0)->get();
-        if(count($catQuery) > 0)
-        {
-            foreach($catQuery as $key => $value)
-            {
-                $subcategory =null;
-                if(count($value->childs) > 0)
-                {
-                    foreach($value->childs as $child)
-                    {
-                        $subcategory[] = array(
+        $category = null;
+        $catQuery = Category::with('childs')->where('parent_id', 0)->get();
+        if ($catQuery->count() > 0) {
+            foreach ($catQuery as $value) {
+                $subcategory = null;
+                if ($value->childs->count() > 0) {
+                    foreach ($value->childs as $child) {
+                        $subcategory[] = [
                             'id' => $child->id,
-                            'name'=> $child->name
-                        );
+                            'name' => $child->name
+                        ];
                     }
                 }
-                $category[] = array(
+                $category[] = [
                     'id' => $value->id,
-                    'name'=> $value->name,
+                    'name' => $value->name,
                     'subcategory' => $subcategory
-                );
-                
+                ];
             }
         }
         $data['allCategory'] = $category;
 
+        // fetch ads
+        $data['smallAds'] = Ads::where('type', 'small')->active()->get();
+
+        // equipments query
         $equipments = Equipment::published()->approved()
-                ->whereHas('customer', function ($query) {
-                    $query->where('is_free', true)
-                        ->orWhere(function ($q) {
-                            $today = \Carbon\Carbon::today();
-                            $q->where('is_free', false)
-                                ->whereHas('subscriptions', function ($sub) use ($today) {
-                                    $sub->where('status', 'active')
-                                        ->where('start_date', '<=', $today)
-                                        ->where('end_date', '>=', $today);
-                                });
-                        });
-                });
+            ->whereHas('customer', function ($query) {
+                $query->where('is_free', true)
+                    ->orWhere(function ($q) {
+                        $today = \Carbon\Carbon::today();
+                        $q->where('is_free', false)
+                            ->whereHas('subscriptions', function ($sub) use ($today) {
+                                $sub->where('status', 'active')
+                                    ->where('start_date', '<=', $today)
+                                    ->where('end_date', '>=', $today);
+                            });
+                    });
+            });
 
-            // Filter by category
-            if ($request->filled('category')) {
-                $categoryQuery = Category::find($request->category);
-                if($categoryQuery->parent_id == 0)
-                {
-                    $categoryIds = Category::where('parent_id',$request->category)->pluck('id');
-                    $equipments->whereIn('category_id', $categoryIds);
-                }
-                else
-                {
-                    $equipments->where('category_id', $request->category);
-                }
-                
+        // category filter
+        if ($request->filled('category')) {
+            $categoryQuery = Category::find($request->category);
+            if ($categoryQuery && $categoryQuery->parent_id == 0) {
+                $categoryIds = Category::where('parent_id', $request->category)->pluck('id');
+                $equipments->whereIn('category_id', $categoryIds);
+            } else {
+                $equipments->where('category_id', $request->category);
             }
+        }
 
-            // Filter by name
-            if ($request->filled('name')) {
-                $equipments->where('name', 'like', '%' . $request->name . '%');
-                $data['search_keyword'] = $request->name;
+        // name filter
+        if ($request->filled('name')) {
+            $equipments->where('name', 'like', '%' . $request->name . '%');
+            $data['search_keyword'] = $request->name;
+        }
+
+        // manufacturer filter
+        if ($request->filled('manufacturer_id')) {
+            $equipments->where('manufacturer_id', $request->manufacturer_id);
+        }
+
+        // model filter
+        if ($request->filled('equipment_model_id')) {
+            $equipments->where('equipment_model_id', $request->equipment_model_id);
+        }
+
+        // sort
+        if ($request->filled('sort')) {
+            if ($request->sort == 1) {
+                $equipments->orderBy('price', 'asc');
+            } elseif ($request->sort == 2) {
+                $equipments->orderBy('price', 'desc');
             }
+        }
 
-            // Filter by manufacturer
-            if ($request->filled('manufacturer_id')) {
-                $equipments->where('manufacturer_id', $request->manufacturer_id);
-            }
-
-            // Filter by model
-            if ($request->filled('equipment_model_id')) {
-                $equipments->where('equipment_model_id', $request->equipment_model_id);
-            }
-
-            if ($request->filled('sort')) {
-                // Low to High (Price) = 1 
-                // High to Low (Price) = 2
-                if($request->sort == 1)
-                {
-                    $equipments->orderBy('price', 'asc');
-                }
-                if($request->sort == 2)
-                {
-                    $equipments->orderBy('price', 'desc');
-                }
-                
-            }
-
-            // Final query execution
-            $data['allEquipments'] = $equipments
-                ->with('customer') // Optional: eager load customer
-                ->orderBy('id', 'desc')
-                ->paginate(9)
-                ->withQueryString();
+        // final query with pagination
+        $data['allEquipments'] = $equipments
+            ->with('customer')
+            ->orderBy('id', 'desc')
+            ->paginate(9)
+            ->withQueryString();
 
         return view('frontend::products', $data);
     }
+
     public function product_details($slug)
     {
         $today = \Carbon\Carbon::today();

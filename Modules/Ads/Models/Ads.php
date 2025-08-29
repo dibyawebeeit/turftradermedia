@@ -18,6 +18,11 @@ class Ads extends Model
         'status'
     ];
 
+    public function scopeActive($query)
+    {
+        return $query->where('status', 1);
+    }
+    
     // protected static function newFactory(): AdsFactory
     // {
     //     // return AdsFactory::new();

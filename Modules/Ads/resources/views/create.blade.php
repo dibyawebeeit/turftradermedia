@@ -76,9 +76,9 @@
                                     <div class="col-md-12">
                                         <span>**Note:</span>
                                         <ul>
-                                            <li>Large Ad: 1200px X 300px</li>
-                                            <li>Medium Ad: 730px X 90px</li>
-                                            <li>Small Ad: 300px X 250px</li>
+                                            <li>Large Ad: 1825px X 239px</li>
+                                            <li>Medium Ad: 1084px X 241px</li>
+                                            <li>Small Ad: 335px X 542px</li>
                                         </ul>
                                     </div>
                                 </div> <!-- end row -->

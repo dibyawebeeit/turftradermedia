@@ -1,3 +1,12 @@
+@media screen and (max-width: 1440px) {
+
+  .productBox .product-add-img img {
+    height: 475px;
+}
+  
+}
+
+
 @media screen and (max-width: 960px) {
 
   .saleSlider .slick-prev {
@@ -12,6 +21,9 @@
     top: inherit;
 }
   
+  .section-img img{ width:100%;}
+  .foot-banr1 img{ width:100%; }
+  
      .setting-card .col-lg-4 {
         width: 100%;
         -ms-flex: 0 0 100%;
@@ -20,6 +32,10 @@
         padding-left: 15px;
         padding-right: 15px;
     }
+  
+  .productBox .product-add-img img {
+    height: auto;
+}
   
   .dataTables_wrapper{ overflow-x: scroll;}
   .pro-detls-watchlist p{ justify-content: start;}
